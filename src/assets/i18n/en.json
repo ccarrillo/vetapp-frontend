@@ -12,11 +12,60 @@
       "TEXT": "-- Main"
     },
     "HOME": {
-      "TEXT": "Home",
+      "TEXT": "Home"
+    },
+    "MAIN-VET": {
+      "TEXT": "-- Vet"
+    },
+    "VET-MANAGEMENT": {
+      "TEXT": "Managment",
       "LIST": {
-        "DASHBOARD1": "Dashboard 1",
-        "DASHBOARD2": "Dashboard 2",
-        "DASHBOARD3": "Dashboard 3"
+        "ENTERPRISE": "Enterprise",
+        "EMPLOYEE": "Employee",
+        "USER": "User"
+      }
+    },
+    "VET-ANIMALS": {
+      "TEXT": "Animals",
+      "LIST": {
+        "MAINTENANCE": "Maintenance",
+        "REPORT": "Reports"
+      }
+    },
+    "VET-REPRODUCTION": {
+      "TEXT": "Reproduction",
+      "LIST": {
+        "INSEMINATION": "Insemination",
+        "BIRTH": "Birth",
+        "SERVICES": "Services"
+      }
+    },
+    "VET-HEALTH": {
+      "TEXT": "Health",
+      "LIST": {
+        "LACTATION": "Lactation",
+        "MASTITIS": "Mastitis",
+        "CHIROPODY": "Chiropody",
+        "POSTPARTUM": "Post-Partum",
+        "TREATMENT": "Treament"
+      }
+    },
+    "VET-PRODUCTION": {
+      "TEXT": "Production",
+      "LIST": {
+        "REPORTS": "Reports",
+        "LACTATION": "Lactation",
+        "HEAVY-MILK": "Heavy Milk",
+        "SALE-MILK": "Sale Milk"
+      }
+    },
+    "VET-ALIMENTATION": {
+      "TEXT": "Alimentation",
+      "LIST": {
+        "ALIMENTATION": "Alimentation",
+        "COST": "Cost",
+        "FORMULAS": "Formulas",
+        "GRAPHICS": "Graphics"
       }
     },
     "ADVANCE-TABLE": {

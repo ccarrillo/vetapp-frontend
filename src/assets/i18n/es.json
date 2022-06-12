@@ -12,11 +12,60 @@
       "TEXT": "-- Principal"
     },
     "HOME": {
-      "TEXT": "Casa",
+      "TEXT": "Casa"
+    },
+    "MAIN-VET": {
+      "TEXT": "-- Veterinaria"
+    },
+    "VET-MANAGEMENT": {
+      "TEXT": "Administración",
       "LIST": {
-        "DASHBOARD1": "Tablero 1",
-        "DASHBOARD2": "Tablero 2",
-        "DASHBOARD3": "Tablero 3"
+        "ENTERPRISE": "Empresa",
+        "EMPLOYEE": "Empleado",
+        "USER": "Usuario"
+      }
+    },
+    "VET-ANIMALS": {
+      "TEXT": "Animales",
+      "LIST": {
+        "MAINTENANCE": "Mantenimiento",
+        "REPORT": "Reportes"
+      }
+    },
+    "VET-REPRODUCTION": {
+      "TEXT": "Reproducción",
+      "LIST": {
+        "INSEMINATION": "Inseminación",
+        "BIRTH": "Nacimientos",
+        "SERVICES": "Servicios"
+      }
+    },
+    "VET-HEALTH": {
+      "TEXT": "Sanidad",
+      "LIST": {
+        "LACTATION": "Lactancia",
+        "MASTITIS": "Mastitis",
+        "CHIROPODY": "Podología",
+        "POSTPARTUM": "Post-Parto",
+        "TREATMENT": "Tratamiento"
+      }
+    },
+    "VET-PRODUCTION": {
+      "TEXT": "Producción",
+      "LIST": {
+        "REPORTS": "Reportes",
+        "LACTATION": "Lactancia",
+        "HEAVY-MILK": "Pesado de Leche",
+        "SALE-MILK": "Venta de Leche"
+      }
+    },
+    "VET-ALIMENTATION": {
+      "TEXT": "Alimentación",
+      "LIST": {
+        "ALIMENTATION": "Alimentación",
+        "COST": "Costo",
+        "FORMULAS": "Formulas",
+        "GRAPHICS": "Graficos"
       }
     },
     "ADVANCE-TABLE": {

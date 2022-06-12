@@ -17,6 +17,50 @@ const routes: Routes = [
         loadChildren: () =>
           import('./dashboard/dashboard.module').then((m) => m.DashboardModule)
       },
+      //Inicio Implementacion Veterinaria
+      {
+        path: 'managment',
+        loadChildren: () =>
+          import('./paginas/administracion/administracion.module').then(
+            (m) => m.AdministracionModule
+          )
+      },
+      {
+        path: 'feeding',
+        loadChildren: () =>
+          import('./paginas/alimentacion/alimentacion.module').then(
+            (m) => m.AlimentacionModule
+          )
+      },
+      {
+        path: 'animal',
+        loadChildren: () =>
+          import('./paginas/animal/animal.module').then(
+            (m) => m.AnimalModule
+          )
+      },
+      {
+        path: 'production',
+        loadChildren: () =>
+          import('./paginas/produccion/produccion.module').then(
+            (m) => m.ProduccionModule
+          )
+      },
+      {
+        path: 'reproduction',
+        loadChildren: () =>
+          import('./paginas/reproduccion/reproduccion.module').then(
+            (m) => m.ReproduccionModule
+          )
+      },
+      {
+        path: 'health',
+        loadChildren: () =>
+          import('./paginas/sanidad/sanidad.module').then(
+            (m) => m.SanidadModule
+          )
+      },
+      //Fin Implementacion Veterinaria
       {
         path: 'extra-pages',
         loadChildren: () =>
@@ -48,4 +92,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

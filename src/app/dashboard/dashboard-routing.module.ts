@@ -10,16 +10,16 @@ const routes: Routes = [
     redirectTo: 'main',
     pathMatch: 'full'
   },
-  {
+  /*{
     path: 'main',
     component: MainComponent
   },
   {
     path: 'dashboard2',
     component: Dashboard2Component
-  },
+  },*/
   {
-    path: 'dashboard3',
+    path: 'main',
     component: Dashboard3Component
   }
 ];

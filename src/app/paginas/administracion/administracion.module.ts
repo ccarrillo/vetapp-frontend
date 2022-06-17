@@ -13,6 +13,7 @@ import { UsuarioListarComponent } from './usuario/usuario-listar/usuario-listar.
 import { UsuarioRegistrarComponent } from './usuario/usuario-registrar/usuario-registrar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
   imports: [
     CommonModule,
     AdministracionRoutingModule,
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     ComponentsModule

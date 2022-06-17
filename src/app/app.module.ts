@@ -31,6 +31,7 @@ import {
 } from '@angular/common/http';
 import { WINDOW_PROVIDERS } from './core/service/window.service';
 
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
   wheelPropagation: false

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { EmpresaRegistrarComponent } from './empresa-registrar/empresa-registrar.component';
 
 @Component({
   selector: 'app-empresa',
@@ -7,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmpresaComponent implements OnInit {
 
+  isListMode: boolean = true;
+  sendObjEmpresa: any;
+  
   breadscrums = [
     {
       title: 'Empresa',
@@ -18,6 +22,17 @@ export class EmpresaComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  listMode() {
+    this.sendObjEmpresa = null;
+    this.isListMode = !this.isListMode;
+  }
+
+  sendEmpresa(empresa: any) {
+    this.listMode();
+    this.sendObjEmpresa = empresa;
+    console.log("empresa", empresa);
   }
 
 }

@@ -26,6 +26,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const materialModules = [
   CKEditorModule,
@@ -56,6 +60,10 @@ const materialModules = [
   OwlDateTimeModule,
   OwlNativeDateTimeModule,
   ColorPickerModule,
+  NgxDatatableModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSnackBarModule,
 
 ];
 

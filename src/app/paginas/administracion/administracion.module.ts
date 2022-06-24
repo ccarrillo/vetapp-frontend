@@ -14,6 +14,7 @@ import { UsuarioRegistrarComponent } from './usuario/usuario-registrar/usuario-r
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     ComponentsModule
   ]
 })

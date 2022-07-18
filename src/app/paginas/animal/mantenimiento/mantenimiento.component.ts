@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./mantenimiento.component.sass']
 })
 export class MantenimientoComponent implements OnInit {
+   
+  isListMode: boolean = true;
+  sendObjAnimal: any;
 
   breadscrums = [
     {
@@ -18,6 +21,17 @@ export class MantenimientoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  listMode() {
+    this.sendObjAnimal = null;
+    this.isListMode = !this.isListMode;
+  }
+
+  sendAnimal(animal: any) {
+    this.listMode();
+    this.sendObjAnimal = animal;
+    console.log("animal", animal);
   }
 
 }

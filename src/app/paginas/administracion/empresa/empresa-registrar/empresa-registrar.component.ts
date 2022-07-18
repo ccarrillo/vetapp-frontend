@@ -46,16 +46,16 @@ export class EmpresaRegistrarComponent implements OnInit {
   initForm() {
     this.register = this.fb.group({
       id: [''],
-      name: ['', Validators.required],
-      ruc: ['', Validators.required],
+      name: ['', [Validators.required]],
+      ruc: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      website: ['', Validators.required],
-      address: ['', Validators.required],
+      website: ['', [Validators.required]],
+      address: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]],
       mobile: ['', [Validators.required, Validators.pattern(/^[0-9]\d*$/)]],
-      igv: ['', Validators.required],
-      currency_symbol: ['', Validators.required],
-      is_active: [true],
+      igv: ['', [Validators.required]],
+      currency_symbol: ['', [Validators.required]],
+      is_active: [false, [Validators.requiredTrue]]
     });
   }
 

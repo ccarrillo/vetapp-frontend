@@ -10,6 +10,7 @@ import { AnimalTrasladoComponent } from './mantenimiento/animal-traslado/animal-
 import { ReporteComponent } from './reporte/reporte.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
   imports: [
     CommonModule,
     AnimalRoutingModule,
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     ComponentsModule

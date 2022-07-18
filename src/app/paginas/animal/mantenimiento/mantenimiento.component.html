@@ -12,9 +12,22 @@
               <h2><strong>Mantenimiento</strong> Pagina</h2>
             </div>
             <div class="body">
-  
+
+               <!-- Inicio - Add content here -->
+            <div *ngIf="isListMode; else elseBlock">
+              <button mat-raised-button color="primary" (click)="listMode()">Registrar</button>
+
+              <app-animal-listar (sendAnimal)='sendAnimal($event)'></app-animal-listar>
+            </div>
+            <ng-template #elseBlock>
+              <button mat-raised-button color="primary" (click)="listMode()">Regresar</button>
+
+              <app-animal-registrar (changeListMode)='listMode()' [sendObj]="sendObjAnimal"></app-animal-registrar>
+            </ng-template>
+            <!-- Fin - Add content here -->
+       
               <!-- Add content here -->
-  
+              
             </div>
           </div>
         </div>

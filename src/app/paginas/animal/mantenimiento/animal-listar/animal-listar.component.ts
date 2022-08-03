@@ -14,7 +14,7 @@ export class AnimalListarComponent implements OnInit {
 
   @Output() sendAnimal = new EventEmitter();
 
-  displayedColumns: string[] = ['no', 'arete', 'nombre', 'raza','categoria','sexo', 'estadoproductivo', 'estadoreproductivo', 'corral', 'fechadenacimiento', 'fechadeultimoparto','numeropartos','madre','padre','precio','prueba','venta','action'];
+  displayedColumns: string[] = ['no', 'arete', 'nombre', 'raza','categoriareproduccion','categoriaproduccion','sexo', 'estadoproductivo', 'estadoreproductivo', 'corral', 'fechadenacimiento', 'fechadeultimoparto','numeropartos','madre','padre','precio','prueba','venta','action'];
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 

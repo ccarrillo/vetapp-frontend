@@ -12,6 +12,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { MaterialModule } from 'src/app/shared/material.module';
 
+import { ParametroComponent } from './parametros/parametro/parametro.component';
+
+import { ParametroListarComponent } from './parametros/parametro/parametro-listar/parametro-listar.component';
+import { ParametroRegistrarComponent } from './parametros/parametro/parametro-registrar/parametro-registrar.component';
+
+
 
 @NgModule({
   declarations: [
@@ -20,7 +26,14 @@ import { MaterialModule } from 'src/app/shared/material.module';
     AnimalListarComponent,
     AnimalVentaComponent,
     AnimalTrasladoComponent,
-    ReporteComponent
+    ReporteComponent,
+   
+    ParametroComponent,
+
+    ParametroListarComponent,
+    ParametroRegistrarComponent,
+   
+   
   ],
   imports: [
     CommonModule,

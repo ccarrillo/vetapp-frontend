@@ -33,10 +33,16 @@
                         <th mat-header-cell *matHeaderCellDef> Raza </th>
                         <td mat-cell *matCellDef="let element"> {{element.razaId}} </td>
                     </ng-container>
-                    <!-- Sitio Web Column -->
-                    <ng-container matColumnDef="categoria">
-                        <th mat-header-cell *matHeaderCellDef> Categoria </th>
-                        <td mat-cell *matCellDef="let element"> {{element.categoriaId}} </td>
+                    <!-- categoriareproducion -->
+                    <ng-container matColumnDef="categoriareproduccion">
+                        <th mat-header-cell *matHeaderCellDef> Categoria Reproduccion </th>
+                        <td mat-cell *matCellDef="let element"> {{element.categoriaReproduccionId}} </td>
+                    </ng-container>
+
+                    <!-- categoriaproducion -->
+                    <ng-container matColumnDef="categoriaproduccion">
+                        <th mat-header-cell *matHeaderCellDef> Categoria Produccion </th>
+                        <td mat-cell *matCellDef="let element"> {{element.categoriaProduccionId}} </td>
                     </ng-container>
                     <!-- Dirección Column -->
                     <ng-container matColumnDef="sexo">

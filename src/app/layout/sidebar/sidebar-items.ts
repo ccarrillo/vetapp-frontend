@@ -84,6 +84,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
       {
+        path: 'animal/parametro',
+        title: 'MENUITEMS.VET-ANIMALS.LIST.PARAMETER',
+        moduleName: 'animal',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      },
+      {
         path: 'animal/report',
         title: 'MENUITEMS.VET-ANIMALS.LIST.REPORT',
         moduleName: 'animal',

@@ -42,7 +42,8 @@ export class AnimalRegistrarComponent implements OnInit {
    listaEstadoProduccion: any [] =  [];
    listaEstadoReproduccion: any [] =  [];
    listaCorral: any [] =  [];
-   listaCategoria: any [] =  [];
+   listaCategoriaReproduccion: any [] =  [];
+   listaCategoriaProduccion: any [] =  [];
    listaAnimalesHembras:any [] =  [];
    listaAnimalesMachos:any [] =  [];
    filteredOptionsAnimalesHembra: Observable<any[]>;
@@ -248,11 +249,35 @@ export class AnimalRegistrarComponent implements OnInit {
       
     });
 
-    this._api.getTypeRequest('parvetvalue/'.concat(Constantes.CONSTANTES_COMBO_CATEGORIA)).subscribe({
+    this._api.getTypeRequest('parvetvalue/'.concat(Constantes.CONSTANTES_COMBO_CATEGORIA_REPRODUCCION)).subscribe({
       next: (data: any) => {
         if (data) {
           this.sinData = false;
-           this.listaCategoria = data;
+           this.listaCategoriaReproduccion = data;
+        } else {
+          this.sinData = true;
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Ocurrio un error inesperado, vuelva a intentar',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+          
+      
+    });
+
+
+    this._api.getTypeRequest('parvetvalue/'.concat(Constantes.CONSTANTES_COMBO_CATEGORIA_PRODUCCION)).subscribe({
+      next: (data: any) => {
+        if (data) {
+          this.sinData = false;
+           this.listaCategoriaProduccion = data;
         } else {
           this.sinData = true;
         }
@@ -317,8 +342,10 @@ export class AnimalRegistrarComponent implements OnInit {
        estadoproductivoId: ['', [Validators.required]],
        estadoreproductivoId: ['', [Validators.required]],
        corralId: ['', [Validators.required]],
-       categoriaId: ['', [Validators.required]],
+       categoriaReproduccionId: ['', [Validators.required]],
+       categoriaProduccionId: ['', [Validators.required]],
        numeroparto: ['', [Validators.required]],
+       precio: ['', [Validators.required]],
        venta: ['', [Validators.required]],
        is_active: [true, [Validators.requiredTrue]],
      });
@@ -364,7 +391,7 @@ export class AnimalRegistrarComponent implements OnInit {
     let pl = this.register.value;
     pl.madreId = this.myControlAnimalHembra.value.id;
     pl.padreId = this.myControlAnimalMacho.value.id;
-    console.log('EMPRESA', pl);
+    console.log('Animal', pl);
     //console.log('alex',this.myControlAnimalHembra.value.id);
     if (this.register.invalid) {
       return;
@@ -372,7 +399,7 @@ export class AnimalRegistrarComponent implements OnInit {
     if (this.isAddMode) {
       this.crear(pl);
     } else {
-      console.log('EMPRESA ACTUALIZAR', pl);
+      console.log('Animal ACTUALIZAR', pl);
       this.actualizar(pl);
     }
   }

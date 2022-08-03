@@ -29,6 +29,7 @@
       "TEXT": "Animals",
       "LIST": {
         "MAINTENANCE": "Maintenance",
+        "PARAMETER": "Parameter",
         "REPORT": "Reports"
       }
     },

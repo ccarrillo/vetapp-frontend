@@ -202,16 +202,16 @@
 
                       <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                         <mat-form-field class="example-full-width" appearance="outline">
-                          <mat-label>Categoria</mat-label>
-                          <mat-select formControlName="categoriaId" required>
-                            <mat-option *ngFor="let item of listaCategoria" [value]="item.id">
+                          <mat-label>Categoria Reproduccion</mat-label>
+                          <mat-select formControlName="categoriaReproduccionId" required>
+                            <mat-option *ngFor="let item of listaCategoriaReproduccion" [value]="item.id">
                               {{item.name}}
                             </mat-option>
                               
                           </mat-select>
                           <mat-icon matSuffix>flag</mat-icon>
-                          <mat-error *ngIf="register.get('categoriaId').hasError('required')">
-                              La categoria es requerido
+                          <mat-error *ngIf="register.get('categoriaReproduccionId').hasError('required')">
+                              La categoria de reproduccion es requerido
                           </mat-error>
                        </mat-form-field>
                       </div>
@@ -220,6 +220,21 @@
 
 
                 <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Categoria Produccion</mat-label>
+                      <mat-select formControlName="categoriaProduccionId" required>
+                        <mat-option *ngFor="let item of listaCategoriaProduccion" [value]="item.id">
+                          {{item.name}}
+                        </mat-option>
+                          
+                      </mat-select>
+                      <mat-icon matSuffix>flag</mat-icon>
+                      <mat-error *ngIf="register.get('categoriaProduccionId').hasError('required')">
+                          La categoria de produccion es requerido
+                      </mat-error>
+                   </mat-form-field>
+                  </div>
                       
                   <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                     <mat-form-field class="example-full-width" appearance="outline">
@@ -258,27 +273,47 @@
                    </mat-form-field>
                   </div>
                  
-                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                    <mat-form-field class="example-full-width" appearance="outline">
-                      <mat-label>Venta</mat-label>
-                      <mat-select formControlName="venta" required>
-                          
-                          <mat-option [value]="0">
-                            No
-                          </mat-option>
-                          <mat-option [value]="1">
-                            Si
-                          </mat-option>
-                          
-                      </mat-select>
-                      <mat-icon matSuffix>flag</mat-icon>
-                      <mat-error *ngIf="register.get('venta').hasError('required')">
-                           estado de venta es requerido
-                      </mat-error>
-                   </mat-form-field>
-                  </div>
+                  
                    
               </div>
+             
+              <div class="row">
+
+                      
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Precio</mat-label>
+                      <input matInput formControlName="precio" required>
+                      <mat-icon matSuffix>face</mat-icon>
+                      <mat-error *ngIf="register.get('precio').hasError('required')">
+                          El precio es requerido
+                      </mat-error>
+                  </mat-form-field>
+               </div>
+
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Venta</mat-label>
+                    <mat-select formControlName="venta" required>
+                        
+                        <mat-option [value]="0">
+                          No
+                        </mat-option>
+                        <mat-option [value]="1">
+                          Si
+                        </mat-option>
+                        
+                    </mat-select>
+                    <mat-icon matSuffix>flag</mat-icon>
+                    <mat-error *ngIf="register.get('venta').hasError('required')">
+                         estado de venta es requerido
+                    </mat-error>
+                 </mat-form-field>
+                </div>
+                 
+            </div>
+
 
                   <div class="row">
                       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">

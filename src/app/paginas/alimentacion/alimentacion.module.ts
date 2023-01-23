@@ -12,6 +12,8 @@ import { CostoRegistrarComponent } from './costo/costo-registrar/costo-registrar
 import { GraficosComponent } from './graficos/graficos.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { MaterialModule } from 'src/app/shared/material.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -28,8 +30,10 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
   imports: [
     CommonModule,
     AlimentacionRoutingModule,
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     ComponentsModule
   ]
 })

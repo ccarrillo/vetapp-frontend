@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormulasListarComponent } from './formulas-listar/formulas-listar.component';
 
 @Component({
   selector: 'app-formulas',
@@ -6,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./formulas.component.sass']
 })
 export class FormulasComponent implements OnInit {
+
+  @ViewChild(FormulasListarComponent) childFormulasListar;
+  isListMode: boolean = true;
+  sendObjFormula: any;
 
   breadscrums = [
     {
@@ -18,6 +23,18 @@ export class FormulasComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  listMode() {
+    this.sendObjFormula = null;
+    this.isListMode = !this.isListMode;
+  }
+
+  sendFormula(formula: any) {
+    this.listMode();
+    this.sendObjFormula = formula;
+    //console.log("sendObjFormula", this.sendObjFormula);
+    //console.log("parentObjView", this.parentObjView);
   }
 
 }

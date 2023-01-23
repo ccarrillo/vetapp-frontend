@@ -30,6 +30,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const materialModules = [
   CKEditorModule,
@@ -64,7 +65,7 @@ const materialModules = [
   MatTableModule,
   MatPaginatorModule,
   MatSnackBarModule,
-
+  MatExpansionModule,
 ];
 
 @NgModule({

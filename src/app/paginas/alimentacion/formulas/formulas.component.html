@@ -14,6 +14,17 @@
             <div class="body">
   
               <!-- Add content here -->
+              <div *ngIf="isListMode; else elseBlock">
+                <button mat-raised-button color="primary" (click)="listMode()">Registrar</button>
+                
+                <app-formulas-listar (sendFormula)='sendFormula($event)'></app-formulas-listar>
+              </div>
+              <ng-template #elseBlock>
+                <button mat-raised-button color="primary" (click)="listMode()">Regresar</button>
+                
+                <app-formulas-registrar (changeListMode)='listMode()' [sendObj]="sendObjFormula"></app-formulas-registrar>
+              </ng-template>
+              <!-- Fin - Add content here -->
   
             </div>
           </div>

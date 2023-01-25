@@ -12,7 +12,11 @@ import { NacimientoListarComponent } from './nacimiento/nacimiento-listar/nacimi
 import { NacimientoRegistrarComponent } from './nacimiento/nacimiento-registrar/nacimiento-registrar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
-
+import { InventarioSemenComponent } from './inventario-semen/inventario-semen.component';
+import { InventarioListarComponent } from './inventario-semen/inventario-listar/inventario-listar.component';
+import { InventarioRegistrarComponent } from './inventario-semen/inventario-registrar/inventario-registrar.component';
+import { MaterialModule } from 'src/app/shared/material.module';
+//import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
   declarations: [
@@ -23,14 +27,19 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
     InseminacionListarComponent,
     InseminacionRegistrarComponent,
     NacimientoListarComponent,
-    NacimientoRegistrarComponent
+    NacimientoRegistrarComponent,
+    InventarioSemenComponent,
+    InventarioListarComponent,
+    InventarioRegistrarComponent
   ],
   imports: [
     CommonModule,
     ReproduccionRoutingModule,
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    ComponentsModule
+    ComponentsModule,
+    //NgxMatSelectSearchModule
   ]
 })
 export class ReproduccionModule { }

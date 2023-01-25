@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatRadioChange } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
@@ -30,7 +31,11 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import {CdkTreeModule} from '@angular/cdk/tree';
+import {MatTreeModule} from '@angular/material/tree';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatExpansionModule } from '@angular/material/expansion'; 
 
 const materialModules = [
   CKEditorModule,
@@ -52,6 +57,7 @@ const materialModules = [
   MatGridListModule,
   MatMenuModule,
   MatRadioModule,
+  MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
   MatSliderModule,
@@ -65,7 +71,13 @@ const materialModules = [
   MatTableModule,
   MatPaginatorModule,
   MatSnackBarModule,
-  MatExpansionModule,
+  MatTabsModule,
+  CdkTreeModule,
+  MatTreeModule,
+  NgxMatSelectSearchModule,
+  MatExpansionModule
+
+
 ];
 
 @NgModule({

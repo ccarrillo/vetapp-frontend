@@ -1,0 +1,60 @@
+<div class="row clearfix">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="body">
+                <form class="register-form m-4" [formGroup]="register">
+                  <input type="hidden" formControlName="id">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Marca izquierda</mat-label>
+                                <input matInput formControlName="izquierda" >
+                                <mat-icon matSuffix>face</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Marca derecha</mat-label>
+                                <input matInput formControlName="derecha">
+                                <mat-icon matSuffix>face</mat-icon>
+                            </mat-form-field>
+                        </div>
+                         
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Color</mat-label>
+                                <input matInput formControlName="color">
+                                <mat-icon matSuffix>face</mat-icon>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Marcas distintivas</mat-label>
+                                <textarea matInput formControlName="marcas"></textarea>
+                                </mat-form-field>
+    
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Foto</mat-label>
+                            <textarea matInput formControlName="foto"></textarea>
+                            </mat-form-field>
+
+                        </div>
+    
+                    </div>
+
+
+                
+
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>

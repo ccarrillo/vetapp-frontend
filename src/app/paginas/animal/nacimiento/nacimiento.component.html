@@ -1,0 +1,168 @@
+<div class="row clearfix">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="body">
+                <form class="register-form m-4" [formGroup]="register">
+                  <input type="hidden" formControlName="id">
+                  <div class="row">
+                        <div class="col-4" >
+          
+                        <mat-form-field class="example-full-width" >
+                            <mat-label>Fecha de nacimiento</mat-label>
+                            <input matInput [matDatepicker]="picker3"  formControlName="fechanacimiento"  required>
+                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                            <mat-datepicker #picker3></mat-datepicker>
+                            
+                        </mat-form-field>
+                        </div>
+                        <div class="col-4" >
+            
+                            <mat-form-field class="example-full-width" >
+                            <mat-label>Fecha destete</mat-label>
+                            <input matInput [matDatepicker]="picker4"  formControlName="fechadestete" >
+                            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                            <mat-datepicker #picker4></mat-datepicker>
+                            
+                            </mat-form-field>
+                        </div>
+                            
+                        <div class="col-4" >
+            
+                            <mat-form-field class="example-full-width" >
+                            <mat-label>Fecha de Castración</mat-label>
+                            <input matInput [matDatepicker]="picker5"  formControlName="fechacastracion" >
+                            <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                            <mat-datepicker #picker5></mat-datepicker>
+                            
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+
+                  <div class="row">
+
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Proposito</mat-label>
+                          <mat-select id="proposito" formControlName="proposito" required>
+                            <mat-option *ngFor="let item of listaProposito" [value]="item.id">
+                              {{item.name}}
+                            </mat-option>
+                          </mat-select>
+                          <mat-icon matSuffix>flag</mat-icon>
+                          <mat-error *ngIf="register.get('proposito').hasError('required')">
+                              proposito de animal es requerido
+                          </mat-error>
+                         </mat-form-field>
+                      </div>
+
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Pureza %</mat-label>
+                              <input matInput formControlName="pureza">
+                              <mat-icon matSuffix>face</mat-icon>
+                          </mat-form-field>
+                      </div>
+                       
+                      
+
+                </div>
+
+
+
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                  <div class="card">
+                    <div class="header">
+                      <h2>Madre</h2>
+                    </div>
+                    <div class="body">
+                      <div class="row">
+                      <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Arete/Nombre</mat-label>
+                            <input type="text"
+                                   placeholder="Pick one"
+                                   aria-label="Madre"
+                                   matInput
+                                  
+                                   [formControl]="myControlAnimalHembra"
+                                   [matAutocomplete]="auto" required>
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnAnimalesHembra">
+                              <mat-option *ngFor="let option of filteredOptionsAnimalesHembra | async" [value]="option">
+                                {{option.arete}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          
+                          </mat-form-field>
+                      </div>
+                      <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Otra identificacion</mat-label>
+                            <input matInput formControlName="otra">
+                            <mat-icon matSuffix>face</mat-icon>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 mb-2">
+                        <button class="msr-3"  mat-raised-button
+                        color="primary" >Ver Detalle</button>
+                      </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                  <div class="card">
+                    <div class="header">
+                        <h2>Padre</h2>
+                      </div>
+                      <div class="body">
+                        <div class="row">
+                        <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
+                          <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Arete/Nombre</mat-label>
+                              <input type="text"
+                                     placeholder="Pick one"
+                                     aria-label="Padre"
+                                     matInput
+                                    
+                                     [formControl]="myControlAnimalMacho"
+                                     [matAutocomplete]="auto" required>
+                              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnAnimalesMacho">
+                                <mat-option *ngFor="let option of filteredOptionsAnimalesMacho | async" [value]="option">
+                                  {{option.arete}}
+                                </mat-option>
+                              </mat-autocomplete>
+                            
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
+                          <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Otra identificacion</mat-label>
+                              <input matInput formControlName="otra">
+                              <mat-icon matSuffix>face</mat-icon>
+                          </mat-form-field>
+                        </div>
+  
+                        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 mb-2">
+                          <button class="msr-3"  mat-raised-button
+                          color="primary" >Ver Detalle</button>
+                        </div>
+  
+                        </div>
+                      </div>
+                   </div>
+                  
+              </div>     
+
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+

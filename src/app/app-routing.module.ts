@@ -33,6 +33,13 @@ const routes: Routes = [
           )
       },
       {
+        path: 'group',
+        loadChildren: () =>
+          import('./paginas/grupo/grupo.module').then(
+            (m) => m.GrupoModule
+          )
+      },
+      {
         path: 'animal',
         loadChildren: () =>
           import('./paginas/animal/animal.module').then(

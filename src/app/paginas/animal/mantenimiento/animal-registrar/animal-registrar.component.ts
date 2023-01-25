@@ -46,6 +46,7 @@ export class AnimalRegistrarComponent implements OnInit {
    listaCategoriaProduccion: any [] =  [];
    listaAnimalesHembras:any [] =  [];
    listaAnimalesMachos:any [] =  [];
+   listaGrupoAnimal: any[] =  [];
    filteredOptionsAnimalesHembra: Observable<any[]>;
    filteredOptionsAnimalesMacho: Observable<any[]>;
    //filteredOptions: Observable<User[]>;
@@ -296,6 +297,33 @@ export class AnimalRegistrarComponent implements OnInit {
       
     });
 
+
+    this._api.getTypeRequest('grupoanimal/sinhijo').subscribe({
+      next: (data: any) => {
+       console.log("ENTRO CARGAR combo");
+        console.log(data);
+        //this.dataSource = data; //No pagina
+        if (data) {
+          this.sinData = false;
+           this.listaGrupoAnimal = data;
+        } else {
+          this.sinData = true;
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Ocurrio un error inesperado, vuelva a intentar',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+          
+      
+    });
+
    
     
     
@@ -333,7 +361,7 @@ export class AnimalRegistrarComponent implements OnInit {
      this.register = this.fb.group({
        id: [''],
        arete: ['', [Validators.required]],
-       nombre: [''],
+       idGrupoAnimal: ['', [Validators.required]],
        razaId: ['', [Validators.required]],
        origenId: ['', [Validators.required]],
        fechanacimiento: ['', [Validators.required]],
@@ -347,6 +375,7 @@ export class AnimalRegistrarComponent implements OnInit {
        numeroparto: ['', [Validators.required]],
        precio: ['', [Validators.required]],
        venta: ['', [Validators.required]],
+       noservir:[''],
        is_active: [true, [Validators.requiredTrue]],
      });
    }
@@ -405,20 +434,46 @@ export class AnimalRegistrarComponent implements OnInit {
   }
 
   private crear(pl: any) {
-    pl.madreId = this.myControlAnimalHembra.value.id;
-    pl.padreId = this.myControlAnimalMacho.value.id;
-    this._api.postTypeRequest('animal', pl).subscribe({
+    this._api.getTypeRequest('animal/existe/'.concat(pl.arete)).subscribe({
       next: (data) => {
-        console.log(data);
-        this.router.navigateByUrl('animal/maintenance');
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Datos registrados Correctamente',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        this.changeListMode.emit();
+           if(data){
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Ya existe un animal con ese arete o nombre',
+              showConfirmButton: false,
+              timer: 3500
+            });
+           }
+           else{
+            /*pl.madreId = this.myControlAnimalHembra.value.id;
+            pl.padreId = this.myControlAnimalMacho.value.id;*/
+            this._api.postTypeRequest('animal', pl).subscribe({
+              next: (data) => {
+                console.log(data);
+                this.router.navigateByUrl('animal/maintenance');
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Datos registrados Correctamente',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                this.changeListMode.emit();
+              },
+              error: (error) => {
+                console.log(error);
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: 'Ocurrio un error inesperado, vuelva a intentar',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+            });
+           }
+        
       },
       error: (error) => {
         console.log(error);
@@ -431,21 +486,54 @@ export class AnimalRegistrarComponent implements OnInit {
         });
       }
     });
+   
   }
 
   private actualizar(pl: any) {
-    this._api.putTypeRequest('animal/' + this.id, pl).subscribe({
+
+    //console.log(`animal/existe/${pl.id}/${pl.arete}`);
+    this._api.getTypeRequest(`animal/existe/${pl.id}/${pl.arete}`).subscribe({
       next: (data) => {
-        console.log(data);
-        this.router.navigateByUrl('animal/maintenance');
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Datos actualizados Correctamente',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        this.changeListMode.emit();
+           if(data){
+                  
+            this._api.putTypeRequest('animal/' + this.id, pl).subscribe({
+              next: (data) => {
+                console.log(data);
+                this.router.navigateByUrl('animal/maintenance');
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Datos actualizados Correctamente',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                this.changeListMode.emit();
+              },
+              error: (error) => {
+                console.log(error);
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: 'Ocurrio un error inesperado, vuelva a intentar',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+            });
+
+
+           
+           }
+           else{
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Ya existe un animal con ese arete o nombre',
+              showConfirmButton: false,
+              timer: 3500
+            });
+           }
+        
       },
       error: (error) => {
         console.log(error);
@@ -458,6 +546,9 @@ export class AnimalRegistrarComponent implements OnInit {
         });
       }
     });
+
+
+   
   }
 
 

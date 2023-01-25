@@ -2,49 +2,43 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SanidadRoutingModule } from './sanidad-routing.module';
-import { TratamientoComponent } from './tratamiento/tratamiento.component';
-import { TratamientoListarComponent } from './tratamiento/tratamiento-listar/tratamiento-listar.component';
-import { TratamientoRegistrarComponent } from './tratamiento/tratamiento-registrar/tratamiento-registrar.component';
-import { LactanciaComponent } from './lactancia/lactancia.component';
-import { LactanciaListarComponent } from './lactancia/lactancia-listar/lactancia-listar.component';
-import { LactanciaRegistrarComponent } from './lactancia/lactancia-registrar/lactancia-registrar.component';
-import { MastitisComponent } from './mastitis/mastitis.component';
-import { MastitisRegistrarComponent } from './mastitis/mastitis-registrar/mastitis-registrar.component';
-import { MastitisListarComponent } from './mastitis/mastitis-listar/mastitis-listar.component';
-import { PodologiaComponent } from './podologia/podologia.component';
-import { PodologiaListarComponent } from './podologia/podologia-listar/podologia-listar.component';
-import { PodologiaRegistrarComponent } from './podologia/podologia-registrar/podologia-registrar.component';
-import { PostPartoComponent } from './post-parto/post-parto.component';
-import { PostPartoRegistrarComponent } from './post-parto/post-parto-registrar/post-parto-registrar.component';
-import { PostPartoListarComponent } from './post-parto/post-parto-listar/post-parto-listar.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { EventoComponent } from './evento/evento.component';
+import { EventoListarComponent } from './evento/evento-listar/evento-listar.component';
+import { EventoCrearComponent } from './evento/evento-crear/evento-crear.component';
+import { MaterialModule } from 'src/app/shared/material.module';
+import { DialogadicionalComponent } from './evento/evento-crear/dialogadicional/dialogadicional.component';
+import { DialogrecordatorioComponent } from './evento/evento-crear/dialogrecordatorio/dialogrecordatorio.component';
+import { EventoAnimalComponent } from './evento-animal/evento-animal.component';
+import { ProtocoloComponent } from './protocolo/protocolo.component';
+import { ProtocoloCrearComponent } from './protocolo/protocolo-crear/protocolo-crear.component';
+import { ProtocoloListarComponent } from './protocolo/protocolo-listar/protocolo-listar.component';
 
 
 @NgModule({
   declarations: [
-    TratamientoComponent,
-    TratamientoListarComponent,
-    TratamientoRegistrarComponent,
-    LactanciaComponent,
-    LactanciaListarComponent,
-    LactanciaRegistrarComponent,
-    MastitisComponent,
-    MastitisRegistrarComponent,
-    MastitisListarComponent,
-    PodologiaComponent,
-    PodologiaListarComponent,
-    PodologiaRegistrarComponent,
-    PostPartoComponent,
-    PostPartoRegistrarComponent,
-    PostPartoListarComponent
+    EventoComponent,
+    EventoListarComponent,
+    EventoCrearComponent,
+    DialogadicionalComponent,
+    DialogrecordatorioComponent,
+    EventoAnimalComponent,
+    ProtocoloComponent,
+    ProtocoloCrearComponent,
+    ProtocoloListarComponent
   ],
   imports: [
     CommonModule,
     SanidadRoutingModule,
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     ComponentsModule
+  ],
+  exports: [
+     EventoAnimalComponent
   ]
 })
 export class SanidadModule { }

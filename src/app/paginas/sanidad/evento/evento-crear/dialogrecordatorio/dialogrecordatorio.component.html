@@ -1,0 +1,53 @@
+<div>
+    <h2 mat-dialog-title>Recordatorio de evento</h2>
+    <div>
+      <form [formGroup]="addCusForm" (ngSubmit)="onSubmitClick()">
+        <input type="hidden" formControlName="id">
+        <div class="row">
+            <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Seleccione evento</mat-label>
+                    <mat-select id="idtipoevento" formControlName="idtipoevento">
+                        <mat-option *ngFor="let item of listaTipoEvento" [value]="item.id">
+                          {{item.nombreEvento}}
+                        </mat-option>
+                      </mat-select>
+                    <mat-error *ngIf="addCusForm.get('idtipoevento').hasError('required')">
+                        el evento es requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+           
+            
+            
+        </div>
+
+        <div class="row">
+            <div>Cuando el evento ocurra  recordar este tipo de evento:</div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>dias</mat-label>
+                    <input matInput formControlName="numerodias" required>
+                    <mat-icon matSuffix>face</mat-icon>
+                    <mat-error *ngIf="addCusForm.get('numerodias').hasError('required')">
+                        El numero de dias es requerido
+                    </mat-error>
+                </mat-form-field>
+                
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+
+                    <mat-label >dias despues</mat-label>    
+            </div>
+        </div>
+        
+       
+        <div class="btn-sec">
+            <button class="msr-3" mat-raised-button color="primary" [disabled]="!addCusForm.valid"  [mat-dialog-close]="this.addCusForm.value" cdkFocusInitial >Aceptar</button>
+            <button type="button" mat-button (click)="closeDialog()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

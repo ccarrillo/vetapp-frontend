@@ -1,0 +1,277 @@
+<div class="row clearfix">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="header">
+              <h2><strong>Evento: </strong> {{labelBtn}}</h2>
+            </div>
+            <div class="body">
+                <form class="register-form m-4" [formGroup]="register">
+                  <input type="hidden" formControlName="id">
+                    <div class="row">
+                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">     
+                        <p>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-select  [formControl]="eventoCtrl" placeholder="grupo evento" #singleSelect >
+                            <mat-option>
+                              <ngx-mat-select-search [formControl]="eventoFilterCtrl"></ngx-mat-select-search>
+                            </mat-option>
+                      
+                            <mat-option *ngFor="let evento of filteredEventos | async" [value]="evento">
+                              {{evento.nombre}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        
+                        </p>
+                      </div> 
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput formControlName="nombreEvento" required>
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('nombreEvento').hasError('required')">
+                                    El nombre es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Costo</mat-label>
+                                <input matInput formControlName="precio" >
+                                <mat-icon matSuffix>face</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Abreviatura</mat-label>
+                                <input matInput formControlName="abreviacion" >
+                                <mat-icon matSuffix>face</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        
+                    </div>
+                   
+                    <div class="row clearfix">
+                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                          <div class="card">
+                            <div class="header">
+                              <h2>
+                                <strong>Datos adicionales</strong> del evento</h2>
+                            </div>
+                            <div class="body table-responsive" *ngIf="!sinData">
+                              <mat-form-field class="example-full-width" appearance="outline">
+                                  <mat-label>Búsqueda</mat-label>
+                                  <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese palabras clave">
+                              </mat-form-field>
+                              <table mat-table   [dataSource]="dataSource" class="w-100" #MatTabla1 >
+                                
+                                  <!-- No Column -->
+                                  <ng-container matColumnDef="no">
+                                      <th mat-header-cell *matHeaderCellDef> No. </th>
+                                      <td mat-cell *matCellDef="let element;index as i;"> {{(i+1) +
+                                          (paginator.pageIndex*paginator.pageSize)}}</td>
+                                  </ng-container>
+                                  <!-- Razón Social Column -->
+                                  <ng-container matColumnDef="nombre">
+                                      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                                  </ng-container>
+                                  <!-- RUC Column -->
+                                  <ng-container matColumnDef="tipo">
+                                      <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                                      <td mat-cell *matCellDef="let element" > 
+                                        <p *ngIf="element.radioInformacion==1" >Texto desde {{element.tdesde}} hasta {{element.thasta}}</p>
+                                        <p *ngIf="element.radioInformacion==2" > Numero entre {{element.ndesde}} y {{element.nhasta}}</p>
+                                        <p *ngIf="element.radioInformacion==3" > Numero entre {{element.ddesde}} y {{element.dhasta}}</p>
+                                        <p *ngIf="element.radioInformacion==4" > Seleccion de {{element.combosseleccionables}}</p>
+                                        <p *ngIf="element.radioInformacion==5" > Nombre/numero del padre</p>
+                                        <p *ngIf="element.radioInformacion==6" > Nombre/numero de la madre</p>
+                                      </td>
+                                  </ng-container>
+                                  <!-- Correo Electrónico Column -->
+                                  <ng-container matColumnDef="requerido" >
+                                      <th mat-header-cell *matHeaderCellDef> Requerido </th>
+                                      <td mat-cell *matCellDef="let element" > <p *ngIf="element.requerido==true" >Si</p>
+                                        <p *ngIf="element.requerido==false" >No</p>
+                                       </td>
+                                      
+                                  </ng-container>
+                                  <ng-container matColumnDef="action">
+                                      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                                      <td mat-cell *matCellDef="let element;index as i;">
+                                          <button mat-icon-button matTooltip="Editar" (click)="editarAdicional(element,i)">
+                                              <mat-icon color="black">edit</mat-icon>
+                                          </button>
+                                          <button mat-icon-button matTooltip="Eliminar" (click)="eliminarAdicional(element,i)">
+                                              <mat-icon color="warn">delete</mat-icon>
+                                          </button>
+                                      </td>
+                                  </ng-container>
+              
+                                  <!--
+                                  <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                                      <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                                      <td mat-cell *matCellDef="let emp">{{ emp[column] }}</td>
+                                  </ng-container>
+                                  -->
+              
+                                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                              </table>
+                              <mat-paginator  #paginator="matPaginator" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                          </div>
+                          </div>
+                          
+                          
+                          
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            <button mat-raised-button color="primary"  (click)="openDialog()">Agregar</button>
+                        </div>
+                    </div> 
+                    
+
+                      <div class="row clearfix">
+                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                          <div class="card">
+                            <div class="header">
+                              <h2>
+                                <strong>Recordatorios</strong> del evento</h2>
+                            </div>
+
+                            <div class="body table-responsive" *ngIf="!sinData2">
+                              <mat-form-field class="example-full-width" appearance="outline">
+                                  <mat-label>Búsqueda</mat-label>
+                                  <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese palabras clave">
+                              </mat-form-field>
+                              <table mat-table  [dataSource]="dataSource2" class="w-100"  #MatTabla2>
+                               
+                                  <!-- No Column -->
+                                  <ng-container matColumnDef="no">
+                                      <th mat-header-cell *matHeaderCellDef> No. </th>
+                                      <td mat-cell *matCellDef="let element;index as i;"> {{(i+1) +
+                                          (paginator2.pageIndex*paginator2.pageSize)}}</td>
+                                  </ng-container>
+                                  <!-- Razón Social Column -->
+                                  
+                                   
+                                  <ng-container matColumnDef="nombre" >
+                                      <th mat-header-cell *matHeaderCellDef> Tipo de evento </th>
+                                      <td mat-cell *matCellDef="let element">
+                                        <mat-select  [(value)]="element.idtipoevento" disabled>
+                                        <mat-option *ngFor="let item of listaTipoEvento" [value]="item.id">
+                                          {{item.nombreEvento}}
+                                        </mat-option>
+                                      </mat-select></td>
+                                  </ng-container>
+                              
+                                  <!-- Correo Electrónico Column -->
+                                  <ng-container matColumnDef="dias" >
+                                      <th mat-header-cell *matHeaderCellDef> Dias </th>
+                                      <td mat-cell *matCellDef="let element"> {{element.numerodias}} </td>
+                                  </ng-container>
+                                  <ng-container matColumnDef="action">
+                                      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                                      <td mat-cell *matCellDef="let element;index as i;">
+                                          <button mat-icon-button matTooltip="Editar" (click)="editarRecordatorio(element,i)">
+                                              <mat-icon color="black">edit</mat-icon>
+                                          </button>
+                                          <button mat-icon-button matTooltip="Eliminar" (click)="eliminarRecordatorio(element,i)">
+                                              <mat-icon color="warn">delete</mat-icon>
+                                          </button>
+                                      </td>
+                                  </ng-container>
+              
+                                  <!--
+                                  <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                                      <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                                      <td mat-cell *matCellDef="let emp">{{ emp[column] }}</td>
+                                  </ng-container>
+                                  -->
+              
+                                  <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                  <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+                               
+                              </table>
+                              <mat-paginator #paginator2="matPaginator" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                          </div>
+                              
+                          </div>
+                          
+                          
+                          
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                            <button mat-raised-button color="primary"  (click)="openDialogRecordatorio()">Agregar</button>
+                        </div>
+                      </div>
+
+                    <div class="row">
+                        
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <label><mat-checkbox  id="movimiento" (change)="habilitarCorral($event)" formControlName="checkgrupoanimal" >
+                            </mat-checkbox>Si se agrega nun evento de este tipo, mover los animales a este grupo/corral</label>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <label><mat-checkbox  id="recordatorio" (change)="habilitarTipoEvento($event)" formControlName="checktipoevento" > 
+                          </mat-checkbox>No muestre eventos con fechas antes de un  evento reciente de este tipo</label>
+                        </div>
+                    </div>
+                     <div class="row">
+                     
+                       <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">     
+                        <p>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-select  [formControl]="grupoCtrl" placeholder="grupo animales" #singleSelect [disabled]="habComboCorral">
+                            <mat-option>
+                              <ngx-mat-select-search [formControl]="grupoFilterCtrl"></ngx-mat-select-search>
+                            </mat-option>
+                      
+                            <mat-option *ngFor="let grupo of filteredGrupos | async" [value]="grupo">
+                              {{grupo.nombre}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        
+                        </p>
+                      </div> 
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                           <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Evento reciente de este Tipo</mat-label>
+                            <mat-select id="idEventoRecordatorio" formControlName="idEventoRecordatorio" [disabled]="habComboTipoEvento">
+                              <mat-option *ngFor="let item of listaTipoEvento" [value]="item.id">
+                                {{item.nombreEvento}}
+                              </mat-option>
+                            </mat-select>
+                            <mat-icon matSuffix>flag</mat-icon>
+                           </mat-form-field>
+                      </div>
+
+                    </div>
+                    
+                  
+                    
+  
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                            <mat-checkbox class="example-margin" formControlName="is_active" >I accept
+                                terms
+                                and conditions
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                          <button class="msr-3" [disabled]="!register.valid" mat-raised-button
+                          color="primary" (click)="guardar()">{{labelBtn}}</button>
+                      <button type="button" mat-button (click)="limpiar()">Limpiar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>

@@ -68,12 +68,58 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: '',
+    title: 'MENUITEMS.VET-GROUP.TEXT',
+    moduleName: 'group',
+    icon: 'monitor',
+    class: 'menu-toggle',
+    groupTitle: false,
+    submenu: [
+      {
+        path: 'group/animal',
+        title: 'MENUITEMS.VET-GROUP.LIST.ANIMALGROUP',
+        moduleName: 'group',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      },
+      {
+        path: 'group/inventory',
+        title: 'MENUITEMS.VET-GROUP.LIST.SEMENINVENTORYGROUP',
+        moduleName: 'group',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      }
+    ]
+  },
+  {
+    path: '',
     title: 'MENUITEMS.VET-ANIMALS.TEXT',
     moduleName: 'animal',
     icon: 'monitor',
     class: 'menu-toggle',
     groupTitle: false,
     submenu: [
+      {
+        path: 'animal/detail',
+        title: 'MENUITEMS.VET-ANIMALS.LIST.DETAIL',
+        moduleName: 'animal',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      },
+      {
+        path: 'animal/general',
+        title: 'MENUITEMS.VET-ANIMALS.LIST.GENERAL',
+        moduleName: 'animal',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      },
       {
         path: 'animal/maintenance',
         title: 'MENUITEMS.VET-ANIMALS.LIST.MAINTENANCE',
@@ -86,6 +132,15 @@ export const ROUTES: RouteInfo[] = [
       {
         path: 'animal/parametro',
         title: 'MENUITEMS.VET-ANIMALS.LIST.PARAMETER',
+        moduleName: 'animal',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      },
+      {
+        path: 'animal/parametrovalue',
+        title: 'MENUITEMS.VET-ANIMALS.LIST.PARAMETERVALUE',
         moduleName: 'animal',
         icon: '',
         class: 'ml-menu',
@@ -121,6 +176,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
       {
+        path: 'reproduction/inventario',
+        title: 'MENUITEMS.VET-REPRODUCTION.LIST.INVENTORY-SEMEN',
+        moduleName: 'reproduction',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      },
+      {
         path: 'reproduction/birth',
         title: 'MENUITEMS.VET-REPRODUCTION.LIST.BIRTH',
         moduleName: 'reproduction',
@@ -149,8 +213,8 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     submenu: [
       {
-        path: 'health/lactation',
-        title: 'MENUITEMS.VET-HEALTH.LIST.LACTATION',
+        path: 'health/events',
+        title: 'MENUITEMS.VET-HEALTH.LIST.EVENTS',
         moduleName: 'health',
         icon: '',
         class: 'ml-menu',
@@ -158,41 +222,15 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
       {
-        path: 'health/mastitis',
-        title: 'MENUITEMS.VET-HEALTH.LIST.MASTITIS',
-        moduleName: 'health',
-        icon: '',
-        class: 'ml-menu',
-        groupTitle: false,
-        submenu: []
-      },
-      {
-        path: 'health/chiropody',
-        title: 'MENUITEMS.VET-HEALTH.LIST.CHIROPODY',
-        moduleName: 'health',
-        icon: '',
-        class: 'ml-menu',
-        groupTitle: false,
-        submenu: []
-      },
-      {
-        path: 'health/postpartum',
-        title: 'MENUITEMS.VET-HEALTH.LIST.POSTPARTUM',
-        moduleName: 'health',
-        icon: '',
-        class: 'ml-menu',
-        groupTitle: false,
-        submenu: []
-      },
-      {
-        path: 'health/treatment',
-        title: 'MENUITEMS.VET-HEALTH.LIST.TREATMENT',
+        path: 'health/protocol',
+        title: 'MENUITEMS.VET-HEALTH.LIST.PROTOCOL',
         moduleName: 'health',
         icon: '',
         class: 'ml-menu',
         groupTitle: false,
         submenu: []
       }
+     
     ]
   },
   {
@@ -233,6 +271,15 @@ export const ROUTES: RouteInfo[] = [
       {
         path: 'production/sale-milk',
         title: 'MENUITEMS.VET-PRODUCTION.LIST.SALE-MILK',
+        moduleName: 'production',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      },
+      {
+        path: 'production/daily-check',
+        title: 'MENUITEMS.VET-PRODUCTION.LIST.DAILY-CHECK',
         moduleName: 'production',
         icon: '',
         class: 'ml-menu',

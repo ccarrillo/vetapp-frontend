@@ -25,11 +25,21 @@
         "USER": "Usuario"
       }
     },
+    "VET-GROUP": {
+      "TEXT": "Grupo",
+      "LIST": {
+        "ANIMALGROUP": "Grupo Animales",
+        "SEMENINVENTORYGROUP": "Grupo Inventario de Semen"
+      }
+    },
     "VET-ANIMALS": {
       "TEXT": "Animales",
       "LIST": {
+        "DETAIL": "Detalle",
+        "GENERAL": "General",
         "MAINTENANCE": "Mantenimiento",
         "PARAMETER": "Parametro",
+        "PARAMETERVALUE":"ParametroValor",
         "REPORT": "Reportes"
       }
     },
@@ -37,18 +47,17 @@
       "TEXT": "Reproducción",
       "LIST": {
         "INSEMINATION": "Inseminación",
+        "INVENTORY-SEMEN":"Inventario-Semen",
         "BIRTH": "Nacimientos",
         "SERVICES": "Servicios"
+      
       }
     },
     "VET-HEALTH": {
       "TEXT": "Sanidad",
       "LIST": {
-        "LACTATION": "Lactancia",
-        "MASTITIS": "Mastitis",
-        "CHIROPODY": "Podología",
-        "POSTPARTUM": "Post-Parto",
-        "TREATMENT": "Tratamiento"
+        "EVENTS": "Eventos",
+        "PROTOCOL": "Protocolo"
       }
     },
     "VET-PRODUCTION": {
@@ -57,7 +66,8 @@
         "REPORTS": "Reportes",
         "LACTATION": "Lactancia",
         "HEAVY-MILK": "Pesado de Leche",
-        "SALE-MILK": "Venta de Leche"
+        "SALE-MILK": "Venta de Leche",
+        "DAILY-CHECK":"Control diario"
       }
     },
     "VET-ALIMENTATION": {

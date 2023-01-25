@@ -14,6 +14,10 @@ import { LecheVentaRegistrarComponent } from './leche-venta/leche-venta-registra
 import { LecheVentaListarComponent } from './leche-venta/leche-venta-listar/leche-venta-listar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { ControlDiarioComponent } from './control-diario/control-diario.component';
+import { ControlRegistrarComponent } from './control-diario/control-registrar/control-registrar.component';
+import { ControlListarComponent } from './control-diario/control-listar/control-listar.component';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 
 @NgModule({
@@ -27,11 +31,15 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
     LechePesadoListarComponent,
     LecheVentaComponent,
     LecheVentaRegistrarComponent,
-    LecheVentaListarComponent
+    LecheVentaListarComponent,
+    ControlDiarioComponent,
+    ControlRegistrarComponent,
+    ControlListarComponent
   ],
   imports: [
     CommonModule,
     ProduccionRoutingModule,
+    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     ComponentsModule

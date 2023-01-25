@@ -18,13 +18,21 @@
                               </mat-error>
                           </mat-form-field>
                       </div>
-                      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-                          <mat-form-field class="example-full-width" appearance="outline">
-                              <mat-label>nombre</mat-label>
-                              <input matInput formControlName="nombre">
-                              <mat-icon matSuffix>face</mat-icon>
-                          </mat-form-field>
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Grupo de animales</mat-label>
+                          <mat-select id="idGrupoAnimal" formControlName="idGrupoAnimal" >
+                            <mat-option *ngFor="let item of listaGrupoAnimal" [value]="item.id">
+                              {{item.nombre}}
+                            </mat-option>
+                          </mat-select>
+                          <mat-icon matSuffix>flag</mat-icon>
+                          <mat-error *ngIf="register.get('idGrupoAnimal').hasError('required')">
+                            El grupo de animal es requerido
+                        </mat-error>
+                         </mat-form-field>
                       </div>
+                     
                   </div>
                 
                   <div class="row">
@@ -280,7 +288,7 @@
               <div class="row">
 
                       
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
                   <mat-form-field class="example-full-width" appearance="outline">
                       <mat-label>Precio</mat-label>
                       <input matInput formControlName="precio" required>
@@ -289,10 +297,10 @@
                           El precio es requerido
                       </mat-error>
                   </mat-form-field>
-               </div>
+                </div>
 
 
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
                   <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Venta</mat-label>
                     <mat-select formControlName="venta" required>
@@ -310,6 +318,11 @@
                          estado de venta es requerido
                     </mat-error>
                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+                  <mat-checkbox class="example-margin" formControlName="noservir">No servir
+                  </mat-checkbox>
                 </div>
                  
             </div>

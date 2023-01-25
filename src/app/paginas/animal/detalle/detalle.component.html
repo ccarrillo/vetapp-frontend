@@ -1,0 +1,75 @@
+<section class="content">
+    <div class="container-fluid">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="body">
+          <mat-tab-group>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon msr-2">check_circle</mat-icon>
+                Principal
+              </ng-template>
+              <br>
+              <app-generaldetalle [animal]="animalparent"></app-generaldetalle>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon msr-2">book</mat-icon>
+                Eventos
+              </ng-template>
+              <app-evento></app-evento>
+               
+            </mat-tab>
+
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon msr-2">notification_important</mat-icon>
+                Recordatorio
+              </ng-template>
+              <br>
+              <app-recordatorio></app-recordatorio>
+            </mat-tab>
+
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon class="example-tab-icon msr-2">poll</mat-icon>
+                  Produccion
+                </ng-template>
+                <br>
+                <b>Message Content</b>
+                <p>
+                  Lorem ipsum dolor sit amet, ut duo atqui exerci dicunt, ius impedit
+                  mediocritatem an. Pri ut tation electram moderatius.
+                  Per te suavitate democritum. Duis nemore probatus ne quo, ad liber essent
+                  aliquid
+                  pro. Et eos nusquam accumsan, vide mentitum fabellas ne est, eu munere
+                  gubergren
+                  sadipscing mel.
+                </p>
+              </mat-tab>
+            
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon class="example-tab-icon msr-2">timeline</mat-icon>
+                  Medicion
+                </ng-template>
+                <br>
+                <app-medicion ></app-medicion>
+              </mat-tab>
+
+
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </section>

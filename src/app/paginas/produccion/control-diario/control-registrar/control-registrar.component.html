@@ -1,0 +1,193 @@
+<div class="row clearfix">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="header">
+              <h2><strong>Control diario: </strong> {{labelBtn}}</h2>
+            </div>
+            <div class="body">
+                <form class="register-form m-4" [formGroup]="register">
+                  <input type="hidden" formControlName="id">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Rac. Ternero</mat-label>
+                                <input matInput formControlName="racion" required>
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('racion').hasError('required')">
+                                    La racion es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Venta contado</mat-label>
+                                <input matInput formControlName="vcontado">
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('vcontado').hasError('required')">
+                                    La venta contado es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Venta interna</mat-label>
+                                <input matInput formControlName="vinterna" required>
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('vinterna').hasError('required')">
+                                    La venta interna es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                  
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Antib. Mastitis</mat-label>
+                                <input matInput formControlName="antibiotico" required>
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('antibiotico').hasError('required')">
+                                    Antibiotico y mastitis es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Embarque</mat-label>
+                                <input matInput formControlName="embarque">
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('embarque').hasError('required')">
+                                    Embarque es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Precio</mat-label>
+                                <input matInput formControlName="precio" required>
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('precio').hasError('required')">
+                                    El precio es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Ordeño</mat-label>
+                            <input matInput formControlName="ordeno" required>
+                            <mat-icon matSuffix>face</mat-icon>
+                            <mat-error *ngIf="register.get('ordeno').hasError('required')">
+                                El ordeño es requerido
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Establo</mat-label>
+                            <input matInput formControlName="establo">
+                            <mat-icon matSuffix>face</mat-icon>
+                            <mat-error *ngIf="register.get('establo').hasError('required')">
+                                El establo es requerido
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Secas</mat-label>
+                            <input matInput formControlName="secas" required>
+                            <mat-icon matSuffix>face</mat-icon>
+                            <mat-error *ngIf="register.get('secas').hasError('required')">
+                                Secas es requerido
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+  
+                    </div>         
+                  
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>UFC</mat-label>
+                                <input matInput formControlName="ufc" required>
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('ufc').hasError('required')">
+                                    UFC es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>CCSS</mat-label>
+                                <input matInput formControlName="ccss">
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('ccss').hasError('required')">
+                                    CCSS es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+    
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Grasa</mat-label>
+                                <input matInput formControlName="grasa" required>
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('grasa').hasError('required')">
+                                    Grasa es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+      
+                    </div>  
+                
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Proteina</mat-label>
+                                <input matInput formControlName="proteina" required>
+                                <mat-icon matSuffix>face</mat-icon>
+                                <mat-error *ngIf="register.get('proteina').hasError('required')">
+                                    Proteina es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4" >
+        
+                            <mat-form-field class="example-full-width" >
+                              <mat-label>Fecha</mat-label>
+                              <input matInput [matDatepicker]="picker3"  formControlName="fecha" >
+                              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                              <mat-datepicker #picker3></mat-datepicker>
+                              
+                            </mat-form-field>
+                        </div>
+    
+                        
+      
+                    </div>  
+
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                            <mat-checkbox class="example-margin" formControlName="is_active" >I accept
+                                terms
+                                and conditions
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                          <button class="msr-3" [disabled]="!register.valid" mat-raised-button
+                          color="primary" (click)="guardar()">{{labelBtn}}</button>
+                      <button type="button" mat-button (click)="limpiar()">Limpiar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>

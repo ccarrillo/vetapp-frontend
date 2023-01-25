@@ -23,6 +23,13 @@ export class ApiService {
     }));
   }
 
+  postTypeRequestModificado(url: string, payload: any) {
+  
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.post(this.REST_API_SERVER + url, payload,{headers: headers});
+    
+  }
+
   putTypeRequest(url: string, payload: any) {
     return this.httpClient.put(this.REST_API_SERVER + url, payload).pipe(map(res => {
       return res;

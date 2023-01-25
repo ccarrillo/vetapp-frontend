@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ControlDiarioComponent } from './control-diario/control-diario.component';
 import { InformesComponent } from './informes/informes.component';
 import { LactanciaComponent } from './lactancia/lactancia.component';
 import { LechePesadoComponent } from './leche-pesado/leche-pesado.component';
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'sale-milk',
     component: LecheVentaComponent
+  },
+  {
+    path: 'daily-check',
+    component: ControlDiarioComponent
   }
 ];
 

@@ -1,0 +1,58 @@
+<div class="row clearfix">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="header">
+              <h2><strong>Protocolo: </strong> {{labelBtn}}</h2>
+            </div>
+            <div class="body">
+                <form class="register-form m-4" [formGroup]="register">
+                  <input type="hidden" formControlName="id">
+                    <div class="row">
+                      
+                     
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Nombre</mat-label>
+                            <input matInput formControlName="nombre" required>
+                            <mat-icon matSuffix>face</mat-icon>
+                            <mat-error *ngIf="register.get('nombre').hasError('required')">
+                                El nombre es requerido
+                            </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">     
+                        
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Grupo de protocolo</mat-label>
+                            <mat-select id="grupoProtocoloId" formControlName="grupoProtocoloId" >
+                              <mat-option *ngFor="let item of listaGrupoProtocolo" [value]="item.id">
+                                {{item.nombre}}
+                              </mat-option>
+                            </mat-select>
+                            <mat-icon matSuffix>flag</mat-icon>
+                           </mat-form-field>
+                         </div> 
+
+                    </div>
+                 
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                            <mat-checkbox class="example-margin" formControlName="is_active" >I accept
+                                terms
+                                and conditions
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                          <button class="msr-3" [disabled]="!register.valid" mat-raised-button
+                          color="primary" (click)="guardar()">{{labelBtn}}</button>
+                      <button type="button" mat-button (click)="limpiar()">Limpiar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>

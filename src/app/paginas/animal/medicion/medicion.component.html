@@ -1,0 +1,27 @@
+
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="body">
+
+               <!-- Inicio - Add content here -->
+            <div *ngIf="isListMode; else elseBlock">
+              <button mat-raised-button color="primary" (click)="listMode()">Registrar</button>
+
+              <app-medicion-listar   (sendMedicion)='sendMedicion($event)'></app-medicion-listar>
+            </div>
+            <ng-template #elseBlock>
+              <button mat-raised-button color="primary" (click)="listMode()">Regresar</button>
+
+              <app-medicion-registrar (changeListMode)='listMode()' [sendObj]="sendObjMedicion"></app-medicion-registrar>
+            </ng-template>
+            <!-- Fin - Add content here -->
+       
+              <!-- Add content here -->
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+  

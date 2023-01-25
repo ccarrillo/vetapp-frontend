@@ -1,0 +1,562 @@
+<div class="row clearfix">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+           
+                <form class="register-form m-4" [formGroup]="register">
+                  <input type="hidden" formControlName="id">
+                       
+                    <div>
+                    
+                      <mat-accordion class="example-headers-align">
+                        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Datos Principales
+                            </mat-panel-title>
+                            <mat-panel-description>
+                              Los datos principales del animal
+                              <mat-icon>domain verification</mat-icon>
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+          
+                          <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Arete o Nombre</mat-label>
+                                    <input matInput formControlName="arete" required>
+                                    <mat-icon matSuffix>face</mat-icon>
+                                    <mat-error *ngIf="register.get('arete').hasError('required')">
+                                        El numero de arete o arete es requerido
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Otra de identificación</mat-label>
+                                    <input matInput formControlName="otraIdentificacion">
+                                    <mat-icon matSuffix>face</mat-icon>
+                                </mat-form-field>
+                            </div>
+                             
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                              <mat-form-field class="example-full-width" appearance="outline">
+                                  <mat-label>Sexo</mat-label>
+                                  <mat-select formControlName="sexo" required>
+                                      <mat-option [value]="'H'">
+                                        Hembra
+                                      </mat-option>
+                                      <mat-option [value]="'M'">
+                                        Macho
+                                      </mat-option>
+                                  </mat-select>
+                                  <mat-icon matSuffix>flag</mat-icon>
+                                  <mat-error *ngIf="register.get('sexo').hasError('required')">
+                                      este campo es obligatorio
+                                  </mat-error>
+                              </mat-form-field>
+                            </div>
+    
+                        </div>
+    
+    
+                        <div class="row">
+    
+                          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Raza</mat-label>
+                              <mat-select id="razaId" formControlName="razaId" required>
+                                <mat-option *ngFor="let item of listaRaza" [value]="item.id">
+                                  {{item.name}}
+                                </mat-option>
+                              </mat-select>
+                              <mat-icon matSuffix>flag</mat-icon>
+                              <mat-error *ngIf="register.get('razaId').hasError('required')">
+                                  raza de animal es requerido
+                              </mat-error>
+                             </mat-form-field>
+                          </div>
+    
+                          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Grupo de animales</mat-label>
+                              <mat-select id="idGrupoAnimal" formControlName="idGrupoAnimal" >
+                                <mat-option *ngFor="let item of listaGrupoAnimal" [value]="item.id">
+                                  {{item.nombre}}
+                                </mat-option>
+                              </mat-select>
+                              <mat-icon matSuffix>flag</mat-icon>
+                             </mat-form-field>
+                          </div>
+                           
+                          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-checkbox class="example-margin" formControlName="noservir">No servir
+                            </mat-checkbox>
+                          </div>
+    
+                      </div>
+
+                      <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Estado productivo</mat-label>
+                                <mat-select formControlName="estadoproductivoId" required>
+                                  
+                                  <mat-option *ngFor="let item of listaEstadoProduccion" [value]="item.id">
+                                    {{item.name}}
+                                  </mat-option>
+                                    
+                                </mat-select>
+                                <mat-icon matSuffix>flag</mat-icon>
+                                <mat-error *ngIf="register.get('estadoproductivoId').hasError('required')">
+                                    Estado productivo es requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Estado reproductivo</mat-label>
+                                <mat-select formControlName="estadoreproductivoId" required>
+                                  <mat-option *ngFor="let item of listaEstadoReproduccion" [value]="item.id">
+                                    {{item.name}}
+                                  </mat-option>
+                                    
+                                </mat-select>
+                                <mat-icon matSuffix>flag</mat-icon>
+                                <mat-error *ngIf="register.get('estadoreproductivoId').hasError('required')">
+                                    Estado reproductivo requerido
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                          <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Categoria Reproduccion</mat-label>
+                            <mat-select formControlName="categoriaReproduccionId" required>
+                              <mat-option *ngFor="let item of listaCategoriaReproduccion" [value]="item.id">
+                                {{item.name}}
+                              </mat-option>
+                                
+                            </mat-select>
+                            <mat-icon matSuffix>flag</mat-icon>
+                            <mat-error *ngIf="register.get('categoriaReproduccionId').hasError('required')">
+                                La categoria de reproduccion es requerido
+                            </mat-error>
+                         </mat-form-field>
+                        </div>
+                    </div>
+                   
+                    <div class="row">
+
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Categoria Produccion</mat-label>
+                          <mat-select formControlName="categoriaProduccionId" required>
+                            <mat-option *ngFor="let item of listaCategoriaProduccion" [value]="item.id">
+                              {{item.name}}
+                            </mat-option>
+                              
+                          </mat-select>
+                          <mat-icon matSuffix>flag</mat-icon>
+                          <mat-error *ngIf="register.get('categoriaProduccionId').hasError('required')">
+                              La categoria de produccion es requerido
+                          </mat-error>
+                       </mat-form-field>
+                      </div>
+
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Numero de partos</mat-label>
+                          <input matInput formControlName="numeroparto" required>
+                          <mat-icon matSuffix>face</mat-icon>
+                          <mat-error *ngIf="register.get('numeroparto').hasError('required')">
+                              El numero de partos es requerido
+                          </mat-error>
+                        </mat-form-field>
+                        
+                      </div>
+
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Precio</mat-label>
+                            <input matInput formControlName="precio" required>
+                            <mat-icon matSuffix>face</mat-icon>
+                            <mat-error *ngIf="register.get('precio').hasError('required')">
+                                El precio es requerido
+                            </mat-error>
+                        </mat-form-field>
+                      </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Origen</mat-label>
+                            <mat-select formControlName="origenId" required>
+                              <mat-option *ngFor="let item of listaOrigen" [value]="item.id">
+                                {{item.name}}
+                              </mat-option>
+
+                            </mat-select>
+                            <mat-icon matSuffix>flag</mat-icon>
+                            <mat-error *ngIf="register.get('origenId').hasError('required')">
+                                origen es requerido
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                        
+                      <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Venta</mat-label>
+                          <mat-select formControlName="venta" required>
+                              
+                              <mat-option [value]="false">
+                                No
+                              </mat-option>
+                              <mat-option [value]="true">
+                                Si
+                              </mat-option>
+                              
+                          </mat-select>
+                          <mat-icon matSuffix>flag</mat-icon>
+                          <mat-error *ngIf="register.get('venta').hasError('required')">
+                               estado de venta es requerido
+                          </mat-error>
+                       </mat-form-field>
+                      </div>
+
+                    </div>
+    
+    
+                      <div class="row">
+                        <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Anotaciones</mat-label>
+                          <textarea matInput formControlName="anotaciones"></textarea>
+                        </mat-form-field>
+    
+                        </div>
+    
+                      </div>
+    
+                  <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                      <div class="card">
+                        <div class="header">
+                          <h2>Lactancia</h2>
+                        </div>
+                        <div class="body">
+                          <div class="row">
+                          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                            <mat-label>Estado:</mat-label>
+                            <br>
+                            <mat-label>Días en producción:</mat-label>
+                            <br>
+                            <mat-label>Lactancia:</mat-label>
+                            <br>
+                            <mat-label>Días en seca:</mat-label>
+                          </div>
+                          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                            <mat-label></mat-label>
+                            <br>
+                            <mat-label></mat-label>
+                            <br>
+                            <mat-label></mat-label>
+                            <br>
+                            <mat-label></mat-label>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                      <div class="card">
+                        <div class="header">
+                          <h2>Reproducción</h2>
+                        </div>
+                        <div class="body">
+                          <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                              <mat-label>Estado:</mat-label>
+                              <br>
+                              <mat-label>Ultimo Servicio:</mat-label>
+                              <br>
+                              <mat-label>Próximo Celo:</mat-label>
+                              <br>
+                              <mat-label>Vencimiento:</mat-label>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                              <mat-label></mat-label>
+                              <br>
+                              <mat-label></mat-label>
+                              <br>
+                              <mat-label></mat-label>
+                              <br>
+                              <mat-label></mat-label>
+                            </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                      
+                  </div>  
+          
+                          <mat-action-row>
+                            <button mat-button color="primary" (click)="nextStep()">Next</button>
+                          </mat-action-row>
+                        </mat-expansion-panel>
+          
+                        <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Nacimiento
+                            </mat-panel-title>
+                            <mat-panel-description>
+                              Datos del nacimiento
+                              <mat-icon>cake</mat-icon>
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+          
+                          <div class="row">
+                            <div class="col-4" >
+              
+                            <mat-form-field class="example-full-width" >
+                                <mat-label>Fecha de nacimiento</mat-label>
+                                <input matInput [matDatepicker]="picker3"  formControlName="fechanacimiento"  required>
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                                
+                            </mat-form-field>
+                            </div>
+                            <div class="col-4" >
+                
+                                <mat-form-field class="example-full-width" >
+                                <mat-label>Fecha destete</mat-label>
+                                <input matInput [matDatepicker]="picker4"  formControlName="fechadestete" >
+                                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                <mat-datepicker #picker4></mat-datepicker>
+                                
+                                </mat-form-field>
+                            </div>
+                                
+                            <div class="col-4" >
+                
+                                <mat-form-field class="example-full-width" >
+                                <mat-label>Fecha de Castración</mat-label>
+                                <input matInput [matDatepicker]="picker5"  formControlName="fechacastracion" >
+                                <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                                <mat-datepicker #picker5></mat-datepicker>
+                                
+                                </mat-form-field>
+                            </div>
+    
+                        </div>
+    
+    
+                      <div class="row">
+    
+                          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Proposito</mat-label>
+                              <mat-select id="propositoId" formControlName="propositoId" required>
+                                <mat-option *ngFor="let item of listaProposito" [value]="item.id">
+                                  {{item.name}}
+                                </mat-option>
+                              </mat-select>
+                              <mat-icon matSuffix>flag</mat-icon>
+                              <mat-error *ngIf="register.get('propositoId').hasError('required')">
+                                  proposito de animal es requerido
+                              </mat-error>
+                             </mat-form-field>
+                          </div>
+    
+                          <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                              <mat-form-field class="example-full-width" appearance="outline">
+                                  <mat-label>Pureza %</mat-label>
+                                  <input matInput formControlName="pureza">
+                                  <mat-icon matSuffix>face</mat-icon>
+                              </mat-form-field>
+                          </div>
+                           
+                          
+    
+                    </div>
+    
+    
+    
+                      <div class="card">
+                        <div class="header">
+                          <h2>Madre</h2>
+                        </div>
+                        <div class="body">
+                          
+                          <mat-radio-group aria-label="Select an option" class="adicional-radio-group"  (change)="radioChange($event)" formControlName="radioMadre">
+                            <mat-radio-button value="1" style="margin-right:  24.0em; margin-bottom: 1.0em;">Nombre/Número</mat-radio-button>
+                            <mat-radio-button value="2">Otra identifición</mat-radio-button>
+                          </mat-radio-group>
+
+                          <div class="row">
+                           
+                          <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Madre</mat-label>
+                              <mat-select disabled="{{hmadrenombre}}" id="madreId" formControlName="madreId">
+                                
+                                <mat-option *ngFor="let item of listaAnimalesHembras" [value]="item.id">
+                                  {{item.arete}}
+                                </mat-option>
+                                  
+                              </mat-select>
+                              <mat-icon matSuffix>flag</mat-icon>
+                           </mat-form-field>
+                          </div>
+                          <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Otra identificacion</mat-label>
+                                <input matInput formControlName="otraIdentificacionMadre">
+                                <mat-icon matSuffix>face</mat-icon>
+                            </mat-form-field>
+                          </div>
+    
+                          <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 mb-2">
+                            <button class="msr-3"  mat-raised-button
+                            color="primary" >Ver Detalle</button>
+                          </div>
+    
+                          </div>
+                        </div>
+                      </div>
+                     
+    
+                    
+                      <div class="card">
+                        <div class="header">
+                            <h2>Padre</h2>
+                          </div>
+                          <div class="body">
+                            <mat-radio-group aria-label="Select an option" (change)="radioChangePadre($event)" formControlName="radioPadre">
+                              <mat-radio-button value="3" style="margin-right:  24.0em; margin-bottom: 1.0em;">Nombre/Número</mat-radio-button>
+                              <mat-radio-button value="4">Otra identifición</mat-radio-button>
+                            </mat-radio-group>
+                            <div class="row">
+                            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
+                              <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Padre</mat-label>
+                                <mat-select disabled="{{hpadrenombre}}" id="padreId" formControlName="padreId">
+                                  
+                                  <mat-option *ngFor="let item of listaAnimalesMachos" [value]="item.id">
+                                    {{item.arete}}
+                                  </mat-option>
+                                    
+                                </mat-select>
+                                <mat-icon matSuffix>flag</mat-icon>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
+                              <mat-form-field class="example-full-width" appearance="outline">
+                                  <mat-label>Otra identificacion</mat-label>
+                                  <input matInput formControlName="otraIdentificacionPadre">
+                                  <mat-icon matSuffix>face</mat-icon>
+                              </mat-form-field>
+                            </div>
+      
+                            <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 mb-2">
+                              <button class="msr-3"  mat-raised-button
+                              color="primary" >Ver Detalle</button>
+                            </div>
+      
+                            </div>
+                          </div>
+                       </div>
+                      
+                  
+          
+                          <mat-action-row>
+                            <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                            <button mat-button color="primary" (click)="nextStep()">Next</button>
+                          </mat-action-row>
+                        </mat-expansion-panel>
+          
+                        <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Caracteristica
+                            </mat-panel-title>
+                            <mat-panel-description>
+                              Datos caracteristicos del animal
+                              <mat-icon>date_range</mat-icon>
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+          
+                          <div class="row">
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Marca izquierda</mat-label>
+                                    <input matInput formControlName="marcaizquierda" >
+                                    <mat-icon matSuffix>face</mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Marca derecha</mat-label>
+                                    <input matInput formControlName="marcaderecha">
+                                    <mat-icon matSuffix>face</mat-icon>
+                                </mat-form-field>
+                            </div>
+                             
+                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Color</mat-label>
+                                    <input matInput formControlName="color">
+                                    <mat-icon matSuffix>face</mat-icon>
+                                </mat-form-field>
+                            </div>
+    
+                        </div>
+    
+    
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Marcas distintivas</mat-label>
+                                    <textarea matInput formControlName="marcadistintiva"></textarea>
+                                    </mat-form-field>
+        
+                            </div>
+    
+                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Foto</mat-label>
+                                <textarea matInput formControlName="foto"></textarea>
+                                </mat-form-field>
+    
+                            </div>
+        
+                        </div>
+          
+                          <mat-action-row>
+                            <button mat-button color="warn" (click)="prevStep()">Previous</button>
+                            <button mat-button color="primary" (click)="nextStep()">End</button>
+                          </mat-action-row>
+                        </mat-expansion-panel>
+          
+                      </mat-accordion>
+                   
+                 </div>
+
+                 <div class="row" style="margin-top: 2.0em;">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <button class="msr-3" [disabled]="!register.valid" mat-raised-button color="primary"
+                      (click)="actualizar()">Actualizar</button>
+                   
+                  </div>
+                </div>
+
+                </form>
+           
+        </div>
+    </div>
+  </div>

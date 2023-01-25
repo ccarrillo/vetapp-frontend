@@ -1,0 +1,37 @@
+<section class="content">
+    <div class="container-fluid">
+      <div class="block-header" *ngFor="let breadscrum of breadscrums">
+        <!-- breadcrumb -->
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+        </app-breadcrumb>
+      </div>
+      <div class="row clearfix">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="card">
+            <div class="header">
+              <h2><strong>Mantenimiento</strong> Pagina</h2>
+            </div>
+            <div class="body">
+
+               <!-- Inicio - Add content here -->
+            <div *ngIf="isListMode; else elseBlock">
+              <button mat-raised-button color="primary" (click)="listMode()">Registrar</button>
+
+              <app-parametrovalue-listar (sendParametroValue)='sendParametro($event)'></app-parametrovalue-listar>
+            </div>
+            <ng-template #elseBlock>
+              <button mat-raised-button color="primary" (click)="listMode()">Regresar</button>
+
+              <app-parametrovalue-registrar (changeListMode)='listMode()' [sendObj]="sendObjParametroValue"></app-parametrovalue-registrar>
+            </ng-template>
+            <!-- Fin - Add content here -->
+       
+              <!-- Add content here -->
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

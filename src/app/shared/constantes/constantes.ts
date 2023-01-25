@@ -8,4 +8,6 @@ export class Constantes {
     public static CONSTANTES_COMBO_CATEGORIA_PRODUCCION = '7'; //cosntante de parametro de veterinaria para el combo de categoria produccion
     public static CONSTANTES_FILTRO_ANIMAL_HEMBRA = 'H'; //cosntante de parametro de veterinaria para el filtro de animales hembras
     public static CONSTANTES_FILTRO_ANIMAL_MACHO = 'M'; //cosntante de parametro de veterinaria para el filtro de animales hembras
+    public static CONSTANTES_FILTRO_PROPOSITO = '13'; //cosntante de parametro de veterinaria para el filtro de animales hembras
+    public static CONSTANTES_FILTRO_TIPO_EMPLEADO = '1'; //tipo de empleado zanitarios
  }

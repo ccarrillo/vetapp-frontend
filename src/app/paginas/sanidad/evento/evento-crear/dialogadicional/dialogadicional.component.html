@@ -1,0 +1,127 @@
+
+<mat-dialog-content>
+<div>
+    <h2 mat-dialog-title>Datos Adicionales</h2>
+    <div>
+      <form [formGroup]="addCusForm" (ngSubmit)="onSubmitClick()">
+        <input type="hidden" formControlName="id">
+        <div class="row">
+            
+            <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width"   appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre"  required>
+                    <mat-icon matSuffix>face</mat-icon>
+                    <mat-error *ngIf="addCusForm.get('nombre').hasError('required')">
+                        El nombre es requerido
+                    </mat-error>
+                </mat-form-field>
+            </div>
+           
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Abreviatura</mat-label>
+                    <input matInput formControlName="abreviacion"  >
+                    <mat-icon matSuffix>face</mat-icon>
+                </mat-form-field>
+            </div>
+            
+        </div>
+        
+        <div class="flexbox-container">
+
+                
+                <div  style="display: -ms-flex;display: -webkit-flex;display: flex;width: 20%;">
+                  <mat-radio-group aria-label="Select an option" class="adicional-radio-group" (change)="radioChange($event)" formControlName="radioInformacion"  >
+                    <mat-radio-button value="1" style="margin-left: 1.2em;">Texto</mat-radio-button>
+                    <mat-radio-button value="2" style="margin-top: 4.5em;">Número entero</mat-radio-button>
+                    <mat-radio-button value="3" style="margin-top: 4.5em;">Número decimal</mat-radio-button>
+                    <mat-radio-button value="4" style="margin-top: 4.5em;">Selección de:</mat-radio-button>
+                    <mat-radio-button value="5" style="margin-top: 4.5em;">Nombre/Número del padre</mat-radio-button>
+                    <mat-radio-button value="6" style="margin-top: 2.0em;">Nombre/Número de la madre</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              
+ 
+                <div>
+
+                  <mat-form-field class="example-full-width"  appearance="outline">
+                    <mat-label>Desde</mat-label>
+                    <input matInput formControlName="tdesde"   >
+                    <mat-icon matSuffix>face</mat-icon>
+                    
+                   </mat-form-field>
+                   
+                  <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Desde</mat-label>
+                      <input matInput formControlName="ndesde"  >
+                      <mat-icon matSuffix>face</mat-icon>
+                     
+                  </mat-form-field>
+
+                     
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Desde</mat-label>
+                      <input matInput formControlName="ddesde"  >
+                      <mat-icon matSuffix>face</mat-icon>
+                      </mat-form-field>
+
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Anotaciones</mat-label>
+                        <input matInput formControlName="textoadd" >
+                      
+                      </mat-form-field>
+
+                      <button type="button" color="primary" mat-button (click)="agregaCombo()" [disabled]="boton_deshabilitado">Añadir</button>
+                    
+                 </div>
+                   
+                <div>
+                  <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Hasta</mat-label>
+                    <input matInput formControlName="thasta" [checked]="checked" >
+                    <mat-icon matSuffix>face</mat-icon>
+                   </mat-form-field>
+                   <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Hasta</mat-label>
+                    <input matInput formControlName="nhasta"  >
+                    <mat-icon matSuffix>face</mat-icon>
+                   </mat-form-field>
+   
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Hasta</mat-label>
+                      <input matInput formControlName="dhasta" >
+                      <mat-icon matSuffix>face</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>elementos</mat-label>
+                      <mat-select formControlName="combosseleccionables" >
+                        <mat-option *ngFor="let elem of elementos" [value]="elem">
+                          {{elem}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  
+
+                 </div>
+
+              
+         </div>
+
+          
+         <section class="example-section">
+            <mat-checkbox class="example-margin" formControlName="requerido" >Se requiere esta informacion adicional
+            </mat-checkbox>
+        </section>
+          
+        
+        <div class="btn-sec">
+            <button class="msr-3" mat-raised-button color="primary" [disabled]="!addCusForm.valid"  [mat-dialog-close]="this.addCusForm.value" cdkFocusInitial >Aceptar</button>
+            <button type="button" mat-button (click)="closeDialog()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+</mat-dialog-content>

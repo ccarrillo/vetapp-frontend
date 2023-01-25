@@ -1,0 +1,174 @@
+<div class="row clearfix">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+    <div class="card">
+      <div class="header">
+        <h2><strong>Evento: </strong> {{labelBtn}}</h2>
+      </div>
+      <div class="body">
+        <form class="register-form m-4" [formGroup]="register">
+          <input type="hidden" formControlName="id">
+
+          <div class="row">
+
+            <div class="col-3">
+
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Fecha de evento</mat-label>
+                
+                <input   matInput placeholder="Formato: 10/07/2020"   [matDatepicker]="picker3"  formControlName="fecha"  required>
+                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                <mat-datepicker #picker3  ></mat-datepicker>
+                <mat-error *ngIf="register.get('fecha').hasError('required')">
+                  La fecha es obligatorio en el formato adecuado
+                </mat-error>
+
+              </mat-form-field>
+            </div>
+
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Tipo de evento</mat-label>
+                <mat-select id="idtipoevento" formControlName="idtipoevento"  [(ngModel)]="opcionSeleccionado" (selectionChange)="capturar()"  >
+                  <mat-option *ngFor="let item of listaTipoEvento" [value]="item.id">
+                    {{item.nombreEvento}}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matSuffix>flag</mat-icon>
+                <mat-error *ngIf="register.get('idtipoevento').hasError('required')">
+                  Es obligatorio es tipo de evento
+                </mat-error>
+
+               </mat-form-field>
+            </div>
+
+
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Técnico</mat-label>
+                <mat-select id="tecnico" formControlName="tecnico">
+                  <mat-option *ngFor="let item of listaEmpleado" [value]="item.id">
+                    {{item.firstName}}{{item.lastName}}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matSuffix>flag</mat-icon>
+                <mat-error *ngIf="register.get('tecnico').hasError('required')">
+                  Es obligatorio el personal que atendio el evento
+                </mat-error>
+
+               </mat-form-field>
+            </div>
+
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Costo S/.</mat-label>
+                <input matInput formControlName="costo">
+                <mat-icon matSuffix>face</mat-icon>
+              </mat-form-field>
+            </div>
+
+
+          </div>
+
+          <div class="row">
+
+           
+
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Anotaciones</mat-label>
+                <textarea matInput formControlName="anotacion"></textarea>
+              </mat-form-field>
+
+            </div>
+
+          </div>
+
+
+
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+              <div class="card">
+                <div class="header">
+                  <h2><strong>Informacion adicional: </strong></h2>
+                </div>
+                <div class="body" >
+
+                  <div id="container" class="one" #one></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+              <div class="card">
+                <div class="header">
+                  <h2><strong>Crear estos recordatorios: </strong></h2>
+                </div>
+                <div class="body">
+
+                  <div id="containerdos" class="recor" #recor>
+                    <tbody>
+                      <tr >
+                          <td WIDTH="50%" align="center">
+                            <mat-label>Tipo de recordatorio</mat-label>
+                          </td>
+                            <td WIDTH="50%" align="center">
+                              <mat-label>Fecha</mat-label>
+                            </td>
+                          
+                      </tr>
+                     
+                    </tbody>
+                  </div>
+                  <button mat-icon-button matTooltip="Agregar" (click)="crearSelectEvento('elemento',0)">
+                    <mat-icon color="black">add</mat-icon>Agregar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+      
+              <div class="card">
+                <div class="header">
+                  <h2><strong>Protocolo: </strong></h2>
+                </div>
+                <div class="body">
+                    
+                  <mat-radio-group aria-label="Select an option" class="adicional-radio-group"  (change)="radioChange($event)" formControlName="radioProtocolo">
+                    <mat-radio-button value="1" style="margin-right:  24.0em; margin-bottom: 1.0em;">Iniciar Protocolo</mat-radio-button>
+                    <mat-radio-button value="2">Continuar Protocolo</mat-radio-button>
+                  </mat-radio-group>
+
+                  <div class="row">
+                   
+
+                  </div>
+
+                </div>
+             </div>
+            
+          </div>
+
+
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <mat-checkbox class="example-margin" formControlName="is_active">I accept
+                terms
+                and conditions
+              </mat-checkbox>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <button class="msr-3" [disabled]="!register.valid" mat-raised-button color="primary"
+                (click)="guardar()">{{labelBtn}}</button>
+              <button type="button" mat-button (click)="limpiar()">Limpiar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

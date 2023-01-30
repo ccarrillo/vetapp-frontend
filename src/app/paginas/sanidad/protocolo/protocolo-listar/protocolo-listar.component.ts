@@ -26,7 +26,12 @@ export class ProtocoloListarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("ENTRO LISTAR");
+    this.refrescar();
+   
+    
+  }
+
+  refrescar(){
     this._api.getTypeRequest('protocolo/grupos').subscribe({
       next: (data: any) => {
         console.log("ENTRO LISTAR protocolo");
@@ -61,6 +66,27 @@ export class ProtocoloListarComponent implements OnInit {
   editar(evento: any) {
     this.sendEvento.emit(evento);
     console.log('Form Value', evento);
+  }
+
+  eliminar(id: any){
+     this._api.deleteTypeRequest('protocolo/' + id).subscribe({
+      next: (data: any) => {
+        console.log("ENTRO eliminar protocolo");
+        console.log(data);
+         this.refrescar();
+      },
+      error: (error) => {
+        console.log(error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Ocurrio un error inesperado, vuelva a intentar',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    });
+   
   }
 
 }

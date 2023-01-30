@@ -100,8 +100,7 @@ export class EventoCrearComponent implements OnInit {
     private dialogModel: MatDialog,
     private fb: FormBuilder,
     private _api: ApiService,
-    private router: Router,
-    private modalService: NgbModal
+    private router: Router
     ) {
       this.initForm();
       

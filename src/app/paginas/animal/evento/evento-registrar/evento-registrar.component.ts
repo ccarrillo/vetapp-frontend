@@ -1,9 +1,7 @@
-import { I } from '@angular/cdk/keycodes';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatRadioChange } from '@angular/material/radio';
 import { Router } from '@angular/router';
-import { id } from '@swimlane/ngx-datatable';
 import { DetalleAdicionalEventoAnimal } from 'src/app/core/models/detalle_adicional_evento';
 import { DetalleRecordatorioEventoAnimal } from 'src/app/core/models/detalle_recordatorio_evento';
 import { Constantes } from 'src/app/shared/constantes/constantes';

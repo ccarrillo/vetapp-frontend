@@ -70,7 +70,7 @@ export class EventoRegistrarComponent implements OnInit {
     this.renderer.appendChild(d2, input);
     if(element.requerido)
     {
-      this.renderer.setAttribute(input, "required","true");
+      this.renderer.setAttribute(input, "required",null);
     }
     if(element.radioInformacion == '1')
     {
@@ -88,13 +88,13 @@ export class EventoRegistrarComponent implements OnInit {
       this.renderer.setAttribute( input, "id",`input${idinput}`);
       this.renderer.setAttribute( input, "name","entero");
       this.renderer.setAttribute( input, "class","clasetexto");
-      this.renderer.setAttribute( input, "pattern","[0-9]*");
+      this.renderer.setAttribute( input, "numbersOnly",null);
       this.renderer.setAttribute( input, "onpaste","return false;");
       this.renderer.setAttribute( input, "onDrop","return false;");
       this.renderer.setAttribute( input, "autocomplete","off");
       this.renderer.setAttribute( input, "step","any");
-      this.renderer.setAttribute( input, "min",`${element.ndesde}`);
-      this.renderer.setAttribute( input, "max",`${element.nhasta}`);
+      this.renderer.setAttribute( input, "min",`${element.tdesde}`);
+      this.renderer.setAttribute( input, "max",`${element.thasta}`);
       this.renderer.listen(input, "keypress",event => {
         if (this.filterInteger(event, event.target) === false) {
               event.preventDefault();
@@ -114,8 +114,8 @@ export class EventoRegistrarComponent implements OnInit {
       this.renderer.setAttribute( input, "onDrop","return false;");
       this.renderer.setAttribute( input, "autocomplete","off");
       this.renderer.setAttribute( input, "step","any");
-      this.renderer.setAttribute( input, "min",`${element.ddesde}`);
-      this.renderer.setAttribute( input, "max",`${element.dhasta}`);
+      this.renderer.setAttribute( input, "min",`${element.tdesde}`);
+      this.renderer.setAttribute( input, "max",`${element.thasta}`);
      
     }
     this.renderer.appendChild(this.d1.nativeElement, d2);
@@ -158,10 +158,10 @@ export class EventoRegistrarComponent implements OnInit {
     if(element.radioInformacion == '5')
     {   
       const texto = this.renderer.createText("Padre:");
-        console.log(element.radioInformacion.length);
+       
       let option = this.renderer.createElement("option");
         option.value = "selecciona";
-        option.text = "Selecciona un padre" ;   
+        option.text = "Selecciona el padre" ;   
         select.appendChild(option);
       for (const val of this.listaAnimalesMachos)
       {
@@ -192,12 +192,17 @@ export class EventoRegistrarComponent implements OnInit {
     if(element.radioInformacion == '6')
     { 
       const texto = this.renderer.createText("Madre:");
+      let option = this.renderer.createElement("option");
+      option.value = "selecciona";
+      option.text = "Selecciona la madre" ;   
+      select.appendChild(option);
       for (const val of this.listaAnimalesHembras)
       {
-          let option = this.renderer.createElement("option");
-          option.value = val.toString();
-          option.text = val ;   
-          select.appendChild(option);
+        let option = this.renderer.createElement("option");
+        //console.log(val);
+        option.value = val.id;
+        option.text = val.arete ;   
+        select.appendChild(option);
       }
       this.renderer.appendChild(d2, texto);
       this.renderer.appendChild(d2, select);
@@ -426,7 +431,7 @@ export class EventoRegistrarComponent implements OnInit {
                    if(this.listaDetalleTipoEvento.length>0)
                    {
                       let idinput:number=0, idselect:number=0, idcombo:number=0;
-                      this.listaDetalleTipoEvento.forEach(element => {
+                      this.listaDetalleTipoEvento.forEach( async element => {
                                       
                                    if(element.radioInformacion == '1' || element.radioInformacion == '2' || element.radioInformacion == '3'){
                                             idinput++;
@@ -437,35 +442,45 @@ export class EventoRegistrarComponent implements OnInit {
                                              this.crearSelect(element,idselect);
                                    }
                                    if(element.radioInformacion == '5'){
-                                              idcombo++;
+                                             
                                               if(this.listaAnimalesMachos.length<=0)
                                               {
-                                                this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_MACHO)).subscribe({
-                                                  next: (data: any) => {
-                                                  
-                                                    if (data) {
-                                                      this.sinData = false;
-                                                       this.listaAnimalesMachos = data;
-                                                       this.crearCombo(element,idcombo);
-                                                    } else {
-                                                      this.sinData = true;
-                                                    }
-                                                  },
-                                                  error: (error) => {
-                                                    console.log(error);
-                                                    Swal.fire({
-                                                      position: 'top-end',
-                                                      icon: 'error',
-                                                      title: 'Ocurrio un error inesperado, vuelva a intentar',
-                                                      showConfirmButton: false,
-                                                      timer: 1500
-                                                    });
-                                                  }
+                                                
+                                                    this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_MACHO)).subscribe({
+                                                    next: (data: any) => {
+
+                                                      if (data) {
+                                                        this.sinData = false;
+                                                        this.listaAnimalesMachos = data;
+                                                         idcombo++;
+                                                         this.crearCombo(element,idcombo);
+                                                      } else {
+                                                        this.sinData = true;
+                                                        
+                                                      }
                                                       
-                                                  
-                                                });
+                                                    },
+                                                    error: (error) => {
+                                                      console.log(error);
+                                                      Swal.fire({
+                                                        position: 'top-end',
+                                                        icon: 'error',
+                                                        title: 'Ocurrio un error inesperado, vuelva a intentar',
+                                                        showConfirmButton: false,
+                                                        timer: 1500
+                                                        });
+                                                      }
+                                                      
+                                                    }
+                                                    );
+                                                   
+                                                
+                                                 console.log('alex'+this.listaAnimalesMachos);
+                                                
+                                                 
                                               }
                                               if(this.listaAnimalesMachos.length>0){
+                                                idcombo++;
                                                 this.crearCombo(element,idcombo);
                                               }
                                               
@@ -473,14 +488,14 @@ export class EventoRegistrarComponent implements OnInit {
 
 
                                     if(element.radioInformacion == '6'){
-                                         idcombo++;
+                                         
                                       if(this.listaAnimalesHembras.length<=0){
-                                                     
                                         this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_HEMBRA)).subscribe({
                                           next: (data: any) => {
                                             if (data) {
                                               this.sinData = false;
                                                this.listaAnimalesHembras = data;
+                                               idcombo++;
                                                this.crearCombo(element,idcombo);
                                             } else {
                                               this.sinData = true;
@@ -499,9 +514,11 @@ export class EventoRegistrarComponent implements OnInit {
                                               
                                           
                                         });
+                                               
                                       }
 
                                       if(this.listaAnimalesHembras.length>0){
+                                        idcombo++;
                                         this.crearCombo(element,idcombo);
                                       }
           
@@ -583,6 +600,64 @@ export class EventoRegistrarComponent implements OnInit {
     });
   }
 
+  async comboMadre(){
+     this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_HEMBRA)).subscribe({
+      next: (data: any) => {
+        if (data) {
+          this.sinData = false;
+           this.listaAnimalesHembras = data;
+           return this.listaAnimalesHembras;
+        } else {
+          this.sinData = true;
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Ocurrio un error inesperado, vuelva a intentar',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+          
+      
+    });
+  }
+
+ async comboPadre(){
+    this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_MACHO)).subscribe({
+    next: (data: any) => {
+
+      if (data) {
+        this.sinData = false;
+        this.listaAnimalesMachos = data;
+        return {
+          error: false,
+          message: "Se ha sacado un 6"
+        };
+        // this.crearCombo(element,idcombo);
+      } else {
+        this.sinData = true;
+        return {
+          error: true,
+          message: "Se ha sacado un 7"
+        };
+      }
+    },
+    error: (error) => {
+      console.log(error);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Ocurrio un error inesperado, vuelva a intentar',
+        showConfirmButton: false,
+        timer: 1500
+         });
+       }
+     });
+  }
 
   radioChange($event:  MatRadioChange) {
     
@@ -715,7 +790,7 @@ export class EventoRegistrarComponent implements OnInit {
      
       if(combo.length>0){
        
-      
+        console.log('lleago aqui alex');
         for ( let i=1; i<=combo.length; i++) {
   
           let detalle = new DetalleAdicionalEventoAnimal();
@@ -749,6 +824,8 @@ export class EventoRegistrarComponent implements OnInit {
            this.listaDetalleAcciones.push(detalle);
         }
 
+        
+
       }
       if(selectrecordatorio.length>0){
             console.log('como recordatorio'+selectrecordatorio.length);
@@ -767,7 +844,7 @@ export class EventoRegistrarComponent implements OnInit {
            this.listaDetalleRecordatorio.push(recordatorio);
         }
       }
-       
+      
      console.log(this.listaDetalleAcciones);
      console.log(this.listaDetalleRecordatorio);
      pl.listaDetallleTipoEventoDTO = this.listaDetalleAcciones;

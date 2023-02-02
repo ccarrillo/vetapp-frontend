@@ -411,6 +411,7 @@ export class ProtocoloCrearComponent implements OnInit {
     this.renderer.setAttribute(select, "id",`selectevento${this.x}`);
     this.renderer.setAttribute(input,"class","cajatexto");
     this.renderer.setAttribute(input, "id",`input${this.x}`);
+    this.renderer.setAttribute(input, "appTwoDigitDecimaNumber",null);
     this.renderer.setAttribute(inputoculto,"type","hidden");
     this.renderer.setAttribute(inputoculto,"class","cajaoculto");
     this.renderer.setAttribute(inputoculto, "id",`inputoculto${this.x}`);

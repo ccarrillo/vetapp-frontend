@@ -35,6 +35,7 @@ import { EventoComponent } from './evento/evento.component';
 import { EventoListarComponent } from './evento/evento-listar/evento-listar.component';
 import { EventoRegistrarComponent } from './evento/evento-registrar/evento-registrar.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -77,7 +78,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     ComponentsModule,
     SanidadModule,
     MatExpansionModule,
-    
+    SharedModule
     
   ]
 })

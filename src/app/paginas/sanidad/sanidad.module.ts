@@ -15,6 +15,7 @@ import { EventoAnimalComponent } from './evento-animal/evento-animal.component';
 import { ProtocoloComponent } from './protocolo/protocolo.component';
 import { ProtocoloCrearComponent } from './protocolo/protocolo-crear/protocolo-crear.component';
 import { ProtocoloListarComponent } from './protocolo/protocolo-listar/protocolo-listar.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { ProtocoloListarComponent } from './protocolo/protocolo-listar/protocolo
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     ComponentsModule
   ],
   exports: [

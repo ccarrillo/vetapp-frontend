@@ -29,7 +29,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Nombre</mat-label>
-                                <input matInput formControlName="nombreEvento" required>
+                                <input matInput formControlName="nombreEvento"  required>
                                 <mat-icon matSuffix>face</mat-icon>
                                 <mat-error *ngIf="register.get('nombreEvento').hasError('required')">
                                     El nombre es requerido
@@ -39,7 +39,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Costo</mat-label>
-                                <input matInput formControlName="precio" >
+                                <input matInput formControlName="precio" appTwoDigitDecimaNumber>
                                 <mat-icon matSuffix>face</mat-icon>
                             </mat-form-field>
                         </div>
@@ -82,12 +82,12 @@
                                   <ng-container matColumnDef="tipo">
                                       <th mat-header-cell *matHeaderCellDef> Tipo </th>
                                       <td mat-cell *matCellDef="let element" > 
-                                        <p *ngIf="element.radioInformacion==1" >Texto desde {{element.tdesde}} hasta {{element.thasta}}</p>
-                                        <p *ngIf="element.radioInformacion==2" > Numero entre {{element.ndesde}} y {{element.nhasta}}</p>
-                                        <p *ngIf="element.radioInformacion==3" > Numero entre {{element.ddesde}} y {{element.dhasta}}</p>
-                                        <p *ngIf="element.radioInformacion==4" > Seleccion de {{element.combosseleccionables}}</p>
-                                        <p *ngIf="element.radioInformacion==5" > Nombre/numero del padre</p>
-                                        <p *ngIf="element.radioInformacion==6" > Nombre/numero de la madre</p>
+                                        <p *ngIf="element.radioInformacion==1 " >Texto desde {{element.tdesde}} hasta {{element.thasta}}</p>
+                                        <p *ngIf="element.radioInformacion==2  " > Numero entre {{element.tdesde}} y {{element.thasta}}</p>
+                                        <p *ngIf="element.radioInformacion==3 " > Numero entre {{element.tdesde}} y {{element.thasta}}</p>
+                                        <p *ngIf="element.radioInformacion==4 " > Seleccion de {{element.combosseleccionables}}</p>
+                                        <p *ngIf="element.radioInformacion==5 " > Nombre/numero del padre</p>
+                                        <p *ngIf="element.radioInformacion==6 " > Nombre/numero de la madre</p>
                                       </td>
                                   </ng-container>
                                   <!-- Correo Electrónico Column -->

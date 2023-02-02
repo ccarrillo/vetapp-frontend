@@ -4,6 +4,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { MatRadioChange } from '@angular/material/radio';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-dialogadicional',
@@ -16,6 +18,9 @@ export class DialogadicionalComponent implements OnInit {
   public lname: string = 'Deo';
   public addCusForm: FormGroup;
   boton_deshabilitado: boolean = true;
+  habilitarBoton: boolean = false;
+  opcionSeleccionado: string  = '';
+  textoadd : string = '';
   // checkbox
     checked = false;
     disabled = true;
@@ -23,10 +28,6 @@ export class DialogadicionalComponent implements OnInit {
 
     elementos: string[] = [];
 
-    /*htdesdethasta:boolean;
-    hndesdenhasta:boolean;
-    hddesdedhasta:boolean;
-    hcombosseleccionables:boolean;*/
   // Radio buttions
   favoriteSeason: string;
   seasons: string[] = ['Texto', 'Numero entero', 'Numero decimal', 'Seleccion de','Nombre/numero del padre','Nombre/numero de la madre'];
@@ -203,18 +204,19 @@ export class DialogadicionalComponent implements OnInit {
   initForm() {
       //console.log(this.data);
       if(this.data!=null){
-             
+    
         this.addCusForm = this.fb.group({
           id:[this.data.id],
           nombre: [this.data.nombre,[Validators.required]],
           abreviacion:[this.data.abreviacion],
-          radioInformacion:[this.data.radioInformacion],//this.data!=null? '1':this.data.radioInformacion
+          radioInformacion:[this.data.radioInformacion,[Validators.required]],
+          //this.data!=null? '1':this.data.radioInformacion
           tdesde:[this.data.tdesde],
           thasta:[this.data.thasta],
-          ndesde:[this.data.ndesde],
-          nhasta:[this.data.nhasta],
-          ddesde:[this.data.ddesde],
-          dhasta:[this.data.dhasta],
+          ndesde:[this.data.radioInformacion=="2"?this.data.tdesde:""],
+          nhasta:[this.data.radioInformacion=="2"?this.data.thasta:""],
+          ddesde:[this.data.radioInformacion=="3"?this.data.tdesde:""],
+          dhasta:[this.data.radioInformacion=="3"?this.data.thasta:""],
           combosseleccionables:[this.data.combosseleccionables],
           textoadd:[''],
           requerido:[this.data.requerido]
@@ -228,7 +230,7 @@ export class DialogadicionalComponent implements OnInit {
           id:[''],
           nombre: ['',[Validators.required]],
           abreviacion:[''],
-          radioInformacion:[''],//this.data!=null? '1':this.data.radioInformacion
+          radioInformacion:['',[Validators.required]],//this.data!=null? '1':this.data.radioInformacion
           tdesde:[''],
           thasta:[''],
           ndesde:[''],
@@ -252,21 +254,92 @@ export class DialogadicionalComponent implements OnInit {
 
   onSubmitClick() {
     //console.log('Form Value', this.addCusForm.value);
+    console.log('llego aqui');
+  }
+  aceptar(){
+    this.data= null;
   }
 
-  /*aceptar(){
-    this.addCusForm.value.combosseleccionables= this.elementos.toString();
-    let pl = this.addCusForm.value;
-    this.data =pl
-    console.log('dialogo llego aqui', this.data);
-    this.dialog.close();
-  }*/
 
   agregaCombo(){
-    this.addCusForm.value.combosseleccionables="";
-    this.elementos.push(this.addCusForm.value.textoadd);
-    this.addCusForm.value.combosseleccionables= this.elementos.toString();
+    if(this.addCusForm.value.textoadd.trim()!='')
+    {
+      this.addCusForm.value.combosseleccionables="";
+      this.elementos.push(this.addCusForm.value.textoadd);
+      this.addCusForm.value.combosseleccionables= this.elementos;
+      this.textoadd='';
+    }
+    else{
+      Swal.fire({
+        position: 'top-end',
+        icon: 'info',
+        title: 'Tiene que  escribir algo para añadir',
+        showConfirmButton: false,
+        timer: 2500
+      });
+    }
+    
+   
   }
+  eliminarCombo(){
+      if(this.opcionSeleccionado!=''){
+        let id= this.elementos.indexOf(this.opcionSeleccionado);
+        this.elementos.splice(id, 1);
+        this.addCusForm.value.combosseleccionables= this.elementos;
+        this.opcionSeleccionado='';
+      }
+      else{
+        Swal.fire({
+          position: 'top-end',
+          icon: 'info',
+          title: 'Seleccione un elemento a eliminar',
+          showConfirmButton: false,
+          timer: 2500
+        });
+      }
+      
+  }
+
+  capturar() {
+    // Pasamos el valor seleccionado a la variable verSeleccion
+     console.log(this.opcionSeleccionado);
+}
   
+  habilitar(event: any){
+    console.log('ingreso aqui'+event.target.value);
+    if(this.addCusForm.value.radioInformacion="1")
+    {
+      if(this.addCusForm.value.tdesde.trim() !="" && this.addCusForm.value.thasta.trim() !="" )
+      {
+                this.habilitarBoton= true;
+      }
+      else{
+                this.habilitarBoton= false;
+      }
+
+    }
+    if(this.addCusForm.value.radioInformacion="2")
+    {
+      if(this.addCusForm.value.ndesde!="" && this.addCusForm.value.nhasta!="" )
+      {
+                this.habilitarBoton= true;
+      }
+      else{
+                this.habilitarBoton= false;
+      }
+
+    }
+    if(this.addCusForm.value.radioInformacion="3")
+    {
+      if(this.addCusForm.value.ddesde!="" && this.addCusForm.value.dhasta!="" )
+      {
+                this.habilitarBoton= true;
+      }
+      else{
+                this.habilitarBoton= false;
+      }
+
+    }
+  }
 
 }

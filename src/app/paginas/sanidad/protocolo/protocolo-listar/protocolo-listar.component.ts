@@ -69,10 +69,10 @@ export class ProtocoloListarComponent implements OnInit {
   }
 
   eliminar(id: any){
+    if (confirm("Esta seguro de borrar el registro de protocolo? Se eliminaran recordatorios ligados al evento")) {
      this._api.deleteTypeRequest('protocolo/' + id).subscribe({
       next: (data: any) => {
-        console.log("ENTRO eliminar protocolo");
-        console.log(data);
+       
          this.refrescar();
       },
       error: (error) => {
@@ -86,6 +86,7 @@ export class ProtocoloListarComponent implements OnInit {
         });
       }
     });
+  }
    
   }
 

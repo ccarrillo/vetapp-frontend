@@ -23,11 +23,23 @@ export class EventoListarComponent implements OnInit {
 
   constructor(
     private _api: ApiService,
-    private router: Router,
   ) { }
 
   ngOnInit(): void {
-    console.log("ENTRO LISTAR");
+    this.refrescar();
+  
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  editar(evento: any) {
+    this.sendEvento.emit(evento);
+  }
+
+  refrescar(){
     this._api.getTypeRequest('tipoevento/grupos').subscribe({
       next: (data: any) => {
         console.log("ENTRO LISTAR CARGAR");
@@ -54,15 +66,27 @@ export class EventoListarComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  eliminar(id: any){
+    if (confirm("Esta seguro de borrar el registro de evento? Se eliminaran tanto las acciones y recordatorios ligados al evento")) {
+    this._api.deleteTypeRequest('tipoevento/' + id).subscribe({
+     next: (data: any) => {
+      
+        this.refrescar();
+     },
+     error: (error) => {
+       console.log(error);
+       Swal.fire({
+         position: 'top-end',
+         icon: 'error',
+         title: 'Ocurrio un error inesperado, vuelva a intentar',
+         showConfirmButton: false,
+         timer: 1500
+       });
+     }
+   });
   }
-
-  editar(evento: any) {
-    this.sendEvento.emit(evento);
-    console.log('Form Value', evento);
-  }
+  
+ }
 
 
 }

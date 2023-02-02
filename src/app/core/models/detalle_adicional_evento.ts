@@ -5,10 +5,6 @@ export class DetalleAdicionalEventoAnimal {
     private radioInformacion: string;
     private tdesde: string;
     private thasta: string;
-    private ndesde: string;
-    private nhasta: string;
-    private ddesde: string;
-    private dhasta: string;
     private combosseleccionables: string;
     private requerido: boolean;
     private padremadre: string;
@@ -57,37 +53,6 @@ export class DetalleAdicionalEventoAnimal {
         this.thasta = thasta;
     }
 
-    public getNdesde(): string {
-        return this.ndesde;
-    }
-
-    public setNdesde(ndesde: string): void {
-        this.ndesde = ndesde;
-    }
-
-    public getNhasta(): string {
-        return this.nhasta;
-    }
-
-    public setNhasta(nhasta: string): void {
-        this.nhasta = nhasta;
-    }
-
-    public getDdesde(): string {
-        return this.ddesde;
-    }
-
-    public setDdesde(ddesde: string): void {
-        this.ddesde = ddesde;
-    }
-
-    public getDhasta(): string {
-        return this.dhasta;
-    }
-
-    public setDhasta(dhasta: string): void {
-        this.dhasta = dhasta;
-    }
 
     public getCombosseleccionables(): string {
         return this.combosseleccionables;

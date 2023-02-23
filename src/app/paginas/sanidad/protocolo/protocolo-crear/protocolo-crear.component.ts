@@ -45,15 +45,12 @@ export class ProtocoloCrearComponent implements OnInit {
 
   @ViewChild('one', { static: false }) d1: ElementRef;
 
-
-  
-
   ngOnInit(): void {
 
     
     this.x = 0;
 
-    let respuesta = async () =>  await this._api.getTypeRequest('tipoevento').subscribe({
+   this._api.getTypeRequest('tipoevento').subscribe({
       next: (data: any) => {
         if (data) {
           this.sinData = false;
@@ -76,10 +73,8 @@ export class ProtocoloCrearComponent implements OnInit {
 
     });
    
-     respuesta().then(
-         res => {
+    
           if (this.sendObj){
-            console.log("sendObj", this.sendObj.id);
             this.id = this.sendObj.id;
             this.isAddMode = !this.sendObj.id;
           }
@@ -88,7 +83,6 @@ export class ProtocoloCrearComponent implements OnInit {
             
             this._api.getTypeRequest(`protocolo/porid/${this.sendObj.id}`).subscribe({
               next: (data: any) => {
-                console.log("ENTRO a pasar a objeto");
                 this.objProtocolo =  data;
             
                 this.objProtocolo.listaDetallleProtocoloDTO.forEach(element =>{
@@ -141,8 +135,7 @@ export class ProtocoloCrearComponent implements OnInit {
             
           });
 
-         }
-     ).catch(err => console.log(err));
+    
     
 
   }
@@ -152,7 +145,7 @@ export class ProtocoloCrearComponent implements OnInit {
     this.register = this.fb.group({
       id: [''],
       nombre: ['', [Validators.required]],
-      grupoProtocoloId: [''],
+      grupoProtocoloId: ['',[Validators.required]],
       is_active: [false, [Validators.requiredTrue]]
     });
     
@@ -162,21 +155,18 @@ export class ProtocoloCrearComponent implements OnInit {
   guardar() {
     //console.log('Form Value', this.register.value);
     let pl = this.register.value;
-    console.log('protocolo', pl);
     if (this.register.invalid) {
       return;
     }
     if (this.isAddMode) {
       this.crear(pl);
     } else {
-      console.log('protocolo ACTUALIZAR', pl);
       this.actualizar(pl);
     }
   }
  
    obtenerDatosFormulario(){ 
     let select = document.getElementsByClassName('combo');
-    //let input = document.getElementsByClassName('cajatexto');
 
     if(select.length > 0){
      for ( let i=0; i<select.length; i++) {
@@ -255,23 +245,15 @@ export class ProtocoloCrearComponent implements OnInit {
      };
      
     }
-    return {
-      error: false,
-      message: "Exito"
-     };
-    //console.log(pl);
+
   }
 
   private crear(pl: any) {
       
-    let inserta = async () =>  await this.obtenerDatosFormulario();
+          this.obtenerDatosFormulario();
 
-      inserta().then(  res => {
-        if(!res.error){
             if(this.listaDetalleProtocolo.length>0){
               pl.listaDetallleProtocoloDTO = this.listaDetalleProtocolo;
-              }
-
               this._api.postTypeRequest('protocolo', pl).subscribe({
                 next: (data) => {
                 
@@ -296,9 +278,13 @@ export class ProtocoloCrearComponent implements OnInit {
                   });
                 }
               });
-            }
-          }
-      ).catch(err => console.log(err));
+              //console.log(pl);
+              }
+           
+        
+            
+          
+     
      
    
   }
@@ -307,44 +293,35 @@ export class ProtocoloCrearComponent implements OnInit {
 
     
 
-     let actualiza =   async () =>  await this.obtenerDatosFormulario();
-
-     actualiza().then(  res => {
-       
-        if(!res.error){
+    this.obtenerDatosFormulario();
 
           if(this.listaDetalleProtocolo.length>0){
             pl.listaDetallleProtocoloDTO = this.listaDetalleProtocolo;
+            this._api.putTypeRequest('protocolo/' + this.id, pl).subscribe({
+              next: (data) => {
+               
+                this.router.navigateByUrl('health/protocol');
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Datos actualizados Correctamente',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                this.changeListMode.emit();
+              },
+              error: (error) => {
+               
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: 'Ocurrio un error inesperado, vuelva a intentar',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+            });
             }
-          this._api.putTypeRequest('protocolo/' + this.id, pl).subscribe({
-            next: (data) => {
-             
-              this.router.navigateByUrl('health/protocol');
-              Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Datos actualizados Correctamente',
-                showConfirmButton: false,
-                timer: 1500
-              });
-              this.changeListMode.emit();
-            },
-            error: (error) => {
-             
-              Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: 'Ocurrio un error inesperado, vuelva a intentar',
-                showConfirmButton: false,
-                timer: 1500
-              });
-            }
-          });
-         }
-      
-          }
-     ).catch(err => console.log('error'+err));
-
    
   }
 

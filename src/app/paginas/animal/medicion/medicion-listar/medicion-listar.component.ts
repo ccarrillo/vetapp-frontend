@@ -14,7 +14,7 @@ export class MedicionListarComponent implements OnInit {
  // @Input() listaMedi: any;
   @Output() sendMedicion = new EventEmitter();
   listaMedicionesMostrar :any [] =  [];
-  id:number;
+  idAnimal:number;
   displayedColumns: string[] = ['no', 'fechamedicion', 'peso','estatura', 'condicion', 'action'];
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -124,8 +124,8 @@ export class MedicionListarComponent implements OnInit {
 
   ngOnInit(): void {
      
-    this.id = Number.parseInt(sessionStorage.getItem('idanimalsession'));
-    this._api.getTypeRequest(`medicion/buscar/${this.id}`).subscribe({
+    this.idAnimal = Number.parseInt(sessionStorage.getItem('idanimalsession'));
+   this._api.getTypeRequest(`medicion/buscar/${this.idAnimal}`).subscribe({
       next: (data: any) => {
         if (data) {
           console.log('listar medicion'+data[0].idanimal);

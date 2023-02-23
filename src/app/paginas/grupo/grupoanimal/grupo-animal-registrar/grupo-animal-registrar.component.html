@@ -41,7 +41,7 @@
                   <button title="Añadir nuevo grupo" mat-icon-button (click)="addNewItem(node)">
                     <mat-icon>add</mat-icon>
                   </button>
-                  <button title="Editar nombre del grupo" mat-icon-button (click)="editarNode(node)">
+                  <button title="Editar nombre del grupo" mat-icon-button (onNodeSelection)="receiveSelectedNode(event)"  (click)="editarNode(node)">
                     <mat-icon>edit</mat-icon>
                   </button>
                   <button title="Eliminar grupo" mat-icon-button (click)="deleteNode(node)">

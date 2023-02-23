@@ -2,6 +2,7 @@ export class DetalleAdicionalEventoAnimal {
    
     private id: number;
     private nombre: string;
+    private nombrevalor: string;
     private radioInformacion: string;
     private tdesde: string;
     private thasta: string;
@@ -27,6 +28,14 @@ export class DetalleAdicionalEventoAnimal {
 
     public setNombre(nombre: string): void {
         this.nombre = nombre;
+    }
+
+    public getNombrevalor(): string {
+        return this.nombrevalor;
+    }
+
+    public setNombrevalor(nombrevalor: string): void {
+        this.nombrevalor = nombrevalor;
     }
 
     public getRadioInformacion(): string {

@@ -22,112 +22,112 @@
                      <!-- fecha Column -->
                      <ng-container matColumnDef="fecha">
                         <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                        <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.fecha | date:'dd/MM/yyyy'}} </td>
                     </ng-container>
 
                     <!-- racion Column -->
                     <ng-container matColumnDef="racionternero">
                         <th mat-header-cell *matHeaderCellDef> Racion Ternero </th>
-                        <td mat-cell *matCellDef="let element"> {{element.racionternero}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.racionternero}} </td>
                     </ng-container>
 
                     <!-- venta contado Column -->
                     <ng-container matColumnDef="ventacontado">
                         <th mat-header-cell *matHeaderCellDef> Venta contado </th>
-                        <td mat-cell *matCellDef="let element"> {{element.ventacontado}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.ventacontado}} </td>
                     </ng-container>
 
                        <!-- venta interna Column -->
                     <ng-container matColumnDef="ventainterna">
                         <th mat-header-cell *matHeaderCellDef> ventainterna </th>
-                        <td mat-cell *matCellDef="let element"> {{element.ventainterna}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.ventainterna}} </td>
                     </ng-container>
 
                     <!-- antibiotico Column -->
                     <ng-container matColumnDef="antibmastitis">
-                        <th mat-header-cell *matHeaderCellDef> Antibiotico Mastitis </th>
-                        <td mat-cell *matCellDef="let element"> {{element.antibmastitis}} </td>
+                        <th mat-header-cell *matHeaderCellDef> Antibiotico-Mastitis </th>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.antibmastitis}} </td>
                     </ng-container>
 
                     <!-- venta externa Column -->
                     <ng-container matColumnDef="ventaexterna">
                         <th mat-header-cell *matHeaderCellDef> Embarque </th>
-                        <td mat-cell *matCellDef="let element"> {{element.ventaexterna}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.ventaexterna}} </td>
                     </ng-container>
 
 
                     <!-- precio Column -->
                     <ng-container matColumnDef="precio">
                         <th mat-header-cell *matHeaderCellDef> Precio </th>
-                        <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.precio}} </td>
                     </ng-container>
 
                     <!-- diferencia Column -->
                     <ng-container matColumnDef="diferencia">
                         <th mat-header-cell *matHeaderCellDef> Diferencia </th>
-                        <td mat-cell *matCellDef="let element"> {{element.diferencia}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.diferencia}} </td>
                     </ng-container>
 
                     <!-- total litros contado Column -->
                     <ng-container matColumnDef="totallitros">
                         <th mat-header-cell *matHeaderCellDef> Total litros </th>
-                        <td mat-cell *matCellDef="let element"> {{element.totallitros}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.totallitros}} </td>
                     </ng-container>
 
                        <!-- ordeño Column -->
                     <ng-container matColumnDef="ordeno">
                         <th mat-header-cell *matHeaderCellDef> Ordeño </th>
-                        <td mat-cell *matCellDef="let element"> {{element.ordeno}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.ordeno}} </td>
                     </ng-container>
 
                     <!-- establo Column -->
                     <ng-container matColumnDef="establo">
                         <th mat-header-cell *matHeaderCellDef> Establo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.establo}} </td>
+                        <td mat-cell *matCellDef="let element" style="text-align:center;"> {{element.establo}} </td>
                     </ng-container>
 
-                    <!-- Secas Column -->
+                   <!--
                     <ng-container matColumnDef="secas">
                         <th mat-header-cell *matHeaderCellDef> Secas </th>
                         <td mat-cell *matCellDef="let element"> {{element.secas}} </td>
                     </ng-container>
 
 
-                     <!-- promordeno Column -->
                      <ng-container matColumnDef="promordeno">
                         <th mat-header-cell *matHeaderCellDef> Prom-vac-ordeño </th>
                         <td mat-cell *matCellDef="let element"> {{element.promordeno}} </td>
                     </ng-container>
 
-                    <!-- promestablo Column -->
+                    
                     <ng-container matColumnDef="promestablo">
                         <th mat-header-cell *matHeaderCellDef> Prom-vac-establo </th>
                         <td mat-cell *matCellDef="let element"> {{element.promestablo}} </td>
-                    </ng-container>
+                    </ng-container> -->
 
-                    <!-- ufc litros contado Column -->
-                    <ng-container matColumnDef="ufc">
+                   
+                 <!---   <ng-container matColumnDef="ufc">
                         <th mat-header-cell *matHeaderCellDef> UFC </th>
                         <td mat-cell *matCellDef="let element"> {{element.ufc}} </td>
                     </ng-container>
 
-                       <!-- ccss Column -->
+                      
                     <ng-container matColumnDef="ccss">
                         <th mat-header-cell *matHeaderCellDef> CCSS </th>
                         <td mat-cell *matCellDef="let element"> {{element.ccss}} </td>
                     </ng-container>
 
-                    <!-- grasa Column -->
+                    
                     <ng-container matColumnDef="grasa">
                         <th mat-header-cell *matHeaderCellDef> Grasa </th>
                         <td mat-cell *matCellDef="let element"> {{element.grasa}} </td>
                     </ng-container>
 
-                    <!-- Proteina Column -->
+                    
                     <ng-container matColumnDef="proteina">
                         <th mat-header-cell *matHeaderCellDef> Proteina </th>
                         <td mat-cell *matCellDef="let element"> {{element.proteina}} </td>
-                    </ng-container>
+                    </ng-container>  -->
+                   
                    
                     <!-- Actions Column -->
                     <ng-container matColumnDef="action">
@@ -136,18 +136,12 @@
                             <button mat-icon-button matTooltip="Editar" (click)="editar(element)">
                                 <mat-icon color="black">edit</mat-icon>
                             </button>
-                            <button mat-icon-button matTooltip="Eliminar">
+                            <button mat-icon-button matTooltip="Eliminar" (click)="eliminar(element.id)">
                                 <mat-icon color="warn">delete</mat-icon>
                             </button>
                         </td>
                     </ng-container>
 
-                    <!--
-                    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
-                        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-                        <td mat-cell *matCellDef="let emp">{{ emp[column] }}</td>
-                    </ng-container>
-                    -->
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

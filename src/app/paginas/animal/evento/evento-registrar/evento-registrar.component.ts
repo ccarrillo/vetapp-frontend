@@ -1,6 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatRadioChange } from '@angular/material/radio';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DetalleAdicionalEventoAnimal } from 'src/app/core/models/detalle_adicional_evento';
 import { DetalleRecordatorioEventoAnimal } from 'src/app/core/models/detalle_recordatorio_evento';
@@ -18,6 +17,7 @@ export class EventoRegistrarComponent implements OnInit {
   @Output() changeListMode = new EventEmitter();
   @Input() sendObj: any;
   idAnimal: number;
+  objEventoAnimal: any;
   fecha: Date = new Date(Date.now());
   opcionSeleccionado: string  = '0';
   verSeleccion: string        = '';
@@ -29,8 +29,7 @@ export class EventoRegistrarComponent implements OnInit {
   hprotocolo:boolean;
 
      // checkbox
-     checkediniciar = false;
-     checkedcontinuar = false;
+     selectedValue = '';
 
   register: FormGroup;
   hide = true;
@@ -47,6 +46,7 @@ export class EventoRegistrarComponent implements OnInit {
   listaDetalleRecordatorio: any [] =  [];
   listaAnimalesMachos:any [] =  [];
   listaAnimalesHembras:any [] =  [];
+  listaGrupoProtocoloSinHijo:any [] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -61,16 +61,40 @@ export class EventoRegistrarComponent implements OnInit {
   @ViewChild('one', { static: false }) d1: ElementRef;
   @ViewChild('recor', { static: false }) d2: ElementRef;
 
+
+  onItemChange(selectedValue: string) {
+    this.selectedValue = selectedValue;
+   // console.log(this.selectedValue);
+    if ((<HTMLInputElement>document.getElementById('iniciar')).checked ) {
+     this.hprotocolo = false;
+      }
+      else{
+        this.hprotocolo = true;
+      }
+    if(this.selectedValue=='2'){
+      this.hprotocolo = true;
+      this.register.controls['idprotocolo'].setValue(null);
+    }
+    
+    return this.selectedValue;
+  }
+  
+
   crearInput(element: any,idinput: any) {
      
     const d2 = this.renderer.createElement('div');
     const input = this.renderer.createElement('input');
     const texto = this.renderer.createText(`${element.nombre}:`);
+    const label = this.renderer.createElement('input');
     this.renderer.appendChild(d2, texto);
     this.renderer.appendChild(d2, input);
+    this.renderer.appendChild(d2, label);
     if(element.requerido)
-    {
-      this.renderer.setAttribute(input, "required",null);
+    {  
+      this.renderer.setAttribute(input, "required","true");
+    }
+    if(element.nombrevalor!= null && element.nombrevalor!= ''){
+      this.renderer.setAttribute(input, "value",element.nombrevalor);
     }
     if(element.radioInformacion == '1')
     {
@@ -118,6 +142,17 @@ export class EventoRegistrarComponent implements OnInit {
       this.renderer.setAttribute( input, "max",`${element.thasta}`);
      
     }
+     this.renderer.setAttribute( label, "type","hidden");
+     this.renderer.setAttribute( label, "id",`texto${idinput}`);
+     this.renderer.setAttribute( label, "value",`${element.nombre}`);
+     if(element.id!=null && element.id!='' ){
+      const idactual = this.renderer.createElement('input');
+      this.renderer.appendChild(d2, idactual);
+      this.renderer.setAttribute( idactual, "type","hidden");
+      this.renderer.setAttribute( idactual, "id",`inputactual${idinput}`);
+      this.renderer.setAttribute( idactual, "value",`${element.id}`);
+     }
+     
     this.renderer.appendChild(this.d1.nativeElement, d2);
     //this.renderer.appendChild(this.primero.nativeElement,this.d1.nativeElement);
   }
@@ -145,7 +180,17 @@ export class EventoRegistrarComponent implements OnInit {
     {
       this.renderer.setAttribute(select, "required","true");
     }
+    if(element.id!=null && element.id!='' ){
+      const idactual = this.renderer.createElement('input');
+      this.renderer.appendChild(d2, idactual);
+      this.renderer.setAttribute( idactual, "type","hidden");
+      this.renderer.setAttribute( idactual, "id",`selectactual${idselect}`);
+      this.renderer.setAttribute( idactual, "value",`${element.id}`);
+     }
     this.renderer.appendChild(this.d1.nativeElement, d2);
+    if(element.nombrevalor!= null && element.nombrevalor!= ''){
+      (<HTMLInputElement>document.getElementById(`select${idselect}`)).value=element.nombrevalor;
+    }
     //this.renderer.appendChild(this.primero.nativeElement,this.d1.nativeElement);
   }
 
@@ -180,13 +225,6 @@ export class EventoRegistrarComponent implements OnInit {
         //alert(`Captura: ${event.options[event.selectedIndex].text}`)
         alert('alex'+event.target.value);
       });*/
-
-      if(element.requerido)
-      {
-        this.renderer.setAttribute(select, "required","true");
-      }
-
-
     }
 
     if(element.radioInformacion == '6')
@@ -199,7 +237,6 @@ export class EventoRegistrarComponent implements OnInit {
       for (const val of this.listaAnimalesHembras)
       {
         let option = this.renderer.createElement("option");
-        //console.log(val);
         option.value = val.id;
         option.text = val.arete ;   
         select.appendChild(option);
@@ -212,17 +249,27 @@ export class EventoRegistrarComponent implements OnInit {
       /*this.renderer.listen(select, "change",event => {
         //alert(`Captura: ${event.options[event.selectedIndex].text}`)
         alert('alex'+event.target.value);
-      });*/
-      if(element.requerido)
-      {
-        this.renderer.setAttribute(select, "required","true");
-      }
+      });*/ 
 
     }
-   
-   
-    this.renderer.appendChild(this.d1.nativeElement, d2);
-   // this.renderer.appendChild(this.primero.nativeElement,this.d1.nativeElement);
+    if(element.requerido)
+    {
+      this.renderer.setAttribute(select, "required","true");
+    }
+
+    if(element.id!=null && element.id!='' ){
+      const idactual = this.renderer.createElement('input');
+      this.renderer.appendChild(d2, idactual);
+      this.renderer.setAttribute( idactual, "type","hidden");
+      this.renderer.setAttribute( idactual, "id",`comboactual${idselect}`);
+      this.renderer.setAttribute( idactual, "value",`${element.id}`);
+     }
+    
+      this.renderer.appendChild(this.d1.nativeElement, d2);
+    if(element.nombrevalor!= null && element.nombrevalor!= ''){
+      (<HTMLInputElement>document.getElementById(`combo${idselect}`)).value=element.nombrevalor;
+    }
+  
 
   }
 
@@ -230,8 +277,13 @@ export class EventoRegistrarComponent implements OnInit {
     let fechacalculada = "";
     let fecharecor = new Date(Date.now());
     if(idselect>0)
-    {
-      fecharecor.setDate(fecharecor.getDate()+element.numerodias);
+    { 
+      if(element.fecha!=null){
+        fecharecor.setDate(new Date(element.fecha).getDate());
+      }else{
+        fecharecor.setDate(fecharecor.getDate()+element.numerodias);
+      }
+      
     }
 
     if(idselect==0)
@@ -289,11 +341,23 @@ export class EventoRegistrarComponent implements OnInit {
       this.renderer.setAttribute(boton, "type","button");
       this.renderer.setAttribute(boton, "value","eliminar");
       this.renderer.listen(boton, "click",event => {
+            if(!this.isAddMode && element.id!="" && element.id!=null){
+                element.eliminado= true;
+                this.listaDetalleRecordatorio.push(element);
+            }
           this.renderer.removeChild(d3, select);
           this.renderer.removeChild(d3, fecha);
           this.renderer.removeChild(d3, boton);
          
       });
+
+      if(element.id!=null && element.id!='' ){
+        const idactual = this.renderer.createElement('input');
+        this.renderer.appendChild(d3, idactual);
+        this.renderer.setAttribute( idactual, "type","hidden");
+        this.renderer.setAttribute( idactual, "id",`inputeventoactual${this.x}`);
+        this.renderer.setAttribute( idactual, "value",`${element.id}`);
+       }
       
     this.renderer.appendChild(this.d2.nativeElement, d3);
     //this.renderer.appendChild(this.segundo.nativeElement, this.d2.nativeElement);
@@ -329,26 +393,9 @@ export class EventoRegistrarComponent implements OnInit {
         }
 
   ngOnInit(): void {
-    
-   
-   // this.hoy = this.fecha.toLocaleDateString();
-      //console.log(this.hoy);
-      this.idAnimal = Number.parseInt(sessionStorage.getItem('idanimalsession'));
-    if (this.sendObj){
-      console.log("sendObj", this.sendObj.id);
-      this.id = this.sendObj.id;
-      this.isAddMode = !this.sendObj.id;
-    }
-    if (!this.isAddMode) {
-      this.labelBtn="Actualizar"
-      this.register.patchValue(this.sendObj);
-    }
-    
+
     this._api.getTypeRequest('tipoevento').subscribe({
       next: (data: any) => {
-       console.log("ENTRO CARGAR combo");
-        console.log(data);
-        //this.dataSource = data; //No pagina
         if (data) {
           this.sinData = false;
            this.listaTipoEvento = data;
@@ -369,11 +416,55 @@ export class EventoRegistrarComponent implements OnInit {
           
       
     });
+   
+    this.idAnimal = Number.parseInt(sessionStorage.getItem('idanimalsession'));
+    if (this.sendObj){
+      this.id = this.sendObj.id;
+      this.isAddMode = !this.sendObj.id;
+    }
+    if (!this.isAddMode) {
+      this.labelBtn="Actualizar"
+
+      this._api.getTypeRequest(`eventoanimal/${this.sendObj.id}`).subscribe({
+        next: (data: any) => {
+          this.objEventoAnimal = data;
+               if(this.objEventoAnimal.listaDetallleTipoEventoAnimalDTO.length>0){
+                  this.crearListaDetallesEvento(this.objEventoAnimal.listaDetallleTipoEventoAnimalDTO);
+               }
+              /* if(this.objEventoAnimal.listaRecordatorioEventoAnimalDTO.length>0){
+                  this.crearListaRecordatorio(this.objEventoAnimal.listaRecordatorioEventoAnimalDTO);
+               }*/
+         
+          this.register.patchValue(this.objEventoAnimal);
+          
+          if(this.objEventoAnimal.checkprotocolo == '1'){
+            (<HTMLInputElement>document.getElementById('iniciar')).checked=true;
+              this.hprotocolo = false;
+              this.selectedValue="1";
+           }
+           if(this.objEventoAnimal.checkprotocolo == '2'){
+            (<HTMLInputElement>document.getElementById('continuar')).checked=true;
+            this.selectedValue="2";
+           }
+  
+        },
+        error: (error) => {
+  
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'Ocurrio un error inesperado, vuelva a intentar',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      });
+
+    }
+    
+    
     this._api.getTypeRequest('employees/idtipoempleado/'.concat(Constantes.CONSTANTES_FILTRO_TIPO_EMPLEADO)).subscribe({
       next: (data: any) => {
-       console.log("ENTRO CARGAR combo");
-        console.log(data);
-        //this.dataSource = data; //No pagina
         if (data) {
           this.sinData = false;
            this.listaEmpleado = data;
@@ -383,6 +474,30 @@ export class EventoRegistrarComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Ocurrio un error inesperado, vuelva a intentar',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+          
+      
+    });
+
+    this._api.getTypeRequest('grupoprotocolo/sinhijo').subscribe({
+      next: (data: any) => {
+        
+        if (data) {
+          this.sinData = false;
+           this.listaGrupoProtocoloSinHijo = data;
+        } else {
+          this.sinData = true;
+        }
+      },
+      error: (error) => {
+      
         Swal.fire({
           position: 'top-end',
           icon: 'error',
@@ -422,111 +537,14 @@ export class EventoRegistrarComponent implements OnInit {
 
             this._api.getTypeRequest('detalletipoevento/lista/'.concat(this.verSeleccion)).subscribe({
               next: (data: any) => {
-               console.log("ENTRO CARGAR combo detalle");
-                console.log(data);
-                //this.dataSource = data; //No pagina
+
                 if (data) {
                   this.sinData = false;
                    this.listaDetalleTipoEvento = data;
                    if(this.listaDetalleTipoEvento.length>0)
                    {
-                      let idinput:number=0, idselect:number=0, idcombo:number=0;
-                      this.listaDetalleTipoEvento.forEach( async element => {
-                                      
-                                   if(element.radioInformacion == '1' || element.radioInformacion == '2' || element.radioInformacion == '3'){
-                                            idinput++;
-                                            this.crearInput(element,idinput);
-                                   }
-                                   if(element.radioInformacion == '4'){
-                                             idselect++;
-                                             this.crearSelect(element,idselect);
-                                   }
-                                   if(element.radioInformacion == '5'){
-                                             
-                                              if(this.listaAnimalesMachos.length<=0)
-                                              {
-                                                
-                                                    this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_MACHO)).subscribe({
-                                                    next: (data: any) => {
-
-                                                      if (data) {
-                                                        this.sinData = false;
-                                                        this.listaAnimalesMachos = data;
-                                                         idcombo++;
-                                                         this.crearCombo(element,idcombo);
-                                                      } else {
-                                                        this.sinData = true;
-                                                        
-                                                      }
-                                                      
-                                                    },
-                                                    error: (error) => {
-                                                      console.log(error);
-                                                      Swal.fire({
-                                                        position: 'top-end',
-                                                        icon: 'error',
-                                                        title: 'Ocurrio un error inesperado, vuelva a intentar',
-                                                        showConfirmButton: false,
-                                                        timer: 1500
-                                                        });
-                                                      }
-                                                      
-                                                    }
-                                                    );
-                                                   
-                                                
-                                                 console.log('alex'+this.listaAnimalesMachos);
-                                                
-                                                 
-                                              }
-                                              if(this.listaAnimalesMachos.length>0){
-                                                idcombo++;
-                                                this.crearCombo(element,idcombo);
-                                              }
-                                              
-                                    }
-
-
-                                    if(element.radioInformacion == '6'){
-                                         
-                                      if(this.listaAnimalesHembras.length<=0){
-                                        this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_HEMBRA)).subscribe({
-                                          next: (data: any) => {
-                                            if (data) {
-                                              this.sinData = false;
-                                               this.listaAnimalesHembras = data;
-                                               idcombo++;
-                                               this.crearCombo(element,idcombo);
-                                            } else {
-                                              this.sinData = true;
-                                            }
-                                          },
-                                          error: (error) => {
-                                            console.log(error);
-                                            Swal.fire({
-                                              position: 'top-end',
-                                              icon: 'error',
-                                              title: 'Ocurrio un error inesperado, vuelva a intentar',
-                                              showConfirmButton: false,
-                                              timer: 1500
-                                            });
-                                          }
-                                              
-                                          
-                                        });
-                                               
-                                      }
-
-                                      if(this.listaAnimalesHembras.length>0){
-                                        idcombo++;
-                                        this.crearCombo(element,idcombo);
-                                      }
-          
-                                    }
-                                    
-                                
-                                //this.anadirCajaTexto();
-                      });
+                    this.crearListaDetallesEvento(this.listaDetalleTipoEvento);
+                    
                    }
                 } else {
                   this.sinData = true;
@@ -548,20 +566,14 @@ export class EventoRegistrarComponent implements OnInit {
 
             this._api.getTypeRequest('recordatorioevento/lista/'.concat(this.verSeleccion)).subscribe({
               next: (data: any) => {
-               console.log("ENTRO CARGAR combo");
-                console.log(data);
-                //this.dataSource = data; //No pagina
+           
                 if (data) {
                   this.sinData = false;
                    this.listaRecordatorio = data;
                    if(this.listaRecordatorio.length>0)
                    {
-                     this.x=0;
-                    this.listaRecordatorio.forEach(element => {
-                      this.x++;       
-                      this.crearSelectEvento(element,this.x);
-                      
-                    });
+                     this.crearListaRecordatorio(this.listaRecordatorio);
+                    
                    }
                 } else {
                   this.sinData = true;
@@ -581,7 +593,7 @@ export class EventoRegistrarComponent implements OnInit {
               
             });
            }
-      }
+    }
 
   initForm() {
     
@@ -589,14 +601,118 @@ export class EventoRegistrarComponent implements OnInit {
       id: [''],
       fecha: ['',[Validators.required]],
       idtipoevento: ['',[Validators.required]],
-      radioProtocolo:[''],
-      tecnico: ['',[Validators.required]],
+      checkprotocolo:[''],
+      idempleado: ['',[Validators.required]],
       costo: [''],
       anotacion: [''],
-      protocolo: [''],
-      is_active: [false, [Validators.requiredTrue]],
- 
-      combo: this.fb.array([])
+      idprotocolo: [''],
+      is_active: [false, [Validators.requiredTrue]]
+    });
+  }
+
+  crearListaDetallesEvento(listaDetalleTipoEvento: any) {
+    let idinput:number=0, idselect:number=0, idcombo:number=0;
+    listaDetalleTipoEvento.forEach( async element => {
+                    
+                 if(element.radioInformacion == '1' || element.radioInformacion == '2' || element.radioInformacion == '3'){
+                          idinput++;
+                          this.crearInput(element,idinput);
+                 }
+                 if(element.radioInformacion == '4'){
+                           idselect++;
+                           this.crearSelect(element,idselect);
+                 }
+                 if(element.radioInformacion == '5'){
+                           
+                            if(this.listaAnimalesMachos.length<=0)
+                            {
+                              
+                                  this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_MACHO)).subscribe({
+                                  next: (data: any) => {
+
+                                    if (data) {
+                                      this.sinData = false;
+                                      this.listaAnimalesMachos = data;
+                                       idcombo++;
+                                       this.crearCombo(element,idcombo);
+                                    } else {
+                                      this.sinData = true;
+                                      
+                                    }
+                                    
+                                  },
+                                  error: (error) => {
+                                    console.log(error);
+                                    Swal.fire({
+                                      position: 'top-end',
+                                      icon: 'error',
+                                      title: 'Ocurrio un error inesperado, vuelva a intentar',
+                                      showConfirmButton: false,
+                                      timer: 1500
+                                      });
+                                    }
+                                    
+                                  }
+                                  );
+
+                               
+                            }
+                            if(this.listaAnimalesMachos.length>0){
+                              idcombo++;
+                              this.crearCombo(element,idcombo);
+                            }
+                            
+                  }
+
+
+                  if(element.radioInformacion == '6'){
+                       
+                    if(this.listaAnimalesHembras.length<=0){
+                      this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_HEMBRA)).subscribe({
+                        next: (data: any) => {
+                          if (data) {
+                            this.sinData = false;
+                             this.listaAnimalesHembras = data;
+                             idcombo++;
+                             this.crearCombo(element,idcombo);
+                          } else {
+                            this.sinData = true;
+                          }
+                        },
+                        error: (error) => {
+                          console.log(error);
+                          Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Ocurrio un error inesperado, vuelva a intentar',
+                            showConfirmButton: false,
+                            timer: 1500
+                          });
+                        }
+                            
+                        
+                      });
+                             
+                    }
+
+                    if(this.listaAnimalesHembras.length>0){
+                      idcombo++;
+                      this.crearCombo(element,idcombo);
+                    }
+
+                  }
+                  
+              
+              //this.anadirCajaTexto();
+    });
+  }
+
+  crearListaRecordatorio(listaRecordatorio: any) {
+      this.x=0;
+      listaRecordatorio.forEach(element => {
+      this.x++;       
+      this.crearSelectEvento(element,this.x);
+      
     });
   }
 
@@ -659,204 +775,44 @@ export class EventoRegistrarComponent implements OnInit {
      });
   }
 
-  radioChange($event:  MatRadioChange) {
+  /*radioChange($event:  MatRadioChange) {
     
     if ($event.value === '1') {
      
        
         this.hprotocolo = false;
-        this.register.get("otraIdentificacionMadre").disable();
+        //this.register.get("otraIdentificacionMadre").disable();
     }
     if ($event.value === '2') {
       
       
       this.hprotocolo = true;
-      this.register.get("otraIdentificacionMadre").enable();
+      //this.register.get("otraIdentificacionMadre").enable();
   }
- }
+ }*/
 
   guardar() {
-    console.log('Form Value', this.register.value);
     let pl = this.register.value;
-    console.log('Evento', pl);
     if (this.register.invalid) {
       return;
     }
     if (this.isAddMode) {
       this.crear(pl);
     } else {
-      console.log('Evento ACTUALIZAR', pl);
       this.actualizar(pl);
     }
   }
-
+   
   private crear(pl: any) {
-
-
-     let input = document.getElementsByClassName('clasetexto');
-     let select = document.getElementsByClassName('clasecombo');
-     let combo = document.getElementsByClassName('clasecombopadres');
-     let selectrecordatorio= document.getElementsByClassName('eventorecordatorio');
-    
-     if(select.length > 0){
-
       
-      for ( let i=1; i<=select.length; i++) {
-
-        let detalle = new DetalleAdicionalEventoAnimal();
-        let elemento  =  document.getElementById(`select${i}`);
-        let nombre = (<HTMLInputElement>document.getElementById(`select${i}`)).value;
-        let opciones = (<HTMLSelectElement>document.getElementById(`select${i}`));
-        this.combosseleccionables=[];
-  
-        for ( i=0; i< opciones.length;i++ ) {
-            this.combosseleccionables.push(opciones[i].innerText );
-         }
-         let req = elemento.getAttribute("required");
-         detalle.setNombre(nombre);
-         detalle.setCombosseleccionables(this.combosseleccionables.toString());
-         detalle.setRadioInformacion("2");
-
-              if(req)
-              {
-                detalle.setRequerido(true);
-              }
-              else{
-                detalle.setRequerido(false);
-              }
-
-      
-         this.listaDetalleAcciones.push(detalle);
-      }
-
-     }
-     if(input.length>0){
-      
-      
-      for ( let i=1; i<=input.length; i++) {
-        let detalle = new DetalleAdicionalEventoAnimal();
-            let elemento  =  document.getElementById(`input${i}`);
-             let nombre = (<HTMLInputElement>document.getElementById(`input${i}`)).value;
-             detalle.setNombre(nombre);
-              
-             let radio =  elemento.getAttribute("name");
-             let req = elemento.getAttribute("required");
-              if(req)
-              {
-                detalle.setRequerido(true);
-              }
-              else{
-                detalle.setRequerido(false);
-              }
-
-             let radioInformacion;
-             let tdesde, thasta, ddesde, dhasta, ndesde, nhasta;
-             if(radio == "texto")
-             {
-                 console.log("ingreso aqui alex texto");
-                 radioInformacion= "1";
-                 tdesde = elemento.getAttribute("minlength");
-                 thasta = elemento.getAttribute("maxlength");
-                 detalle.setRadioInformacion(radioInformacion);
-                 detalle.setTdesde(tdesde);
-                 detalle.setThasta(thasta);
-                
-             }
-            if(radio == "entero")
-             {     
-              console.log("ingreso aqui alex entero");
-                  radioInformacion= "2"
-                  ndesde = elemento.getAttribute("min");
-                  nhasta = elemento.getAttribute("max");
-                  detalle.setRadioInformacion(radioInformacion);
-                  detalle.setTdesde(ndesde);
-                  detalle.setThasta(nhasta);
-                 
-             }
-            if(radio == "decimal")
-             {    
-                   console.log("ingreso aqui alex decimal");
-                  radioInformacion= "3"
-                  ddesde = elemento.getAttribute("min");
-                  dhasta = elemento.getAttribute("max");
-                  detalle.setRadioInformacion(radioInformacion);
-                  detalle.setTdesde(ddesde);
-                  detalle.setThasta(dhasta);
-             }
-             this.listaDetalleAcciones.push(detalle);
-               
-       }
-     }
+     this.cargarDatosGuardar(pl);
+     pl.listaDetallleTipoEventoAnimalDTO = this.listaDetalleAcciones;
+     pl.listaRecordatorioEventoAnimalDTO = this.listaDetalleRecordatorio;
      
-      if(combo.length>0){
-       
-        console.log('lleago aqui alex');
-        for ( let i=1; i<=combo.length; i++) {
-  
-          let detalle = new DetalleAdicionalEventoAnimal();
-          let elemento  =  document.getElementById(`combo${i}`);
-          let id = (<HTMLSelectElement>document.getElementById(`combo${i}`)).options[(<HTMLSelectElement>document.getElementById(`combo${i}`)).selectedIndex].value;
-          //let valor  = (<HTMLInputElement>document.getElementById(`combo${i}`)).id;
-          
-          /*console.log('combo'+nombre);
-          console.log('combo'+valor);*/
-            detalle.setIdpadremadre(parseInt(id));
-            let radio =  elemento.getAttribute("name");
-            let req = elemento.getAttribute("required");
-            //detalle.setNombre(nombre);
 
-              if(radio == "padre"){
-                 detalle.setRadioInformacion("5");
-                }
-             if(radio == "madre"){
-              detalle.setRadioInformacion("6");
-                 }
-  
-                if(req)
-                {
-                  detalle.setRequerido(true);
-                }
-                else{
-                  detalle.setRequerido(false);
-                }
-  
-        
-           this.listaDetalleAcciones.push(detalle);
-        }
-
-        
-
-      }
-      if(selectrecordatorio.length>0){
-            console.log('como recordatorio'+selectrecordatorio.length);
-        for ( let i=0; i<selectrecordatorio.length; i++) {
-  
-          let recordatorio = new DetalleRecordatorioEventoAnimal();
-          let elemento  =  document.getElementsByClassName("eventorecordatorio")[i].id;
-          let fec  =  document.getElementsByClassName("fecharecordatorio")[i].id;
-          let id = (<HTMLSelectElement>document.getElementById(elemento)).options[(<HTMLSelectElement>document.getElementById(elemento)).selectedIndex].value;
-          let fecha = (<HTMLInputElement>document.getElementById(fec)).value;
-             
-            recordatorio.setIdanimal(this.idAnimal);
-            recordatorio.setIdtipoevento(parseInt(id));
-            recordatorio.setFecha(new Date(fecha));
-
-           this.listaDetalleRecordatorio.push(recordatorio);
-        }
-      }
-      
-     console.log(this.listaDetalleAcciones);
-     console.log(this.listaDetalleRecordatorio);
-     pl.listaDetallleTipoEventoDTO = this.listaDetalleAcciones;
-     pl.listaDetallleRecordatorioDTO = this.listaDetalleRecordatorio;
-
-
-
-    
-    /*this._api.postTypeRequest('evento', pl).subscribe({
+     this._api.postTypeRequest('eventoanimal/animal/'+this.idAnimal, pl).subscribe({
       next: (data) => {
-        console.log(data);
-        this.router.navigateByUrl('animal/evento');
+        this.router.navigateByUrl('animal/detail/'+ this.idAnimal);
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -876,14 +832,17 @@ export class EventoRegistrarComponent implements OnInit {
           timer: 1500
         });
       }
-    });*/
+    });
   }
 
   private actualizar(pl: any) {
-    this._api.putTypeRequest('evento/' + this.id, pl).subscribe({
+    this.cargarDatosGuardar(pl);
+    pl.listaDetallleTipoEventoAnimalDTO = this.listaDetalleAcciones;
+    pl.listaRecordatorioEventoAnimalDTO = this.listaDetalleRecordatorio;
+    console.log(pl);
+  this._api.putTypeRequest('eventoanimal/animal/'+ this.idAnimal+'/evento/'+this.id, pl).subscribe({
       next: (data) => {
-        console.log(data);
-        this.router.navigateByUrl('managment/enterprise');
+        this.router.navigateByUrl('animal/detail/'+ this.idAnimal);
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -904,6 +863,253 @@ export class EventoRegistrarComponent implements OnInit {
         });
       }
     });
+  }
+
+  cargarDatosGuardar(pl: any) {
+    if(!(<HTMLInputElement>document.getElementById('iniciar')).checked &&
+    !(<HTMLInputElement>document.getElementById('continuar')).checked ){
+     this.selectedValue='0'; 
+     pl.idprotocolo=null;
+   }
+
+   pl.checkprotocolo=this.selectedValue;
+
+
+    let input = document.getElementsByClassName('clasetexto');
+    let select = document.getElementsByClassName('clasecombo');
+    let combo = document.getElementsByClassName('clasecombopadres');
+    let selectrecordatorio:any=[];
+    if(this.isAddMode){
+       selectrecordatorio= document.getElementsByClassName('eventorecordatorio');
+    }
+    
+   
+    if(select.length > 0){
+
+     
+     for ( let i=1; i<=select.length; i++) {
+
+       let detalle = new DetalleAdicionalEventoAnimal();
+       let elemento  =  document.getElementById(`select${i}`);
+       let nombre = (<HTMLInputElement>document.getElementById(`select${i}`)).value;
+       let opciones = (<HTMLSelectElement>document.getElementById(`select${i}`));
+      
+       this.combosseleccionables=[];
+ 
+       for ( let y=1; y< opciones.length;y++ ) {
+           this.combosseleccionables.push(opciones[y].innerText );
+           
+        }
+        let req = elemento.getAttribute("required");
+
+        detalle.setNombrevalor(nombre);
+        detalle.setCombosseleccionables(this.combosseleccionables.toString());
+        detalle.setRadioInformacion("4");
+        if (!this.isAddMode){
+          let nombr = (<HTMLInputElement>document.getElementById(`selectactual${i}`)).value;
+          detalle.setId(parseInt(nombr));
+        }
+
+             if(req)
+             {
+               detalle.setRequerido(true);
+               if(nombre == "selecciona")
+               {
+                 Swal.fire({
+                   position: 'top-end',
+                   icon: 'info',
+                   title: `El combo es requerido, seleccione una opción`,
+                   showConfirmButton: false,
+                   timer: 3500
+                 });
+                 return {
+                  error: true,
+                  message: `El combo es requerido, seleccione una opción`
+                 };
+               }
+             }
+             else{
+               detalle.setRequerido(false);
+             }
+
+     
+        this.listaDetalleAcciones.push(detalle);
+     }
+
+    }
+    if(input.length>0){
+     
+     
+     for ( let i=1; i<=input.length; i++) {
+       let detalle = new DetalleAdicionalEventoAnimal();
+           let elemento  =  document.getElementById(`input${i}`);
+            let nombre = (<HTMLInputElement>document.getElementById(`texto${i}`)).value;
+            let nombrevalor = (<HTMLInputElement>document.getElementById(`input${i}`)).value;
+            detalle.setNombre(nombre);
+            detalle.setNombrevalor(nombrevalor);
+            if (!this.isAddMode){
+              let nombr = (<HTMLInputElement>document.getElementById(`inputactual${i}`)).value;
+              detalle.setId(parseInt(nombr));
+            }
+            
+             
+            let radio =  elemento.getAttribute("name");
+            let req = elemento.getAttribute("required");
+             if(req)
+             {
+               detalle.setRequerido(true);
+               if(nombrevalor.trim( )=='')
+               {
+                 Swal.fire({
+                   position: 'top-end',
+                   icon: 'info',
+                   title: `El campo ${nombre} es requerido, llene información`,
+                   showConfirmButton: false,
+                   timer: 3500
+                 });
+                 return {
+                  error: true,
+                  message: `El campo ${nombre} es requerido, llene información`
+                 };
+               }
+             }
+             else{
+               detalle.setRequerido(false);
+             }
+
+            let radioInformacion;
+            let tdesde, thasta, ddesde, dhasta, ndesde, nhasta;
+            if(radio == "texto")
+            {
+               
+                radioInformacion= "1";
+                tdesde = elemento.getAttribute("minlength");
+                thasta = elemento.getAttribute("maxlength");
+                detalle.setRadioInformacion(radioInformacion);
+                detalle.setTdesde(tdesde);
+                detalle.setThasta(thasta);
+               
+            }
+           if(radio == "entero")
+            {     
+             
+                 radioInformacion= "2"
+                 ndesde = elemento.getAttribute("min");
+                 nhasta = elemento.getAttribute("max");
+                 detalle.setRadioInformacion(radioInformacion);
+                 detalle.setTdesde(ndesde);
+                 detalle.setThasta(nhasta);
+                
+            }
+           if(radio == "decimal")
+            {    
+               
+                 radioInformacion= "3"
+                 ddesde = elemento.getAttribute("min");
+                 dhasta = elemento.getAttribute("max");
+                 detalle.setRadioInformacion(radioInformacion);
+                 detalle.setTdesde(ddesde);
+                 detalle.setThasta(dhasta);
+            }
+            this.listaDetalleAcciones.push(detalle);
+              
+      }
+    }
+    
+     if(combo.length>0){1
+      
+     
+       for ( let i=1; i<=combo.length; i++) {
+ 
+         let detalle = new DetalleAdicionalEventoAnimal();
+         let elemento  =  document.getElementById(`combo${i}`);
+         let nombre = (<HTMLInputElement>document.getElementById(`combo${i}`)).value;
+         let id = (<HTMLSelectElement>document.getElementById(`combo${i}`)).options[(<HTMLSelectElement>document.getElementById(`combo${i}`)).selectedIndex].value;
+         
+           detalle.setNombrevalor(id);
+           if (!this.isAddMode){
+            let nombr = (<HTMLInputElement>document.getElementById(`comboactual${i}`)).value;
+            detalle.setId(parseInt(nombr));
+          }
+           let radio =  elemento.getAttribute("name");
+           let req = elemento.getAttribute("required");
+           //detalle.setNombre(nombre);
+
+             if(radio == "padre"){
+                detalle.setRadioInformacion("5");
+               }
+            if(radio == "madre"){
+             detalle.setRadioInformacion("6");
+                }
+ 
+               if(req)
+               {
+                 detalle.setRequerido(true);
+                 if(nombre== "selecciona"){
+                     if(radio=="padre")
+                     {
+                       Swal.fire({
+                         position: 'top-end',
+                         icon: 'info',
+                         title: `El combo padre es requerido, seleccione una opción`,
+                         showConfirmButton: false,
+                         timer: 3500
+                       });
+                       return {
+                        error: true,
+                        message: `El combo padre es requerido, seleccione una opción`
+                       };
+                     }
+                     if(radio=="madre")
+                     {
+                       Swal.fire({
+                         position: 'top-end',
+                         icon: 'info',
+                         title: `El combo madre es requerido, seleccione una opción`,
+                         showConfirmButton: false,
+                         timer: 3500
+                       });
+                       return {
+                        error: true,
+                        message: `El combo madre es requerido, seleccione una opción`
+                       };
+                     }
+                 }
+               }
+               else{
+                 detalle.setRequerido(false);
+               }
+ 
+       
+          this.listaDetalleAcciones.push(detalle);
+       }
+
+       
+
+     }
+     if(selectrecordatorio.length>0){
+           
+
+       for ( let i=0; i<selectrecordatorio.length; i++) {
+ 
+         let recordatorio = new DetalleRecordatorioEventoAnimal();
+         let elemento  =  document.getElementsByClassName("eventorecordatorio")[i].id;
+         let fec  =  document.getElementsByClassName("fecharecordatorio")[i].id;
+         let id = (<HTMLSelectElement>document.getElementById(elemento)).options[(<HTMLSelectElement>document.getElementById(elemento)).selectedIndex].value;
+         let fecha = (<HTMLInputElement>document.getElementById(fec)).value;
+    
+           recordatorio.setIdanimal(this.idAnimal);
+           recordatorio.setIdtipoevento(parseInt(id));
+           recordatorio.setFecha(new Date(new Date(fecha).setDate(new Date(fecha).getDate()+1)));
+           if (!this.isAddMode && (<HTMLInputElement>document.getElementById(`inputeventoactual${i+1}`))!= null && (<HTMLInputElement>document.getElementById(`inputeventoactual${i+1}`))!= undefined) {
+             let nombr = (<HTMLInputElement>document.getElementById(`inputeventoactual${i+1}`)).value;
+             recordatorio.setId(parseInt(nombr));
+             //console.log("Ingreso aqui alex");
+          }
+
+          this.listaDetalleRecordatorio.push(recordatorio);
+       }
+     }
   }
 
   limpiar() {

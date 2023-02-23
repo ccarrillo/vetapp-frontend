@@ -28,8 +28,8 @@ export class RecordatorioListarComponent implements OnInit {
   
 
   ngOnInit(): void {
-    console.log("ENTRO LISTAR");
-    this._api.getTypeRequest('recordatorio').subscribe({
+    console.log("ENTRO LISTAR reordatorio");
+  /*  this._api.getTypeRequest('recordatorio').subscribe({
       next: (data: any) => {
         console.log("ENTRO LISTAR CARGAR");
         console.log(data);
@@ -52,7 +52,7 @@ export class RecordatorioListarComponent implements OnInit {
           timer: 1500
         });
       }
-    });
+    });*/
   }
 
   applyFilter(event: Event) {

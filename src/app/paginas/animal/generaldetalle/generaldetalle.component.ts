@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators,  FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators,  FormControl, ValidationErrors } from '@angular/forms';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { Router } from '@angular/router';
 import { Constantes } from 'src/app/shared/constantes/constantes';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
+import { Observable, map, startWith } from 'rxjs';
 import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
@@ -28,8 +28,9 @@ export class GeneraldetalleComponent implements OnInit {
   hideRequiredControl = new FormControl(false);
      // Form 1
   register: FormGroup;
-  myControlAnimalHembra=  new FormControl('');
-  myControlAnimalMacho= new FormControl('');
+  myControlAnimalHembra=  new FormControl(undefined);
+  myControlAnimalMacho= new FormControl(undefined);
+  myControlGrupo= new FormControl(undefined, [Validators.required, this.requireMatch.bind(this)]);
 
   hmadrenombre:boolean;
   hpadrenombre:boolean;
@@ -59,6 +60,7 @@ export class GeneraldetalleComponent implements OnInit {
   listaProposito:any [] =  [];
   filteredOptionsAnimalesHembra: Observable<any[]>;
   filteredOptionsAnimalesMacho: Observable<any[]>;
+  filteredOptionsGrupo: Observable<any[]>;
 
   setStep(index: number) {
     this.step = index;
@@ -128,6 +130,9 @@ export class GeneraldetalleComponent implements OnInit {
     precio: ['', [Validators.required]],
     origenId: ['', [Validators.required]],
     venta: ['', [Validators.required]],
+    myControlAnimalHembra: this.myControlAnimalHembra,
+    myControlAnimalMacho: this.myControlAnimalMacho,
+    myControlGrupo:this.myControlGrupo,
     
   });
 }
@@ -166,6 +171,10 @@ export class GeneraldetalleComponent implements OnInit {
         if (data) {
           this.sinData = false;
            this.listaAnimalesHembras = data;
+           if(this.animal.madreId!= null && this.animal.madreId != undefined && this.animal.madreId != ''){
+              var index = this.listaAnimalesHembras.findIndex(index => index.id == this.animal.madreId);
+              this.myControlAnimalHembra.setValue(this.listaAnimalesHembras[index]);
+            }
         } else {
           this.sinData = true;
         }
@@ -190,6 +199,10 @@ export class GeneraldetalleComponent implements OnInit {
         if (data) {
           this.sinData = false;
            this.listaAnimalesMachos = data;
+           if(this.animal.padreId!= null && this.animal.padreId != undefined && this.animal.padreId != ''){
+            var index = this.listaAnimalesMachos.findIndex(index => index.id == this.animal.padreId);
+            this.myControlAnimalMacho.setValue(this.listaAnimalesMachos[index]);
+          }
         } else {
           this.sinData = true;
         }
@@ -212,9 +225,7 @@ export class GeneraldetalleComponent implements OnInit {
 
     this._api.getTypeRequest('parvetvalue/'.concat(Constantes.CONSTANTES_FILTRO_PROPOSITO)).subscribe({
       next: (data: any) => {
-       /* console.log("ENTRO CARGAR combo");
-        console.log(data);*/
-        //this.dataSource = data; //No pagina
+
         if (data) {
           this.sinData = false;
            this.listaProposito = data;
@@ -239,12 +250,13 @@ export class GeneraldetalleComponent implements OnInit {
 
     this._api.getTypeRequest('grupoanimal/sinhijo').subscribe({
       next: (data: any) => {
-       console.log("ENTRO CARGAR combo");
-        console.log(data);
-        //this.dataSource = data; //No pagina
         if (data) {
           this.sinData = false;
            this.listaGrupoAnimal = data;
+           if(this.animal.idGrupoAnimal!= null && this.animal.idGrupoAnimal != undefined && this.animal.idGrupoAnimal != ''){
+            var index = this.listaGrupoAnimal.findIndex(index => index.id == this.animal.idGrupoAnimal);
+            this.myControlGrupo.setValue(this.listaGrupoAnimal[index]);
+          }
         } else {
           this.sinData = true;
         }
@@ -381,9 +393,77 @@ export class GeneraldetalleComponent implements OnInit {
       
     });
 
+    this.filteredOptionsGrupo = this.myControlGrupo.valueChanges.pipe(
+      startWith(''),
+      map((value3) => (typeof value3 === 'string' ? value3 : value3.nombre)),
+      map((nombre) => (nombre ? this._filterGrupo(nombre) : this.listaGrupoAnimal.slice()))
+    );
+
+    this.filteredOptionsAnimalesHembra = this.myControlAnimalHembra.valueChanges.pipe(
+      startWith(''),
+      map((value) => (typeof value === 'string' ? value : value.arete)),
+      map((arete) => (arete ? this._filterAnimalHembra(arete) : this.listaAnimalesHembras.slice()))
+    );
+    this.filteredOptionsAnimalesMacho = this.myControlAnimalMacho.valueChanges.pipe(
+      startWith(''),
+      map((value2) => (typeof value2 === 'string' ? value2 : value2.arete)),
+      map((arete2) => (arete2 ? this._filterAnimalMacho(arete2) : this.listaAnimalesMachos.slice()))
+    );
+
 
 
   }
+
+
+  //inicio filtros
+
+  private requireMatch(control: FormControl): ValidationErrors | null {
+    const selection: any = control.value;
+    if (this.listaGrupoAnimal && this.listaGrupoAnimal.indexOf(selection) < 0) {
+      return { requireMatch: true };
+    }
+    return null;
+  } 
+    
+  displayFnAnimalesHembra(animal: any): string {
+    return animal && animal.arete ? animal.arete : '';
+  }
+
+  private _filterAnimalHembra(arete: string): any[] {
+    const filterValue = arete.toLowerCase();
+
+    return this.listaAnimalesHembras.filter(
+      (option) => option.arete.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  displayFnAnimalesMacho(animal2: any): string {
+    return animal2 && animal2.arete ? animal2.arete : '';
+  }
+
+  private _filterAnimalMacho(arete2: string): any[] {
+    const filterValue2 = arete2.toLowerCase();
+
+    return this.listaAnimalesMachos.filter(
+      (option2) => option2.arete.toLowerCase().indexOf(filterValue2) === 0
+    );
+  }
+
+  displayFnGrupo(grupo: any): string {
+    return grupo && grupo.nombre ? grupo.nombre : '';
+  }
+
+  private _filterGrupo(nombre: string): any[] {
+    const filterValue = nombre.toLowerCase();
+
+    return this.listaGrupoAnimal.filter(
+      (option) => option.nombre.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+  
+  
+  
+  //fin de filtros
  
 
   radioChange($event:  MatRadioChange) {
@@ -392,13 +472,13 @@ export class GeneraldetalleComponent implements OnInit {
      
        
         this.hmadrenombre = false;
-        //this.register.get("otraIdentificacionMadre").disable();
+        this.register.get("otraIdentificacionMadre").disable();
     }
     if ($event.value === '2') {
       
       
       this.hmadrenombre = true;
-      //this.register.get("otraIdentificacionMadre").enable();
+      this.register.get("otraIdentificacionMadre").enable();
   }
  }
 
@@ -431,8 +511,9 @@ export class GeneraldetalleComponent implements OnInit {
     this.register.controls['fechacastracion'].setValue(this.animal.fechacastracion);
     this.register.controls['propositoId'].setValue(this.animal.propositoId);
     this.register.controls['pureza'].setValue(this.animal.pureza);
-    this.register.controls['madreId'].setValue(this.animal.madreId);
-    this.register.controls['padreId'].setValue(this.animal.padreId);
+    
+    //this.register.controls['madreId'].setValue(this.animal.madreId);
+    //this.register.controls['padreId'].setValue(this.animal.padreId);
     this.register.controls['marcaizquierda'].setValue(this.animal.marcaizquierda);
     this.register.controls['marcaderecha'].setValue(this.animal.marcaderecha);
     this.register.controls['color'].setValue(this.animal.color);
@@ -445,12 +526,13 @@ export class GeneraldetalleComponent implements OnInit {
     this.register.controls['categoriaReproduccionId'].setValue(this.animal.categoriaReproduccionId);
     this.register.controls['categoriaProduccionId'].setValue(this.animal.categoriaProduccionId);
     this.register.controls['numeroparto'].setValue(this.animal.numeroparto);
-    
+    this.register.controls['otraIdentificacionMadre'].setValue(this.animal.otraIdentificacionMadre);
+    this.register.controls['otraIdentificacionPadre'].setValue(this.animal.otraIdentificacionPadre);
     this.register.controls['precio'].setValue(this.animal.precio);
     this.register.controls['origenId'].setValue(this.animal.origenId);
     this.register.controls['venta'].setValue(this.animal.venta);
      //valida la habilitacion de radiobuton al cargar la data 
-    if (this.animal.radioMadre === '1') {
+     if (this.animal.radioMadre === '1') {
      
        
       this.hmadrenombre = false;
@@ -480,15 +562,36 @@ export class GeneraldetalleComponent implements OnInit {
 
  actualizar( ) {
   let pl = this.register.value;
-  //console.log(`animal/existe/${pl.id}/${pl.arete}`);
+  
+  if (this.hmadrenombre) {
+    pl.madreId = null;
+  }
+  else{
+      if(this.myControlAnimalHembra.value!=null)
+      {pl.madreId = this.myControlAnimalHembra.value.id}
+      
+    pl.otraIdentificacionMadre='';
+  }
+  if (this.hpadrenombre) {
+    pl.padreId = null;
+  }
+  else{
+    if(this.myControlAnimalMacho.value!=null)
+    { pl.padreId = this.myControlAnimalMacho.value.id; }
+      
+   
+    pl.otraIdentificacionPadre='';
+  }
+  pl.idGrupoAnimal  = this.myControlGrupo.value.id;
+
   this._api.getTypeRequest(`animal/existe/${this.animal.id}/${pl.arete}`).subscribe({
     next: (data) => {
          if(data){
                 
           this._api.putTypeRequest('animal/' + this.animal.id, pl).subscribe({
             next: (data) => {
-              console.log(data);
-              /*this.router.navigateByUrl('animal/maintenance');*/
+              this.router.navigateByUrl('animal/detail/'+this.animal.id);
+              
               Swal.fire({
                 position: 'top-end',
                 icon: 'success',

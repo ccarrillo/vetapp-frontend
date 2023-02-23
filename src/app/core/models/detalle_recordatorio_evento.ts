@@ -4,6 +4,10 @@ export class DetalleRecordatorioEventoAnimal {
     private  idanimal: number; 
     private  idtipoevento: number;
     private  fecha: Date;
+    private eliminado:boolean;
+
+    
+
 
     public getId(): number {
         return this.id;
@@ -35,6 +39,14 @@ export class DetalleRecordatorioEventoAnimal {
 
     public setFecha(fecha: Date): void {
         this.fecha = fecha;
+    }
+
+    public isEliminado(): boolean {
+        return this.eliminado;
+    }
+
+    public setEliminado(eliminado: boolean): void {
+        this.eliminado = eliminado;
     }
 
     

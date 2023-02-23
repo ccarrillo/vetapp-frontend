@@ -1,13 +1,12 @@
 import { AfterViewInit,Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import {  FormBuilder,  FormControl,  FormGroup, Validators } from '@angular/forms';
+import {  FormBuilder,  FormControl,  FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Constantes } from 'src/app/shared/constantes/constantes';
 import { ApiService } from 'src/app/shared/services/api.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { MatRadioChange } from '@angular/material/radio';
 import { GrupoAnimal } from 'src/app/core/models/grupo_animal';
-import {  ReplaySubject,Subject, take, takeUntil } from 'rxjs';
-import { MatSelect } from '@angular/material/select';
+import {  Observable, ReplaySubject,Subject, map, startWith, take, takeUntil } from 'rxjs';
 import { GrupoInseminacion } from 'src/app/core/models/grupo_inseminacion';
 
 
@@ -18,7 +17,7 @@ import { GrupoInseminacion } from 'src/app/core/models/grupo_inseminacion';
   templateUrl: './inventario-registrar.component.html',
   styleUrls: ['./inventario-registrar.component.sass']
 })
-export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDestroy {
+export class InventarioRegistrarComponent implements OnInit  {
 
     idIncremental: number = 0;
     idIncrementalPadre:number;
@@ -41,22 +40,22 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
  // Form 1
  register: FormGroup;
  grupoFormGroup: FormGroup;
-  /** control for the selected bank */
-  bankCtrl: FormControl = new FormControl();
-   /** control for the MatSelect filter keyword */
-  bankFilterCtrl: FormControl = new FormControl();
+
+
+  myControlAnimalHembra=  new FormControl(undefined);
+  myControlAnimalMacho= new FormControl(undefined);
+  myControlGrupo= new FormControl(undefined, [Validators.required, this.requireMatch.bind(this)]);
+
+  filteredOptionsAnimalesHembra: Observable<any[]>;
+  filteredOptionsAnimalesMacho: Observable<any[]>;
+  filteredOptionsGrupo: Observable<any[]>;
 
  
  listaRaza: any [] =  [];
  listaAnimalesMachos:any [] =  [];
  listaAnimalesHembras:any [] =  [];
  listaGrupoInventario: GrupoInseminacion[] =  [];
-     /** list of banks filtered by search keyword */
- filteredBanks: ReplaySubject<GrupoInseminacion[]> = new ReplaySubject<GrupoInseminacion[]>(1);
- @ViewChild('singleSelect', { static: true }) singleSelect: MatSelect;
-
- /** Subject that emits when the component has been destroyed. */
- protected _onDestroy = new Subject<void>();
+  
 
   hide = true;
   sinData: boolean = false;
@@ -85,8 +84,24 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
       this.labelBtn="Actualizar"//`animal/detail/${id}`
       this._api.getTypeRequest(`inventariosemen/${this.sendObj.id}`).subscribe({
         next: (data: any) => {
-          console.log("ENTRO a pasar a objeto");
           this.objInventario =  data
+          if (this.objInventario.radioMadre === '1') {
+            this.hmadrenombre = false;
+            this.register.get("otraIdentificacionMadre").disable();
+        }
+      if (this.objInventario.radioMadre === '2') {
+            this.hmadrenombre = true;
+            this.register.get("otraIdentificacionMadre").enable();
+       }
+
+       if (this.objInventario.radioPadre === '3') {
+            this.hpadrenombre = false;
+            this.register.get("otraIdentificacionPadre").disable();
+        }
+       if (this.objInventario.radioPadre === '4') {
+          this.hpadrenombre = true;
+          this.register.get("otraIdentificacionPadre").enable();
+       }
           this.register.patchValue(this.objInventario);
         },
         error: (error) => {
@@ -100,6 +115,8 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
           });
         }
       });
+
+    
       
     }
     
@@ -132,8 +149,13 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
     this._api.getTypeRequest('animal/sexo/'.concat(Constantes.CONSTANTES_FILTRO_ANIMAL_HEMBRA)).subscribe({
       next: (data: any) => {
         if (data) {
-          this.sinData = false;
+           this.sinData = false;
            this.listaAnimalesHembras = data;
+           if(this.objInventario.idMadre!= null && this.objInventario.idMadre != undefined && this.objInventario.idMadre != ''){
+            var index = this.listaAnimalesHembras.findIndex(index => index.id == this.objInventario.idMadre);
+            this.myControlAnimalHembra.setValue(this.listaAnimalesHembras[index]);
+          }
+           
         } else {
           this.sinData = true;
         }
@@ -158,6 +180,10 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
         if (data) {
           this.sinData = false;
            this.listaAnimalesMachos = data;
+           if(this.objInventario.idPadre!= null && this.objInventario.idPadre != undefined && this.objInventario.idPadre != ''){
+            var index = this.listaAnimalesMachos.findIndex(index => index.id == this.objInventario.idPadre);
+            this.myControlAnimalMacho.setValue(this.listaAnimalesMachos[index]);
+          }
         } else {
           this.sinData = true;
         }
@@ -178,33 +204,13 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
     
     this._api.getTypeRequest('grupoinventariosemen').subscribe({
       next: (data: any) => {
-       /* console.log("ENTRO CARGAR combo");
-        console.log(data);*/
-        //this.dataSource = data; //No pagina
         if (data) {
           this.sinData = false;
            this.listaGrupoInventario = data;
-           if(!this.isAddMode)
-           {  
-               var index = this.listaGrupoInventario.findIndex(index => index.id == this.objInventario.idGrupoInventario);
-              this.bankCtrl.setValue(this.listaGrupoInventario[index]);
-           }
-            else{
-                 // set initial selection
-           this.bankCtrl.setValue(this.listaGrupoInventario[0]);
-
-            } 
-
-            // load the initial bank list
-            this.filteredBanks.next(this.listaGrupoInventario.slice());
-
-
-            // listen for search field value changes
-            this.bankFilterCtrl.valueChanges
-              .pipe(takeUntil(this._onDestroy))
-              .subscribe(() => {
-                this.filterBanks();
-              });
+           if(this.objInventario.idGrupoInventario!= null && this.objInventario.idGrupoInventario != undefined && this.objInventario.idGrupoInventario != ''){
+            var index = this.listaGrupoInventario.findIndex(index => index.id == this.objInventario.idGrupoInventario);
+            this.myControlGrupo.setValue(this.listaGrupoInventario[index]);
+          }
         } else {
           this.sinData = true;
         }
@@ -224,53 +230,74 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
     });
     
 
-   
+    this.filteredOptionsAnimalesHembra = this.myControlAnimalHembra.valueChanges.pipe(
+      startWith(''),
+      map((value) => (typeof value === 'string' ? value : value.arete)),
+      map((arete) => (arete ? this._filterAnimalHembra(arete) : this.listaAnimalesHembras.slice()))
+    );
+    this.filteredOptionsAnimalesMacho = this.myControlAnimalMacho.valueChanges.pipe(
+      startWith(''),
+      map((value2) => (typeof value2 === 'string' ? value2 : value2.arete)),
+      map((arete2) => (arete2 ? this._filterAnimalMacho(arete2) : this.listaAnimalesMachos.slice()))
+    );
+    this.filteredOptionsGrupo = this.myControlGrupo.valueChanges.pipe(
+      startWith(''),
+      map((value3) => (typeof value3 === 'string' ? value3 : value3.nombre)),
+      map((nombre) => (nombre ? this._filterGrupo(nombre) : this.listaGrupoInventario.slice()))
+    );
+
 
     
    
   }
-  ngAfterViewInit() {
-    this.setInitialValue();
-  }
-  ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
-  }
 
-  
+   //inicio filtros
 
-  /**
-   * Sets the initial value after the filteredBanks are loaded initially
-   */
-   protected setInitialValue() {
-    this.filteredBanks
-      .pipe(take(this.objInventario.id), takeUntil(this._onDestroy))
-      .subscribe(() => {
-        // setting the compareWith property to a comparison function
-        // triggers initializing the selection according to the initial value of
-        // the form control (i.e. _initializeSelection())
-        // this needs to be done after the filteredBanks are loaded initially
-        // and after the mat-option elements are available
-        this.singleSelect.compareWith = (a: GrupoInseminacion, b: GrupoInseminacion) => a && b && a.id === b.id;
-      });
-  }
-  protected filterBanks() {
-    if (!this.listaGrupoInventario) {
-      return;
+   private requireMatch(control: FormControl): ValidationErrors | null {
+    const selection: any = control.value;
+    if (this.listaGrupoInventario && this.listaGrupoInventario.indexOf(selection) < 0) {
+      return { requireMatch: true };
     }
-    // get the search keyword
-    let search = this.bankFilterCtrl.value;
-    if (!search) {
-      this.filteredBanks.next(this.listaGrupoInventario.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredBanks.next(
-      this.listaGrupoInventario.filter(bank => bank.nombre.toLowerCase().indexOf(search) > -1)
-    );
+    return null;
   } 
+    
+   displayFnAnimalesHembra(animal: any): string {
+    return animal && animal.arete ? animal.arete : '';
+  }
+
+  private _filterAnimalHembra(arete: string): any[] {
+    const filterValue = arete.toLowerCase();
+
+    return this.listaAnimalesHembras.filter(
+      (option) => option.arete.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  displayFnAnimalesMacho(animal2: any): string {
+    return animal2 && animal2.arete ? animal2.arete : '';
+  }
+
+  private _filterAnimalMacho(arete2: string): any[] {
+    const filterValue2 = arete2.toLowerCase();
+
+    return this.listaAnimalesMachos.filter(
+      (option2) => option2.arete.toLowerCase().indexOf(filterValue2) === 0
+    );
+  }
+  
+  displayFnGrupo(grupo: any): string {
+    return grupo && grupo.nombre ? grupo.nombre : '';
+  }
+
+  private _filterGrupo(nombre: string): any[] {
+    const filterValue = nombre.toLowerCase();
+
+    return this.listaGrupoInventario.filter(
+      (option) => option.nombre.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+  
+  //fin de filtros
 
   initForm() {
     this.register = this.fb.group({
@@ -296,6 +323,9 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
       numPajuelasDisponibles: ['',[Validators.required]],
       precio: [''],
       observacion: [''],
+      myControlAnimalHembra: this.myControlAnimalHembra,
+      myControlAnimalMacho: this.myControlAnimalMacho,
+      myControlGrupo: this.myControlGrupo,
       is_active: [false, [Validators.requiredTrue]]
     });
     
@@ -305,101 +335,160 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
   guardar() {
    
     let pl = this.register.value;
-    console.log('inventario', pl);
+     
     if (this.register.invalid) {
       return;
     }
     if (this.isAddMode) {
       this.crear(pl);
     } else {
-      console.log('Recordatorio ACTUALIZAR', pl);
       this.actualizar(pl);
     }
   }
 
   private crear(pl: any) {
-    
-    if(this.register.value.radioMadre==='1'){
-      pl.otraIdentificacionMadre='';
-    }
-    if(this.register.value.radioMadre==='2'){
-      pl.idMadre=null;
-    }
-   
-    if(this.register.value.radioPadre==='3'){
-      pl.otraIdentificacionPadre='';
-    }
-    if(this.register.value.radioPadre==='4'){
-      pl.idPadre=null;
-    }
-    pl.idGrupoInventario=this.bankCtrl.value?.id;
 
-    this._api.postTypeRequest('inventariosemen', pl).subscribe({
+    this._api.getTypeRequest(`inventariosemen/existe/${pl.nombreNum}`).subscribe({
       next: (data) => {
-        console.log(data);
-        this.router.navigateByUrl('reproduction/inventario');
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Datos registrados Correctamente',
-          showConfirmButton: false,
-          timer: 1500
+           if(data){
+            if (this.hmadrenombre) {
+              pl.madreId = null;
+            }
+            else{
+                if(this.myControlAnimalHembra.value!=null)
+                {pl.madreId = this.myControlAnimalHembra.value.id}
+                
+              pl.otraIdentificacionMadre='';
+            }
+            if (this.hpadrenombre) {
+              pl.padreId = null;
+            }
+            else{
+              if(this.myControlAnimalMacho.value!=null)
+              { pl.padreId = this.myControlAnimalMacho.value.id; }
+                
+             
+              pl.otraIdentificacionPadre='';
+            }
+             
+            pl.idGrupoInventario=this.myControlGrupo.value.id;
+        
+            this._api.postTypeRequest('inventariosemen', pl).subscribe({
+              next: (data) => {
+            
+                this.router.navigateByUrl('reproduction/inventario');
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Datos registrados Correctamente',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                this.changeListMode.emit();
+              },
+              error: (error) => {
+                console.log(error);
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: 'Ocurrio un error inesperado, vuelva a intentar',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+            });
+           }
+           else{
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Ya existe una pajilla con ese nombre/numero',
+              showConfirmButton: false,
+              timer: 3500
+            });
+           }
+          },
+          error: (error) => {
+            console.log(error);
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Ocurrio un error inesperado, vuelva a intentar',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
         });
-        this.changeListMode.emit();
-      },
-      error: (error) => {
-        console.log(error);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          title: 'Ocurrio un error inesperado, vuelva a intentar',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-    });
+
+    
   }
 
   private actualizar(pl: any) {
-      
-      if(this.register.value.radioMadre==='1'){
-        pl.otraIdentificacionMadre='';
-      }
-      if(this.register.value.radioMadre==='2'){
-        pl.idMadre=null;
-      }
-      if(this.register.value.radioPadre==='3'){
-        pl.otraIdentificacionPadre='';
-      }
-      if(this.register.value.radioPadre==='4'){
-        pl.idPadre=null;
-      }
-      pl.idGrupoInventario=this.bankCtrl.value?.id;
-
-   this._api.putTypeRequest('inventariosemen/' + this.id, pl).subscribe({
+     
+    this._api.getTypeRequest(`inventariosemen/existe/${pl.id}/${pl.nombreNum}`).subscribe({
       next: (data) => {
-        console.log(data);
-        this.router.navigateByUrl('reproduction/inventario');
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Datos actualizados Correctamente',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        this.changeListMode.emit();
-      },
-      error: (error) => {
-        console.log(error);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          title: 'Ocurrio un error inesperado, vuelva a intentar',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-    });
+           if(data){
+            if (this.hmadrenombre) {
+              pl.madreId = null;
+            }
+            else{
+                if(this.myControlAnimalHembra.value!=null)
+                {pl.madreId = this.myControlAnimalHembra.value.id}
+                
+              pl.otraIdentificacionMadre='';
+            }
+            if (this.hpadrenombre) {
+              pl.padreId = null;
+            }
+            else{
+              if(this.myControlAnimalMacho.value!=null)
+              { pl.padreId = this.myControlAnimalMacho.value.id; }
+                
+             
+              pl.otraIdentificacionPadre='';
+            }
+             
+            pl.idGrupoInventario=this.myControlGrupo.value.id;
+        
+           this._api.putTypeRequest('inventariosemen/' +pl.id, pl).subscribe({
+              next: (data) => {
+                console.log(data);
+                this.router.navigateByUrl('reproduction/inventario');
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'success',
+                  title: 'Datos actualizados Correctamente',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+                this.changeListMode.emit();
+              },
+              error: (error) => {
+                console.log(error);
+                Swal.fire({
+                  position: 'top-end',
+                  icon: 'error',
+                  title: 'Ocurrio un error inesperado, vuelva a intentar',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+            });
+           }
+          
+           else{
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'Ya existe una pajilla con ese nombre/numero',
+              showConfirmButton: false,
+              timer: 3500
+            });
+           }
+          
+          }})
+
+   
   }
 
   limpiar() {
@@ -446,101 +535,12 @@ export class InventarioRegistrarComponent implements OnInit, AfterViewInit, OnDe
       this.register.get("otraIdentificacionPadre").disable();
       }
   if ($event.value === '4') {
-    // Do whatever you want here
-    console.log('entro');
-    this.hpadrenombre = true;
-    this.register.get("otraIdentificacionPadre").enable();
+      this.hpadrenombre = true;
+      this.register.get("otraIdentificacionPadre").enable();
      }
  }
 
 
-
-agrega(){
-  for(let x=0;x<9;x++){
-    this.idIncremental++;
-    this.grupAnimal = new GrupoAnimal(this.idIncremental, 0, `alex${x+1}`);
-    this.listaGrupo.push(this.grupAnimal);
-  }
-  
-   this.idIncremental++;
- 
-    var values = this.listaGrupo;
-    var tr = document.createElement('tr');
-    var td = document.createElement('td');
-    var select   = document.createElement("select");
-    select.name = "pets";
-    select.id="pets"+this.idIncremental;
- 
-    for (const val of values)
-    {
-        var option = document.createElement("option");
-        option.id = val.identificador.toString();
-        option.value = val.identificador.toString();
-        option.text = val.nombre.toUpperCase() ;
-       
-        select.appendChild(option);
-    }
- 
-    var label = document.createElement("label");
-    label.innerHTML = "Choose your pets: "
-    label.htmlFor = "pets";
-    
-    document.getElementById("container").appendChild(tr).appendChild(td).appendChild(label).appendChild(select);
-     document.querySelectorAll("select").forEach(ejemplo => {
-      ejemplo.addEventListener("change", () => alert(`Captura: ${ejemplo.options[ejemplo.selectedIndex].text}`), true);
-      ejemplo.addEventListener("change", () => alert(`Captura: ${ejemplo.options[ejemplo.selectedIndex].id}`), true);
-      ejemplo.addEventListener("change", () => {this.selecciona(`${ejemplo.options[ejemplo.selectedIndex].id}`)}, true);
-    });;
- 
-}
-
-
-  selecciona(id:any) {
-    let listaGrup:  GrupoAnimal []= [];
-    let gruAnimal: GrupoAnimal;
-    let incrementa=0;
-    for(let x=0;x<9;x++){
-       incrementa++;
-       gruAnimal = new GrupoAnimal(incrementa, 0, `alfa${x+1}`);
-       listaGrup.push(gruAnimal);
-    }
-    
-     incrementa++;
-   
-      var values = listaGrup;
-   
-      var select   = document.createElement("select");
-      var tr = document.createElement('tr');
-      var td = document.createElement('td');
-      select.name = "pets";
-      select.id="pets"+this.idIncremental;
-
-   
-      for (const val of values)
-      {
-          var option = document.createElement("option");
-          option.id = val.identificador.toString();
-          option.value = val.identificador.toString();
-          option.text = val.nombre.toUpperCase() ;
-         
-          select.appendChild(option);
-      }
-   
-      var label = document.createElement("label");
-      label.innerHTML = "Choose your pets: "
-      label.htmlFor = "pets";
-      
-      //document.getElementById("container").appendChild(label).appendChild(select);
-      document.getElementById("container").appendChild(tr).appendChild(td).appendChild(label).appendChild(select);
-       document.querySelectorAll("select").forEach(ejemplo => {
-        ejemplo.addEventListener("change", () => alert(`Captura: ${ejemplo.options[ejemplo.selectedIndex].text}`), true);
-        ejemplo.addEventListener("change", () => alert(`Captura: ${ejemplo.options[ejemplo.selectedIndex].id}`), true);
-        ejemplo.addEventListener("change", () => {this.selecciona(`${ejemplo.options[ejemplo.selectedIndex].id}`)}, true);
-      });;
-
-  console.log( 'llego aqui'+id) ;
-   
-}
 
 
 

@@ -42,8 +42,6 @@ export class EventoListarComponent implements OnInit {
   refrescar(){
     this._api.getTypeRequest('tipoevento/grupos').subscribe({
       next: (data: any) => {
-        console.log("ENTRO LISTAR CARGAR");
-        console.log(data);
         //this.dataSource = data; //No pagina
         if (data) {
           this.sinData = false;

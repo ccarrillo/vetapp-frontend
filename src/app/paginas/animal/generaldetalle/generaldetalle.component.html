@@ -77,15 +77,24 @@
                           </div>
     
                           <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
-                            <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-form-field class="example-full-width" appearance="outline"  >
                               <mat-label>Grupo de animales</mat-label>
-                              <mat-select id="idGrupoAnimal" formControlName="idGrupoAnimal" >
-                                <mat-option *ngFor="let item of listaGrupoAnimal" [value]="item.id">
-                                  {{item.nombre}}
-                                </mat-option>
-                              </mat-select>
-                              <mat-icon matSuffix>flag</mat-icon>
-                             </mat-form-field>
+                              <input type="text"
+                              placeholder="filtrar grupos de animales"
+                              aria-label="Grupo"
+                              matInput
+                              [formControl]="myControlGrupo"
+                              formControlName="myControlGrupo"
+                              [matAutocomplete]="auto3"
+                              >
+                               
+                                <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayFnGrupo" >
+                                  <mat-option *ngFor="let item3 of filteredOptionsGrupo | async" [value]="item3" >
+                                    {{item3.nombre}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                                <mat-error *ngIf="myControlGrupo.errors?.requireMatch">Seleccione un grupo</mat-error>
+                            </mat-form-field>
                           </div>
                            
                           <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
@@ -401,17 +410,34 @@
                           <div class="row">
                            
                           <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
-                            <mat-form-field class="example-full-width" appearance="outline">
-                              <mat-label>Madre</mat-label>
-                              <mat-select disabled="{{hmadrenombre}}" id="madreId" formControlName="madreId">
+                        
+                              <mat-form-field class="example-full-width" appearance="outline"  >
+                                <mat-label>Madre</mat-label>
+                                <input type="text"
+                                placeholder="filtrar madre"
+                                aria-label="animales"
+                                matInput
+                                [formControl]="myControlAnimalHembra"
+                                formControlName="myControlAnimalHembra"
+                                [matAutocomplete]="auto"
+                                >
+                                 
+                                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnAnimalesHembra" >
+                                    <mat-option *ngFor="let item of filteredOptionsAnimalesHembra | async" [value]="item" disabled="{{hmadrenombre}}">
+                                      {{item.arete}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                  <mat-icon matSuffix>flag</mat-icon>
+                              </mat-form-field>
+                             <!---<mat-select disabled="{{hmadrenombre}}" id="madreId" formControlName="madreId">
                                 
                                 <mat-option *ngFor="let item of listaAnimalesHembras" [value]="item.id">
                                   {{item.arete}}
                                 </mat-option>
                                   
-                              </mat-select>
-                              <mat-icon matSuffix>flag</mat-icon>
-                           </mat-form-field>
+                              </mat-select>-->
+                              
+                          
                           </div>
                           <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
                             <mat-form-field class="example-full-width" appearance="outline">
@@ -443,7 +469,25 @@
                             </mat-radio-group>
                             <div class="row">
                             <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
-                              <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-form-field class="example-full-width" appearance="outline"  >
+                                <mat-label>Padre</mat-label>
+                                <input type="text"
+                                placeholder="filtrar padre"
+                                aria-label="animales"
+                                matInput
+                                [formControl]="myControlAnimalMacho"
+                                formControlName="myControlAnimalMacho"
+                                [matAutocomplete]="auto2"
+                                >
+                                 
+                                  <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayFnAnimalesMacho" >
+                                    <mat-option *ngFor="let item2 of filteredOptionsAnimalesMacho | async" [value]="item2" disabled="{{hpadrenombre}}">
+                                      {{item2.arete}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                  <mat-icon matSuffix>flag</mat-icon>
+                              </mat-form-field>
+                             <!-- <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Padre</mat-label>
                                 <mat-select disabled="{{hpadrenombre}}" id="padreId" formControlName="padreId">
                                   
@@ -453,7 +497,7 @@
                                     
                                 </mat-select>
                                 <mat-icon matSuffix>flag</mat-icon>
-                              </mat-form-field>
+                              </mat-form-field> -->
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 mb-2">
                               <mat-form-field class="example-full-width" appearance="outline">

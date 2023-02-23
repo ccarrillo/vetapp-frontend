@@ -31,6 +31,9 @@
                               </mat-option>
                             </mat-select>
                             <mat-icon matSuffix>flag</mat-icon>
+                            <mat-error *ngIf="register.get('grupoProtocoloId').hasError('required')">
+                              El grupo es requerido
+                            </mat-error>
                            </mat-form-field>
                          </div> 
 

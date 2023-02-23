@@ -322,6 +322,18 @@ saveNode(node: TodoItemFlatNode, itemValue: string) {
   console.log(this._database);
 }
 
+editarNode(node: TodoItemFlatNode): void {
+
+  //console.log('alex'+node.item);
+ // console.log(node);
+  const nestedNode = this.flatNodeMap.get(node);
+  //console.log(nestedNode);
+}
+
+receiveSelectedNode(event) {
+  console.log(event.selectedNode);
+}
+
 deleteNode(node: TodoItemFlatNode): void {
 
     //console.log('alex'+node.item);
@@ -360,11 +372,6 @@ deleteNode(node: TodoItemFlatNode): void {
    
 }
 
-    editarNode(node: TodoItemFlatNode): void {
-
-      //console.log('alex'+node.item);
-      const nestedNode = this.flatNodeMap.get(node);
-      console.log(nestedNode);
-    }
+   
 
 }

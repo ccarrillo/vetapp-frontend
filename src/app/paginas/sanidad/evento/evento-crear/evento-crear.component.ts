@@ -1,22 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import Swal from 'sweetalert2';
 import { SimpleDialogComponent } from './simpleDialog.component';
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogRef
-} from '@angular/material/dialog';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {MatDialog,MatDialogConfig,MatDialogRef} from '@angular/material/dialog';
 import { DialogadicionalComponent } from './dialogadicional/dialogadicional.component';
 import { DialogrecordatorioComponent } from './dialogrecordatorio/dialogrecordatorio.component';
-import { ConnectableObservable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { MatSelect } from '@angular/material/select';
+import {Observable, ReplaySubject, Subject, map, startWith, take, takeUntil } from 'rxjs';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+
 
 @Component({
   selector: 'app-evento-crear',
@@ -46,23 +41,16 @@ export class EventoCrearComponent implements OnInit {
   @ViewChild('paginator2', { static: true }) paginator2: MatPaginator;
   @ViewChild('MatTabla1') tabla1!: MatTable<any>
   @ViewChild('MatTabla2') tabla2!: MatTable<any>
+  
   sinData: boolean = false;
   sinData2: boolean = false;
 
+  filteredOptions: Observable<any[]>;
+  filteredOptionsAnimal: Observable<any[]>;
+
   /** control for the selected bank */
-  grupoCtrl: FormControl = new FormControl();
-  eventoCtrl: FormControl = new FormControl();
-  /** control for the MatSelect filter keyword */
-  grupoFilterCtrl: FormControl = new FormControl();
-  eventoFilterCtrl: FormControl = new FormControl();
-
-  filteredGrupos: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  filteredEventos: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  @ViewChild('singleSelect', { static: true }) singleSelect: MatSelect;
-  @ViewChild('singleEventoSelect', { static: true }) singleEventoSelect: MatSelect;
-  /** Subject that emits when the component has been destroyed. */
-  protected _onDestroy = new Subject<void>();
-
+  myControl = new FormControl(undefined, [Validators.required, this.requireMatch.bind(this)]);
+  myControlAnimal = new FormControl(undefined,);
 
   @Output() changeListMode = new EventEmitter();
   @Input() sendObj: any;
@@ -109,12 +97,12 @@ export class EventoCrearComponent implements OnInit {
 
     if (this.sendObj) {
 
-      console.log("sendObj", this.sendObj.id);
       this.id = this.sendObj.id;
       this.isAddMode = !this.sendObj.id;
     }
     else{
       this.cargarFiltroParaRegistrar();
+      
     }
 
 
@@ -143,7 +131,7 @@ export class EventoCrearComponent implements OnInit {
   
             this.habComboCorral = false;
           }
-          if (this.objGrupoAnimal.checkgrupoanimal) {
+          if (this.objGrupoAnimal.checktipoevento) {
             this.habComboTipoEvento = false;
           }
   
@@ -194,9 +182,52 @@ export class EventoCrearComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource2.paginator = this.paginator2;
 
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => (typeof value === 'string' ? value : value.nombre)),
+      map((nombre) => (nombre ? this._filter(nombre) : this.listaGrupoEvento.slice())),
+    );
+
+    this.filteredOptionsAnimal = this.myControlAnimal.valueChanges.pipe(
+      startWith(''),
+      map((value) => (typeof value === 'string' ? value : value.nombre)),
+      map((nombre) => (nombre? this._filterAnimal(nombre) : this.listaGrupoAnimal.slice())),
+      );
+
 
   }
+  //inicio de filtros
+  private requireMatch(control: FormControl): ValidationErrors | null {
+    const selection: any = control.value;
+    if (this.listaGrupoEvento && this.listaGrupoEvento.indexOf(selection) < 0) {
+      return { requireMatch: true };
+    }
+    return null;
+  } 
 
+ 
+  displayFnGrupoEvento(evento: any): string {
+    return evento && evento.nombre ? evento.nombre: '';
+  }
+  private _filter(nombre: string): any[] {
+    const filterValue = nombre.toLowerCase();
+
+    return this.listaGrupoEvento.filter(
+      (option) => option.nombre.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+
+  displayFnGrupoAnimal(animal: any): string {
+    return animal && animal.nombre ? animal.nombre: '';
+  }
+  private _filterAnimal(nombre: string): any[] {
+    const filterValue = nombre.toLowerCase();
+
+    return this.listaGrupoAnimal.filter(
+      (option) => option.nombre.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
+  //fin de filtros
   cargargrupofiltrosActualizar() {
     this._api.getTypeRequest('grupoevento/sinhijo').subscribe({
       next: (data: any) => {
@@ -204,21 +235,11 @@ export class EventoCrearComponent implements OnInit {
         if (data) {
 
           this.listaGrupoEvento = data;
- 
+          if(this.objGrupoAnimal.grupoEventoId!= null && this.objGrupoAnimal.grupoEventoId != undefined){
             var index = this.listaGrupoEvento.findIndex(index => index.id == this.objGrupoAnimal.grupoEventoId);
-            this.eventoCtrl.setValue(this.listaGrupoEvento[index]);
-
-            // load the initial bank list
-            this.filteredEventos.next(this.listaGrupoEvento.slice());
-
-            // listen for search field value changes
-            this.eventoFilterCtrl.valueChanges
-              .pipe(takeUntil(this._onDestroy))
-              .subscribe(() => {
-                this.filterGruposEventos();
-              });
-          
-         
+            this.myControl.setValue(this.listaGrupoEvento[index]);
+          }
+           
         } else {
           console.log('no cargo combo de lista grupo evento sin hijo 2');
         }
@@ -243,18 +264,13 @@ export class EventoCrearComponent implements OnInit {
         if (data) {
           //this.sinData = false;
           this.listaGrupoAnimal = data;
-        
-            var index = this.listaGrupoAnimal.findIndex(index => index.id == this.objGrupoAnimal.idGrupoMover);
-            this.grupoCtrl.setValue(this.listaGrupoAnimal[index]);
-            // load the initial bank list
-            this.filteredGrupos.next(this.listaGrupoAnimal.slice());
-
-            // listen for search field value changes
-            this.grupoFilterCtrl.valueChanges
-              .pipe(takeUntil(this._onDestroy))
-              .subscribe(() => {
-                this.filterGrupos();
-              });
+          console.log(this.listaGrupoAnimal);
+         
+           if(this.objGrupoAnimal.idGrupoMover!= null && this.objGrupoAnimal.idGrupoMover != undefined){
+              var index = this.listaGrupoAnimal.findIndex(index => index.id == this.objGrupoAnimal.idGrupoMover);
+              this.myControlAnimal.setValue(this.listaGrupoAnimal[index]);
+           }
+         
 
         } else {
           //this.sinData = true;
@@ -284,17 +300,6 @@ export class EventoCrearComponent implements OnInit {
         if (data) {
 
           this.listaGrupoEvento = data;
-            // set initial selection
-            this.eventoCtrl.setValue(this.listaGrupoEvento[0]);
-
-            // load the initial bank list
-            this.filteredEventos.next(this.listaGrupoEvento.slice());
-            // listen for search field value changes
-            this.eventoFilterCtrl.valueChanges
-              .pipe(takeUntil(this._onDestroy))
-              .subscribe(() => {
-                this.filterGruposEventos();
-              });
 
         } else {
           console.log('no cargo combo de lista grupo evento sin hijo 2');
@@ -321,19 +326,6 @@ export class EventoCrearComponent implements OnInit {
           //this.sinData = false;
           this.listaGrupoAnimal = data;
 
-            // set initial selection
-            this.grupoCtrl.setValue(this.listaGrupoAnimal[0]);
-            this.filteredGrupos.next(this.listaGrupoAnimal.slice());
-
-
-            // listen for search field value changes
-            this.grupoFilterCtrl.valueChanges
-              .pipe(takeUntil(this._onDestroy))
-              .subscribe(() => {
-                this.filterGrupos();
-              });
-
-
         } else {
           //this.sinData = true;
           console.log('no cargo combo de lista grupo animal');
@@ -354,77 +346,12 @@ export class EventoCrearComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.setInitialValue();
-    this.setInitialEventoValue();
-  }
-  ngOnDestroy() {
-    this._onDestroy.next();
-    this._onDestroy.complete();
-  }
+  
 
+  
 
-  protected setInitialValue() {
-    this.filteredGrupos
-      .pipe(take(this.objGrupoAnimal.id), takeUntil(this._onDestroy))
-      .subscribe(() => {
-        // setting the compareWith property to a comparison function
-        // triggers initializing the selection according to the initial value of
-        // the form control (i.e. _initializeSelection())
-        // this needs to be done after the filteredBanks are loaded initially
-        // and after the mat-option elements are available
-        this.singleSelect.compareWith = (a: any, b: any) => a && b && a.id === b.id;
-      });
-  }
-
-  protected setInitialEventoValue() {
-    this.filteredEventos
-      .pipe(take(this.objGrupoEvento.id), takeUntil(this._onDestroy))
-      .subscribe(() => {
-        // setting the compareWith property to a comparison function
-        // triggers initializing the selection according to the initial value of
-        // the form control (i.e. _initializeSelection())
-        // this needs to be done after the filteredBanks are loaded initially
-        // and after the mat-option elements are available
-        this.singleEventoSelect.compareWith = (a: any, b: any) => a && b && a.id === b.id;
-      });
-  }
-  protected filterGrupos() {
-    if (!this.listaGrupoAnimal) {
-      return;
-    }
-    // get the search keyword
-    let search = this.grupoFilterCtrl.value;
-    if (!search) {
-      this.filteredGrupos.next(this.listaGrupoAnimal.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredGrupos.next(
-      this.listaGrupoAnimal.filter(bank => bank.nombre.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-
-  protected filterGruposEventos() {
-    if (!this.listaGrupoEvento) {
-      return;
-    }
-    // get the search keyword
-    let search = this.eventoFilterCtrl.value;
-    if (!search) {
-      this.filteredEventos.next(this.listaGrupoEvento.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    // filter the banks
-    this.filteredEventos.next(
-      this.listaGrupoEvento.filter(bank => bank.nombre.toLowerCase().indexOf(search) > -1)
-    );
-  }
+  
+  
 
 
   initForm() {
@@ -437,10 +364,13 @@ export class EventoCrearComponent implements OnInit {
       idEventoRecordatorio: [''],
       checkgrupoanimal: [''],
       checktipoevento: [''],
+      myControl:this.myControl,
+      myControlAnimal:this.myControlAnimal,
       is_active: [false, [Validators.requiredTrue]]
     });
 
   }
+
 
   habilitarCorral(event: MatCheckboxChange): void {
 
@@ -476,16 +406,14 @@ export class EventoCrearComponent implements OnInit {
       pl.idGrupoMover = null;
     }
     else {
-      pl.idGrupoMover = this.grupoCtrl.value?.id;
+      pl.idGrupoMover = this.myControlAnimal.value.id;
     }
     if (this.habComboTipoEvento) {
       pl.idEventoRecordatorio = null;
     }
-    pl.grupoEventoId = this.eventoCtrl.value?.id;
+    pl.grupoEventoId = this.myControl.value.id;
 
-
-
-    //console.log('lista evento', pl);
+      //console.log('lista evento', pl);
     this._api.postTypeRequest('tipoevento', pl).subscribe({
       next: (data) => {
         console.log(data);
@@ -531,12 +459,12 @@ export class EventoCrearComponent implements OnInit {
       pl.idGrupoMover = null;
     }
     else {
-      pl.idGrupoMover = this.grupoCtrl.value?.id;
+      pl.idGrupoMover = this.myControlAnimal.value.id;
     }
     if (this.habComboTipoEvento) {
       pl.idEventoRecordatorio = null;
     }
-    pl.grupoEventoId = this.eventoCtrl.value?.id;
+    pl.grupoEventoId = this.myControl.value.id;
     this._api.putTypeRequest('tipoevento/' + this.id, pl).subscribe({
       next: (data) => {
         console.log(data);
@@ -588,7 +516,7 @@ export class EventoCrearComponent implements OnInit {
   openDialog(): void {
     const dialogAdicional = this.dialogModel.open(DialogadicionalComponent);
     dialogAdicional.afterClosed().subscribe(adi => {
-        console.log(adi);
+      console.log(adi);
       if (adi != undefined) {
         if (adi.radioInformacion == "2") {
           adi.tdesde = adi.ndesde
@@ -629,6 +557,8 @@ export class EventoCrearComponent implements OnInit {
       data: elem
     });
     dialogo1.afterClosed().subscribe(art => {
+      console.log(art);
+      
       if (art.radioInformacion == "2") {
         art.tdesde = art.ndesde
         art.thasta = art.nhasta
@@ -641,8 +571,7 @@ export class EventoCrearComponent implements OnInit {
         art.ddesde = ""
         art.dhasta = ""
       }
-      console.log(art);
-      if (art.id = '') {
+      if (art.id == '') {
         this.datos.splice(edi, 1);
         this.datos.splice(edi, 0, art);
         this.tabla1.renderRows();

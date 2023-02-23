@@ -96,7 +96,7 @@
   
                       <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>elementos</mat-label>
-                        <mat-select formControlName="combosseleccionables" [(ngModel)]="opcionSeleccionado" (change)="capturar()">
+                        <mat-select formControlName="combosseleccionables" >
                           <mat-option *ngFor="let elem of elementos" [value]="elem">
                             {{elem}}
                           </mat-option>

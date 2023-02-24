@@ -34,16 +34,27 @@ export class ControlRegistrarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    console.log("ENTRO REGISTRAR");
+    if (this.sendObj){
+      console.log("sendObj", this.sendObj.id);
+      this.id = this.sendObj.id;
+      this.isAddMode = !this.sendObj.id;
+    }
+    if (!this.isAddMode) {
+      this.labelBtn="Actualizar"
+      this.register.patchValue(this.sendObj);
+    }
   }
 
   initForm() {
     this.register = this.fb.group({
       id: [''],
-      racion: ['', [Validators.required]],
-      vcontado: ['', [Validators.required]],
-      vinterna: ['', [Validators.required]],
-      antibiotico: ['', [Validators.required]],
-      embarque: ['', [Validators.required]],
+      racionternero: ['', [Validators.required]],
+      ventacontado: ['', [Validators.required]],
+      ventainterna: ['', [Validators.required]],
+      antibmastitis: ['', [Validators.required]],
+      ventaexterna: ['', [Validators.required]],
       precio: ['', [Validators.required]],
       ordeno: ['', [Validators.required]],
       establo: ['', [Validators.required]],

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
@@ -254,7 +254,7 @@ export class DialogadicionalComponent implements OnInit {
 
   onSubmitClick() {
     //console.log('Form Value', this.addCusForm.value);
-    console.log('llego aqui');
+   // console.log('llego aqui');
   }
   aceptar(){
     this.data= null;
@@ -266,7 +266,8 @@ export class DialogadicionalComponent implements OnInit {
     {
       this.addCusForm.value.combosseleccionables="";
       this.elementos.push(this.addCusForm.value.textoadd);
-      this.addCusForm.value.combosseleccionables= this.elementos;
+      this.addCusForm.controls['combosseleccionables'].setValue(this.elementos.toString());
+      console.log(this.addCusForm.value.combosseleccionables);
       this.textoadd='';
     }
     else{

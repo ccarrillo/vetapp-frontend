@@ -28,31 +28,8 @@ export class InventarioListarComponent implements OnInit {
   
 
   ngOnInit(): void {
-    console.log("ENTRO LISTAR");
-    this._api.getTypeRequest('inventariosemen').subscribe({
-      next: (data: any) => {
-        console.log("ENTRO LISTAR CARGAR");
-        console.log(data);
-        //this.dataSource = data; //No pagina
-        if (data) {
-          this.sinData = false;
-          this.dataSource = new MatTableDataSource(data);//Es necesario instanciar MatTableDataSource para paginar
-          this.dataSource.paginator = this.paginator;
-        } else {
-          this.sinData = true;
-        }
-      },
-      error: (error) => {
-        console.log(error);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          title: 'Ocurrio un error inesperado, vuelva a intentar',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-    });
+  
+       this.refrescar();
   }
 
   applyFilter(event: Event) {
@@ -64,6 +41,52 @@ export class InventarioListarComponent implements OnInit {
     this.sendInventario.emit(inventario);
     console.log('Form Value', inventario);
   }
+
+  eliminar(id: any){
+    if (confirm("Esta seguro de borrar el registro ? Se eliminara registro y lo asociado a el")) {
+    this._api.deleteTypeRequest('inventariosemen/' + id).subscribe({
+     next: (data: any) => {
+      
+        this.refrescar();
+     },
+     error: (error) => {
+       console.log(error);
+       Swal.fire({
+         position: 'top-end',
+         icon: 'error',
+         title: 'Ocurrio un error inesperado, vuelva a intentar',
+         showConfirmButton: false,
+         timer: 1500
+       });
+     }
+   });
+  }
+  
+ }
+
+ refrescar(){
+  this._api.getTypeRequest('inventariosemen').subscribe({
+    next: (data: any) => {
+      if (data) {
+        this.sinData = false;
+        this.dataSource = new MatTableDataSource(data);//Es necesario instanciar MatTableDataSource para paginar
+        this.dataSource.paginator = this.paginator;
+      } else {
+        this.sinData = true;
+      }
+    },
+    error: (error) => {
+      console.log(error);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Ocurrio un error inesperado, vuelva a intentar',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  });
+ }
 
 
 }

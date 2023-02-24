@@ -11,9 +11,9 @@
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Rac. Ternero</mat-label>
-                                <input matInput formControlName="racion" required>
+                                <input matInput formControlName="racionternero" required>
                                 <mat-icon matSuffix>face</mat-icon>
-                                <mat-error *ngIf="register.get('racion').hasError('required')">
+                                <mat-error *ngIf="register.get('racionternero').hasError('required')">
                                     La racion es requerido
                                 </mat-error>
                             </mat-form-field>
@@ -21,9 +21,9 @@
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Venta contado</mat-label>
-                                <input matInput formControlName="vcontado">
+                                <input matInput formControlName="ventacontado">
                                 <mat-icon matSuffix>face</mat-icon>
-                                <mat-error *ngIf="register.get('vcontado').hasError('required')">
+                                <mat-error *ngIf="register.get('ventacontado').hasError('required')">
                                     La venta contado es requerido
                                 </mat-error>
                             </mat-form-field>
@@ -32,9 +32,9 @@
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Venta interna</mat-label>
-                                <input matInput formControlName="vinterna" required>
+                                <input matInput formControlName="ventainterna" required>
                                 <mat-icon matSuffix>face</mat-icon>
-                                <mat-error *ngIf="register.get('vinterna').hasError('required')">
+                                <mat-error *ngIf="register.get('ventainterna').hasError('required')">
                                     La venta interna es requerido
                                 </mat-error>
                             </mat-form-field>
@@ -46,9 +46,9 @@
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Antib. Mastitis</mat-label>
-                                <input matInput formControlName="antibiotico" required>
+                                <input matInput formControlName="antibmastitis" required>
                                 <mat-icon matSuffix>face</mat-icon>
-                                <mat-error *ngIf="register.get('antibiotico').hasError('required')">
+                                <mat-error *ngIf="register.get('antibmastitis').hasError('required')">
                                     Antibiotico y mastitis es requerido
                                 </mat-error>
                             </mat-form-field>
@@ -56,9 +56,9 @@
                         <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-2">
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>Embarque</mat-label>
-                                <input matInput formControlName="embarque">
+                                <input matInput formControlName="ventaexterna">
                                 <mat-icon matSuffix>face</mat-icon>
-                                <mat-error *ngIf="register.get('embarque').hasError('required')">
+                                <mat-error *ngIf="register.get('ventaexterna').hasError('required')">
                                     Embarque es requerido
                                 </mat-error>
                             </mat-form-field>
@@ -158,12 +158,14 @@
                         </div>
                         <div class="col-4" >
         
-                            <mat-form-field class="example-full-width" >
+                            <mat-form-field class="example-full-width" appearance="outline">
                               <mat-label>Fecha</mat-label>
-                              <input matInput [matDatepicker]="picker3"  formControlName="fecha" >
+                              <input matInput placeholder="Formato: 10/07/2020"  [matDatepicker]="picker3"  formControlName="fecha" >
                               <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                               <mat-datepicker #picker3></mat-datepicker>
-                              
+                              <mat-error *ngIf="register.get('fecha').hasError('required')">
+                                La fecha es obligatorio en el formato adecuado
+                              </mat-error>
                             </mat-form-field>
                         </div>
     

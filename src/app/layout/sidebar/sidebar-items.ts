@@ -103,15 +103,6 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     submenu: [
       {
-        path: 'animal/detail',
-        title: 'MENUITEMS.VET-ANIMALS.LIST.DETAIL',
-        moduleName: 'animal',
-        icon: '',
-        class: 'ml-menu',
-        groupTitle: false,
-        submenu: []
-      },
-      {
         path: 'animal/general',
         title: 'MENUITEMS.VET-ANIMALS.LIST.GENERAL',
         moduleName: 'animal',
@@ -166,36 +157,10 @@ export const ROUTES: RouteInfo[] = [
     class: 'menu-toggle',
     groupTitle: false,
     submenu: [
-      {
-        path: 'reproduction/insemination',
-        title: 'MENUITEMS.VET-REPRODUCTION.LIST.INSEMINATION',
-        moduleName: 'reproduction',
-        icon: '',
-        class: 'ml-menu',
-        groupTitle: false,
-        submenu: []
-      },
+     
       {
         path: 'reproduction/inventario',
         title: 'MENUITEMS.VET-REPRODUCTION.LIST.INVENTORY-SEMEN',
-        moduleName: 'reproduction',
-        icon: '',
-        class: 'ml-menu',
-        groupTitle: false,
-        submenu: []
-      },
-      {
-        path: 'reproduction/birth',
-        title: 'MENUITEMS.VET-REPRODUCTION.LIST.BIRTH',
-        moduleName: 'reproduction',
-        icon: '',
-        class: 'ml-menu',
-        groupTitle: false,
-        submenu: []
-      },
-      {
-        path: 'reproduction/services',
-        title: 'MENUITEMS.VET-REPRODUCTION.LIST.SERVICES',
         moduleName: 'reproduction',
         icon: '',
         class: 'ml-menu',
@@ -250,15 +215,7 @@ export const ROUTES: RouteInfo[] = [
         groupTitle: false,
         submenu: []
       },
-      {
-        path: 'production/lactation',
-        title: 'MENUITEMS.VET-PRODUCTION.LIST.LACTATION',
-        moduleName: 'production',
-        icon: '',
-        class: 'ml-menu',
-        groupTitle: false,
-        submenu: []
-      },
+      
       {
         path: 'production/heavy-milk',
         title: 'MENUITEMS.VET-PRODUCTION.LIST.HEAVY-MILK',
@@ -268,15 +225,7 @@ export const ROUTES: RouteInfo[] = [
         groupTitle: false,
         submenu: []
       },
-      {
-        path: 'production/sale-milk',
-        title: 'MENUITEMS.VET-PRODUCTION.LIST.SALE-MILK',
-        moduleName: 'production',
-        icon: '',
-        class: 'ml-menu',
-        groupTitle: false,
-        submenu: []
-      },
+      
       {
         path: 'production/daily-check',
         title: 'MENUITEMS.VET-PRODUCTION.LIST.DAILY-CHECK',

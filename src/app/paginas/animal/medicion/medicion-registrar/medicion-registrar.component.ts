@@ -53,7 +53,6 @@ export class MedicionRegistrarComponent implements OnInit {
       peso: [''],
       estatura: [''],
       concorporal: [''],
-      idanimal: [this.idAnimalSession],
       is_active: [false, [Validators.requiredTrue]]
     });
   }
@@ -75,7 +74,7 @@ export class MedicionRegistrarComponent implements OnInit {
 
   private crear(pl: any) {
    
-    this._api.postTypeRequest('medicion', pl).subscribe({
+    this._api.postTypeRequest('medicion/animal/'+this.idAnimalSession,pl).subscribe({
       next: (data) => {
         this.router.navigateByUrl('animal/detail/'+ this.idAnimalSession);
         Swal.fire({
@@ -101,7 +100,7 @@ export class MedicionRegistrarComponent implements OnInit {
   }
 
   private actualizar(pl: any) {
-    this._api.putTypeRequest('medicion/' + this.id, pl).subscribe({
+    this._api.putTypeRequest('medicion/animal/' + this.idAnimalSession+'/medicion/'+this.id, pl).subscribe({
       next: (data) => {
         console.log(data);
         this.router.navigateByUrl('animal/detail/'+ this.idAnimalSession);

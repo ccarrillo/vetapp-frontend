@@ -16,6 +16,7 @@ export class EventoListarComponent implements OnInit {
   displayedColumns: string[] = ['no', 'fecha','antes', 'evento','anotacion', 'informacion', 'action'];
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  idAnimal: number;
 
   sinData: boolean = false;
 
@@ -27,11 +28,14 @@ export class EventoListarComponent implements OnInit {
   
 
   ngOnInit(): void {
-    console.log("ENTRO LISTAR");
-    this._api.getTypeRequest('eventos').subscribe({
+    this.idAnimal = Number.parseInt(sessionStorage.getItem('idanimalsession'));
+    this. refrescar();
+  }
+
+  refrescar(){
+    this._api.getTypeRequest('eventoanimal/animal/'+this.idAnimal).subscribe({
       next: (data: any) => {
-        console.log("ENTRO LISTAR CARGAR");
-        console.log(data);
+
         //this.dataSource = data; //No pagina
         if (data) {
           this.sinData = false;
@@ -59,11 +63,34 @@ export class EventoListarComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  editar(recordatorio: any) {
-    this.sendEvento.emit(recordatorio);
-    console.log('Form Value', recordatorio);
+  editar(evento: any) {
+    //this.router.navigateByUrl('animal/detail/'+ id);
+    this.sendEvento.emit(evento);
+    
   }
+   
 
+  eliminar(id: any){
+    if (confirm("Esta seguro de borrar el registro de evento? Se eliminaran tanto las acciones y recordatorios ligados al evento de esto animal")) {
+    this._api.deleteTypeRequest('eventoanimal/' + id).subscribe({
+     next: (data: any) => {
+      
+        this.refrescar();
+     },
+     error: (error) => {
+       console.log(error);
+       Swal.fire({
+         position: 'top-end',
+         icon: 'error',
+         title: 'Ocurrio un error inesperado, vuelva a intentar',
+         showConfirmButton: false,
+         timer: 1500
+       });
+     }
+   });
+  }
+  
+ }
   
 
 }

@@ -14,7 +14,7 @@ export class ControlListarComponent implements OnInit {
 
   @Output() sendControlDiario = new EventEmitter();
 
-  displayedColumns: string[] = ['no','fecha','racionternero','ventacontado','ventainterna','antibmastitis','ventaexterna','precio','diferencia','totallitros','ordeno','establo','secas','promordeno','promestablo','ufc','ccss','grasa','proteina'];
+  displayedColumns: string[] = ['no','fecha','racionternero','ventacontado','ventainterna','antibmastitis','ventaexterna','precio','diferencia','totallitros','ordeno','establo','action'];
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -26,11 +26,17 @@ export class ControlListarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("ENTRO LISTAR");
+     this.refrescar();
+  }
+   
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  refrescar(): void {
     this._api.getTypeRequest('produccionleche').subscribe({
       next: (data: any) => {
-        console.log("ENTRO LISTAR CARGAR");
-        console.log(data);
         //this.dataSource = data; //No pagina
         if (data) {
           this.sinData = false;
@@ -52,5 +58,32 @@ export class ControlListarComponent implements OnInit {
       }
     });
   }
+
+  editar(evento: any) {
+    //this.router.navigateByUrl('animal/detail/'+ id);
+    this.sendControlDiario.emit(evento);
+  }
+
+  eliminar(id: any){
+    if (confirm("Esta seguro de borrar el registro de control? Se eliminaran los datos de esta fechaa")) {
+    this._api.deleteTypeRequest('produccionleche/' + id).subscribe({
+     next: (data: any) => {
+      
+        this.refrescar();
+     },
+     error: (error) => {
+       console.log(error);
+       Swal.fire({
+         position: 'top-end',
+         icon: 'error',
+         title: 'Ocurrio un error inesperado, vuelva a intentar',
+         showConfirmButton: false,
+         timer: 1500
+       });
+     }
+   });
+  }
+  
+ }
 
 }

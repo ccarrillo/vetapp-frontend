@@ -35,11 +35,8 @@ export class GeneralComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("ENTRO LISTAR");
     this._api.getTypeRequest('animal/todosvo').subscribe({
       next: (data: any) => {
-        console.log("ENTRO LISTAR CARGAR");
-        console.log(data);
         //this.dataSource = data; //No pagina
         if (data) {
           this.sinData = false;

@@ -12,9 +12,16 @@ import { GrupoInventarioRegistrarComponent } from './grupoinventariosemen/grupo-
 import { GrupoRoutingModule } from './grupo-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import {MatTreeModule} from '@angular/material/tree';
-
+import { AddNodeComponent, NewNodeDialog } from './theme/add-node/add-node.component';
+import { EditNodeComponent, EditNodeDialog } from './theme/edit-node/edit-node.component';
+import { DeleteNodeComponent } from './theme/delete-node/delete-node.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
+  entryComponents: [
+    NewNodeDialog,
+    EditNodeDialog
+  ],
     declarations: [
       GrupoanimalComponent,
       GrupoAnimalListarComponent,
@@ -22,17 +29,22 @@ import {MatTreeModule} from '@angular/material/tree';
       GrupoinventariosemenComponent,
       GrupoInventarioRegistrarComponent,
       GrupoInventarioListarComponent,
+      AddNodeComponent,
+      NewNodeDialog,
+      EditNodeComponent,
+      EditNodeDialog,
+      DeleteNodeComponent
      
     ],
     imports: [
       CommonModule,
       GrupoRoutingModule,
-      MaterialModule,
       FormsModule,
       ReactiveFormsModule,
       ComponentsModule,
       SharedModule,
-      ComponentsModule
+      ComponentsModule,
+      MaterialModule,
       
       
     ]

@@ -21,7 +21,7 @@
                         [matAutocomplete]="auto">
                           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnGrupoEvento">
                             <mat-option *ngFor="let item of filteredOptions | async" [value]="item" >
-                              {{item.nombre}}
+                              {{item.nombredetallado}}
                             </mat-option>
                           </mat-autocomplete>
                           <mat-error *ngIf="myControl.errors?.requireMatch">Seleccione un grupo</mat-error>
@@ -245,7 +245,7 @@
                          
                           <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayFnGrupoAnimal" >
                             <mat-option *ngFor="let item2 of filteredOptionsAnimal | async" [value]="item2" [disabled]="habComboCorral">
-                              {{item2.nombre}}
+                              {{item2.nombredetallado}}
                             </mat-option>
                           </mat-autocomplete>
                           

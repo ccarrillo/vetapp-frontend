@@ -41,7 +41,6 @@ export class AnimalRegistrarComponent implements OnInit {
    listaOrigen: any [] =  [];
    listaEstadoProduccion: any [] =  [];
    listaEstadoReproduccion: any [] =  [];
-   listaCorral: any [] =  [];
    listaCategoriaReproduccion: any [] =  [];
    listaCategoriaProduccion: any [] =  [];
    listaAnimalesHembras:any [] =  [];
@@ -227,28 +226,7 @@ export class AnimalRegistrarComponent implements OnInit {
       
     });
 
-    this._api.getTypeRequest('parvetvalue/'.concat(Constantes.CONSTANTES_COMBO_CORRAL)).subscribe({
-      next: (data: any) => {
-        if (data) {
-          this.sinData = false;
-           this.listaCorral = data;
-        } else {
-          this.sinData = true;
-        }
-      },
-      error: (error) => {
-        console.log(error);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          title: 'Ocurrio un error inesperado, vuelva a intentar',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-          
-      
-    });
+
 
     this._api.getTypeRequest('parvetvalue/'.concat(Constantes.CONSTANTES_COMBO_CATEGORIA_REPRODUCCION)).subscribe({
       next: (data: any) => {
@@ -369,7 +347,6 @@ export class AnimalRegistrarComponent implements OnInit {
        sexo: ['', [Validators.required]],
        estadoproductivoId: ['', [Validators.required]],
        estadoreproductivoId: ['', [Validators.required]],
-       corralId: ['', [Validators.required]],
        categoriaReproduccionId: ['', [Validators.required]],
        categoriaProduccionId: ['', [Validators.required]],
        numeroparto: ['', [Validators.required]],

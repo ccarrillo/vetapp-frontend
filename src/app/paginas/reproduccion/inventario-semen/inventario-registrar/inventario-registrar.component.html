@@ -247,7 +247,7 @@
                            
                             <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayFnGrupo" >
                               <mat-option *ngFor="let item3 of filteredOptionsGrupo | async" [value]="item3" >
-                                {{item3.nombre}}
+                                {{item3.nombredetallado}}
                               </mat-option>
                             </mat-autocomplete>
                             <mat-icon matSuffix>flag</mat-icon>

@@ -90,7 +90,7 @@
                                
                                 <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayFnGrupo" >
                                   <mat-option *ngFor="let item3 of filteredOptionsGrupo | async" [value]="item3" >
-                                    {{item3.nombre}}
+                                    {{item3.nombredetallado}}
                                   </mat-option>
                                 </mat-autocomplete>
                                 <mat-error *ngIf="myControlGrupo.errors?.requireMatch">Seleccione un grupo</mat-error>

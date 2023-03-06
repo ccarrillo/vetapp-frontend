@@ -27,7 +27,7 @@
                             <mat-label>Grupo de protocolo</mat-label>
                             <mat-select id="grupoProtocoloId" formControlName="grupoProtocoloId" >
                               <mat-option *ngFor="let item of listaGrupoProtocolo" [value]="item.id">
-                                {{item.nombre}}
+                                {{item.nombredetallado}}
                               </mat-option>
                             </mat-select>
                             <mat-icon matSuffix>flag</mat-icon>

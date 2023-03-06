@@ -151,10 +151,13 @@ export class InventarioRegistrarComponent implements OnInit  {
         if (data) {
            this.sinData = false;
            this.listaAnimalesHembras = data;
-           if(this.objInventario.idMadre!= null && this.objInventario.idMadre != undefined && this.objInventario.idMadre != ''){
-            var index = this.listaAnimalesHembras.findIndex(index => index.id == this.objInventario.idMadre);
-            this.myControlAnimalHembra.setValue(this.listaAnimalesHembras[index]);
-          }
+           if(!this.isAddMode){
+            if(this.objInventario.idMadre!= null && this.objInventario.idMadre != undefined && this.objInventario.idMadre != ''){
+              var index = this.listaAnimalesHembras.findIndex(index => index.id == this.objInventario.idMadre);
+              this.myControlAnimalHembra.setValue(this.listaAnimalesHembras[index]);
+            }
+           }
+           
            
         } else {
           this.sinData = true;
@@ -180,10 +183,13 @@ export class InventarioRegistrarComponent implements OnInit  {
         if (data) {
           this.sinData = false;
            this.listaAnimalesMachos = data;
-           if(this.objInventario.idPadre!= null && this.objInventario.idPadre != undefined && this.objInventario.idPadre != ''){
-            var index = this.listaAnimalesMachos.findIndex(index => index.id == this.objInventario.idPadre);
-            this.myControlAnimalMacho.setValue(this.listaAnimalesMachos[index]);
-          }
+           if(!this.isAddMode){
+            if(this.objInventario.idPadre!= null && this.objInventario.idPadre != undefined && this.objInventario.idPadre != ''){
+              var index = this.listaAnimalesMachos.findIndex(index => index.id == this.objInventario.idPadre);
+              this.myControlAnimalMacho.setValue(this.listaAnimalesMachos[index]);
+            }
+           }
+           
         } else {
           this.sinData = true;
         }
@@ -207,10 +213,13 @@ export class InventarioRegistrarComponent implements OnInit  {
         if (data) {
           this.sinData = false;
            this.listaGrupoInventario = data;
-           if(this.objInventario.idGrupoInventario!= null && this.objInventario.idGrupoInventario != undefined && this.objInventario.idGrupoInventario != ''){
-            var index = this.listaGrupoInventario.findIndex(index => index.id == this.objInventario.idGrupoInventario);
-            this.myControlGrupo.setValue(this.listaGrupoInventario[index]);
-          }
+           if(!this.isAddMode){
+            if(this.objInventario.idGrupoInventario!= null && this.objInventario.idGrupoInventario != undefined && this.objInventario.idGrupoInventario != ''){
+              var index = this.listaGrupoInventario.findIndex(index => index.id == this.objInventario.idGrupoInventario);
+              this.myControlGrupo.setValue(this.listaGrupoInventario[index]);
+            }
+           }
+           
         } else {
           this.sinData = true;
         }

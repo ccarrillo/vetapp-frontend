@@ -1,60 +1,40 @@
-import { Component, EventEmitter, Injectable, Input, OnInit, Output } from '@angular/core';
+import { Component,  Injectable, OnInit, } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {SelectionModel} from '@angular/cdk/collections';
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import {MatTreeFlatDataSource, MatTreeFlattener, MatTreeNestedDataSource} from '@angular/material/tree';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+
+
+
+
 /**
  * Node for to-do item
  */
- export class TodoItemNode {
+export class TodoItemNode {
   children: TodoItemNode[];
   nombre: string;
-  /*id: number;
+  nombredetallado: string;
+  id: number;
   padre: number;
-  level: number;*/
+  level: number;
 }
 
 /** Flat to-do item node with expandable and level information */
 export class TodoItemFlatNode {
-  item: string;
+  nombre: string;
+  nombredetallado: string;
   level: number;
   expandable: boolean;
+  id: number;
+  padre: number;
   hasChild:boolean; // new property
 }
 
-/**
- * The Json object for to-do list data.
- */
-const TREE_DATA = {
-  CAMAY: {
-    'Almond Meal flour': null,
-    'Organic eggs': null,
-    'Protein Powder': null,
-    Fruits: {
-      Apple: null,
-      Berries: ['Blueberry', 'Raspberry'],
-      Orange: null
-    }
-  },
-  /*Empresa: [
-    'Cook dinner',
-    'Read the Material Design spec',
-    'Upgrade Application to Angular'
-  ]*/
-};
-/**
- * Checklist database, it can build a tree structured Json object.
- * Each node in Json object represents a to-do item or a category.
- * If a node is a category, it has children items and new items can be added under the category.
- */
-/**
- * Checklist database, it can build a tree structured Json object.
- * Each node in Json object represents a to-do item or a category.
- * If a node is a category, it has children items and new items can be added under the category.
- */
+
+
  @Injectable()
  export class ChecklistDatabase {
    dataChange = new BehaviorSubject<TodoItemNode[]>([]);
@@ -70,17 +50,12 @@ const TREE_DATA = {
      // Build the tree nodes from Json object. The result is a list of `TodoItemNode` with nested
      //     file node as children.
 
-     this._api.getTypeRequest('grupoanimal').subscribe({
+     this._api.getTypeRequest('grupoprotocolo').subscribe({
       next: (data: any) => {
-         
-        console.log("ENTRO LISTAR CARGAR");
-       // console.log(TREE_DATA);
-        console.log(data);
+ 
         //this.dataSource = data; //No pagina
         if (data) {
-         
            const treee= this.buildFileTree(data, 0);
-           console.log(treee);
            this.dataChange.next(data);
            this.sinData = false;
           
@@ -100,11 +75,7 @@ const TREE_DATA = {
         });
       }
     });
-     
-      /*const datas = this.buildFileTree(TREE_DATA, 0);
-       console.log(datas);
-     // Notify the change.
-       this.dataChange.next(datas);*/
+
    }
  
    /**
@@ -145,11 +116,11 @@ const TREE_DATA = {
    }
   
   
-   deleteItem(parent: TodoItemNode,name: string) {
-    //if (!parent.children) parent.children=[];
-   //const nuevo= parent.children.filter(ite => ite.item !== name);
-     //console.log('nuevo array'+this. );
-    //this.dataChange.next(this.data);
+   deleteItem(parent: TodoItemNode,name: string): void {
+    if (parent.children) {
+      parent.children = parent.children.filter(c => c.nombre !== name);
+      this.dataChange.next(this.data);
+    }
 }
   
   
@@ -158,12 +129,19 @@ const TREE_DATA = {
  }
 
 @Component({
-  selector: 'app-grupo-animal-registrar',
-  templateUrl: './grupo-animal-registrar.component.html',
-  styleUrls: ['./grupo-animal-registrar.component.sass'],
+  selector: 'app-grupoprotocolo',
+  templateUrl: './grupoprotocolo.component.html',
+  styleUrls: ['./grupoprotocolo.component.sass'],
   providers: [ChecklistDatabase],
 })
-export class GrupoAnimalRegistrarComponent implements OnInit {
+export class GrupoprotocoloComponent implements OnInit {
+
+  id_grupo:any;
+  editable:boolean = true;
+  valororiginal="";
+  textoDeInput: string = "";
+  nuevoNombreTemporal: TodoItemFlatNode;
+
 /** Map from flat node to nested node. This helps us finding the nested node to be modified */
 flatNodeMap = new Map<TodoItemFlatNode, TodoItemNode>();
 
@@ -182,10 +160,12 @@ treeFlattener: MatTreeFlattener<TodoItemNode, TodoItemFlatNode>;
 
 dataSource: MatTreeFlatDataSource<TodoItemNode, TodoItemFlatNode>;
 
+
+
 /** The selection for checklist */
 checklistSelection = new SelectionModel<TodoItemFlatNode>(true /* multiple */);
 
-constructor(private _database: ChecklistDatabase) {
+constructor(private _database: ChecklistDatabase, private _api: ApiService,) {
   this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
     this.isExpandable, this.getChildren);
   this.treeControl = new FlatTreeControl<TodoItemFlatNode>(this.getLevel, this.isExpandable);
@@ -196,7 +176,7 @@ constructor(private _database: ChecklistDatabase) {
   });
 }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    
   }
   ngOnChanges(){
 
@@ -210,17 +190,21 @@ getChildren = (node: TodoItemNode): TodoItemNode[] => node.children;
 
 hasChild = (_: number, _nodeData: TodoItemFlatNode) => _nodeData.expandable;
 
-hasNoContent = (_: number, _nodeData: TodoItemFlatNode) => _nodeData.item === '';
+hasNoContent = (_: number, _nodeData: TodoItemFlatNode) => _nodeData.nombre === '';
 
 /**
  * Transformer to convert nested node to flat node. Record the nodes in maps for later use.
  */
 transformer = (node: TodoItemNode, level: number) => {
   const existingNode = this.nestedNodeMap.get(node);
-  const flatNode = existingNode && existingNode.item === node.nombre
+  const flatNode = existingNode && existingNode.nombre === node.nombre
       ? existingNode
       : new TodoItemFlatNode();
-  flatNode.item = node.nombre;
+  
+  flatNode.nombre = node.nombre;
+  flatNode.nombredetallado = node.nombredetallado;
+  flatNode.id= node.id;
+  flatNode.padre= node.padre;
   flatNode.level = level;
   flatNode.expandable = true;                   // edit this to true to make it always expandable
   flatNode.hasChild = !!node.children?.length;  // add this line. this property will help 
@@ -229,35 +213,6 @@ transformer = (node: TodoItemNode, level: number) => {
   this.nestedNodeMap.set(node, flatNode);
   return flatNode;
 }
-
-/** Whether all the descendants of the node are selected. */
-/*descendantsAllSelected(node: TodoItemFlatNode): boolean {
-  const descendants = this.treeControl.getDescendants(node);
-  const descAllSelected = descendants.length > 0 && descendants.every(child => {
-    return this.checklistSelection.isSelected(child);
-  });
-  return descAllSelected;
-}*/
-
-/** Whether part of the descendants are selected */
-/*descendantsPartiallySelected(node: TodoItemFlatNode): boolean {
-  const descendants = this.treeControl.getDescendants(node);
-  const result = descendants.some(child => this.checklistSelection.isSelected(child));
-  return result && !this.descendantsAllSelected(node);
-}*/
-
-/** Toggle the to-do item selection. Select/deselect all the descendants node */
-/*todoItemSelectionToggle(node: TodoItemFlatNode): void {
-  this.checklistSelection.toggle(node);
-  const descendants = this.treeControl.getDescendants(node);
-  this.checklistSelection.isSelected(node)
-    ? this.checklistSelection.select(...descendants)
-    : this.checklistSelection.deselect(...descendants);
-
-  // Force update for the parent
-  descendants.forEach(child => this.checklistSelection.isSelected(child));
-  this.checkAllParentsSelection(node);
-}*/
 
 /** Toggle a leaf to-do item selection. Check all the parents to see if they changed */
 todoLeafItemSelectionToggle(node: TodoItemFlatNode): void {
@@ -310,68 +265,204 @@ getParentNode(node: TodoItemFlatNode): TodoItemFlatNode | null {
 
 /** Select the category so we can insert the new item. */
 addNewItem(node: TodoItemFlatNode) {
+ this.nuevoNombreTemporal = node ;
+     if (this.editable == true)
+      {
+        //Oculta el campo de texto
+        this.editable = false;
+       
+      }
   const parentNode = this.flatNodeMap.get(node);
   this._database.insertItem(parentNode!, '');
   this.treeControl.expand(node);
 }
 
+cancelarItem(node: TodoItemFlatNode){
+  const parentNode = this.getParentNode(node);
+
+  // Map from flat node to nested node.
+  const parentFlat = this.flatNodeMap.get(parentNode);
+
+  this._database.deleteItem(parentFlat!, node.nombre);
+  this.treeControl.expand(node);
+  this.editable = true;
+  this.id_grupo = '';
+
+}
+
 /** Save the node to database */
 saveNode(node: TodoItemFlatNode, itemValue: string) {
+
   const nestedNode = this.flatNodeMap.get(node);
   this._database.updateItem(nestedNode!, itemValue);
-  console.log(this._database);
-}
+  this.editable = true;
+  this.id_grupo = '';
+  node.level = node.level+1;
+  node.nombre = itemValue;
+  node.nombredetallado = this.nuevoNombreTemporal.nombredetallado+`/${itemValue}`;
+  node.padre = this.nuevoNombreTemporal.id;
+  //console.log(node);
+  this._database.dataChange.next(this._database.data);
+  this._api.postTypeRequest('grupoprotocolo', node).subscribe({
+    next: (data) => {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Datos registrados Correctamente',
+        showConfirmButton: false,
+        timer: 1500
+      });
+     
+    },
+    error: (error) => {
+      console.log(error);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Ocurrio un error inesperado, vuelva a intentar',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  });
 
-editarNode(node: TodoItemFlatNode): void {
-
-  //console.log('alex'+node.item);
- // console.log(node);
-  const nestedNode = this.flatNodeMap.get(node);
-  //console.log(nestedNode);
-}
-
-receiveSelectedNode(event) {
-  console.log(event.selectedNode);
 }
 
 deleteNode(node: TodoItemFlatNode): void {
 
-    //console.log('alex'+node.item);
-    const nestedNode = this.flatNodeMap.get(node);
-     console.log(nestedNode);
-     //console.log(this._database.dataChange.value[0].item);
-     //console.log(this._database.dataChange.value.length);
-     /*for (let index = 0; index < this._database.dataChange.value.length; index++) {
-      const element = this._database.dataChange.value[index];
-           console.log(element.item);
-     }*/
-    //this._database.deleteItem(nestedNode!,nestedNode.item);
-   /* function recorrer( obj ) {
-      let pila = [ [ '', obj ] ];
-    
-      while( pila.length ) {
-        let curr = pila.pop( );
-    
-        if( ( typeof( curr[1] ) == 'object' ) && ( curr[1] ) ) {
-          for( let idx in curr[1] ) {
-            if( ( typeof( curr[1] ) == 'object' ) && ( curr[1] ) ) {
-              if( curr[0].length ) {
-                pila.push( [ `${curr[0]}.${idx}`, curr[1][idx] ] );
-              } else {
-                pila.push( [ idx, curr[1][idx] ] );
-              }
+  this._api.getTypeRequest(`grupoprotocolo/existe/${node.id}`).subscribe({
+    next: (data) => {
+         if(!data){
+               
+          this._api.deleteTypeRequest('grupoprotocolo/' + node.id).subscribe({
+            next: (data) => {
+              let indice= this._database.dataChange.value[0].children.findIndex(index => index.id == node.id);
+              this._database.dataChange.value[0].children.splice(indice, 1);
+            
+              this._database.dataChange.next(this._database.dataChange.value);
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Datos eliminados correctamente',
+                showConfirmButton: false,
+                timer: 1500
+              });
+            },
+            error: (error) => {
+              console.log(error);
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Ocurrio un error inesperado, vuelva a intentar',
+                showConfirmButton: false,
+                timer: 1500
+              });
             }
-          }
-        } else {
-          console.log( `${curr[0]}: ${curr[1]}` );
-        }
-      }
+          });
+
+
+         
+         }
+         else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No se puede elimnar este grupo, existe animales ligados a este grupo ',
+            showConfirmButton: false,
+            timer: 3500
+          });
+         }
+      
+    },
+    error: (error) => {
+      console.log(error);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Ocurrio un error inesperado, vuelva a intentar',
+        showConfirmButton: false,
+        timer: 1500
+      });
     }
-    
-    recorrer( TREE_DATA );*/
-   
-}
+  });
+
 
    
+   
+ }
+
+ 
+
+  EditNode(nodeToBeEdited) {
+        console.log(nodeToBeEdited);
+         const id = nodeToBeEdited.id;
+         this.valororiginal = nodeToBeEdited.item;
+         this.textoDeInput = nodeToBeEdited.item;
+      if (this.editable == true)
+      {
+        //Oculta el campo de texto
+        this.editable = false;
+        //Manda la variable con la que se va a comparar
+        this.id_grupo = id;
+      }
+      else
+      {
+        this.editable = true;
+        this.id_grupo = '';
+      }
+    };
+      
+   
+
+   actualizar(node){
+  
+      let posicion = node.nombredetallado.indexOf("/");
+      let ultimaPosicion=0;
+       while ( posicion != -1 ) {
+            ultimaPosicion=posicion;
+            posicion = node.nombredetallado.indexOf("/",posicion+1);
+            
+          }
+      if(ultimaPosicion>0)
+      node.nombredetallado = node.nombredetallado.slice(0, ultimaPosicion+1).concat(node.nombre);
+      else
+      node.noombredetallado = node.nombre;
+      
+    this._api.putTypeRequest('grupoprotocolo/' + node.id, node).subscribe({
+      next: (data) => {
+        this._database;
+        this.editable = true;
+        this.id_grupo = '';
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Datos actualizados Correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
+       
+      },
+      error: (error) => {
+        console.log(error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Ocurrio un error inesperado, vuelva a intentar',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+    });
+   
+    
+   }
+
+   cancelar(nodeToBeEdited) {
+    console.log("ingreso a cancelar");
+    this.editable = true;
+    this.id_grupo = '';
+    nodeToBeEdited.item=this.valororiginal;
+   }
+
 
 }

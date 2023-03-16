@@ -84,8 +84,27 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
       {
+        path: 'group/event',
+        title: 'MENUITEMS.VET-GROUP.LIST.EVENTGROUP',
+        moduleName: 'group',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      },
+      {
         path: 'group/inventory',
         title: 'MENUITEMS.VET-GROUP.LIST.SEMENINVENTORYGROUP',
+        moduleName: 'group',
+        icon: '',
+        class: 'ml-menu',
+        groupTitle: false,
+        submenu: []
+      },
+     
+      {
+        path: 'group/protocol',
+        title: 'MENUITEMS.VET-GROUP.LIST.PROTOCOLGROUP',
         moduleName: 'group',
         icon: '',
         class: 'ml-menu',

@@ -8,6 +8,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 
 
+
+
 /**
  * Node for to-do item
  */
@@ -48,7 +50,7 @@ export class TodoItemFlatNode {
      // Build the tree nodes from Json object. The result is a list of `TodoItemNode` with nested
      //     file node as children.
 
-     this._api.getTypeRequest('grupoinventariosemen').subscribe({
+     this._api.getTypeRequest('grupoevento').subscribe({
       next: (data: any) => {
  
         //this.dataSource = data; //No pagina
@@ -127,14 +129,13 @@ export class TodoItemFlatNode {
  }
 
 
-
 @Component({
-  selector: 'app-grupoinventariosemen',
-  templateUrl: './grupoinventariosemen.component.html',
-  styleUrls: ['./grupoinventariosemen.component.sass'],
+  selector: 'app-grupoevento',
+  templateUrl: './grupoevento.component.html',
+  styleUrls: ['./grupoevento.component.sass'],
   providers: [ChecklistDatabase],
 })
-export class GrupoinventariosemenComponent implements OnInit {
+export class GrupoeventoComponent implements OnInit {
   id_grupo:any;
   editable:boolean = true;
   valororiginal="";
@@ -302,7 +303,7 @@ saveNode(node: TodoItemFlatNode, itemValue: string) {
   node.padre = this.nuevoNombreTemporal.id;
   //console.log(node);
   this._database.dataChange.next(this._database.data);
-  this._api.postTypeRequest('grupoinventariosemen', node).subscribe({
+  this._api.postTypeRequest('grupoevento', node).subscribe({
     next: (data) => {
       Swal.fire({
         position: 'top-end',
@@ -329,11 +330,11 @@ saveNode(node: TodoItemFlatNode, itemValue: string) {
 
 deleteNode(node: TodoItemFlatNode): void {
 
-  this._api.getTypeRequest(`grupoinventariosemen/existe/${node.id}`).subscribe({
+  this._api.getTypeRequest(`grupoevento/existe/${node.id}`).subscribe({
     next: (data) => {
          if(!data){
                
-          this._api.deleteTypeRequest('grupoinventariosemen/' + node.id).subscribe({
+          this._api.deleteTypeRequest('grupoevento/' + node.id).subscribe({
             next: (data) => {
               let indice= this._database.dataChange.value[0].children.findIndex(index => index.id == node.id);
               this._database.dataChange.value[0].children.splice(indice, 1);
@@ -427,7 +428,7 @@ deleteNode(node: TodoItemFlatNode): void {
       else
       node.noombredetallado = node.nombre;
       
-    this._api.putTypeRequest('grupoinventariosemen/' + node.id, node).subscribe({
+    this._api.putTypeRequest('grupoevento/' + node.id, node).subscribe({
       next: (data) => {
         this._database;
         this.editable = true;
@@ -462,5 +463,6 @@ deleteNode(node: TodoItemFlatNode): void {
     this.id_grupo = '';
     nodeToBeEdited.item=this.valororiginal;
    }
+
 
 }

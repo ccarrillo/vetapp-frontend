@@ -1,1 +1,84 @@
-<p>grupoinventariosemen works!</p>
+<section class="content">
+    <div class="container-fluid">
+  
+      <div class="row clearfix">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+              
+                <div class="body">
+                  
+                  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                    <!-- /////// delete the first <mat-tree-node> -->
+                     
+                    <mat-tree-node
+                      *matTreeNodeDef="let node; when: hasNoContent"
+                      matTreeNodePadding
+                    >
+                    
+                      <button mat-icon-button disabled></button>
+                      <mat-form-field>
+                        <mat-label>Nuevo grupo...</mat-label>
+                        <input matInput #itemValue placeholder="ingrese nombre"  />
+                      </mat-form-field>
+                      <button mat-button (click)="saveNode(node, itemValue.value)">Guardar</button>
+                      <button title="cancelar"  mat-icon-button (click)="cancelarItem(node)">
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-tree-node>
+                    
+                  
+                    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding  >
+                      <!-- ///////////// remove "; when: hasChild" from *matTreeNodeDef -->
+                    <ng-container  (change)="fueraFoco(node)">
+                      <button
+                        mat-icon-button
+                        matTreeNodeToggle
+                        [attr.aria-label]="'Toggle ' + node.nombre"
+                        *ngIf="node.hasChild"
+                      >
+                        <!-- ////////// add this to make expand button appear when has child -->
+                  
+                        <mat-icon class="mat-icon-rtl-mirror">
+                          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                        </mat-icon>
+                      </button>
+                  
+                      <!-- //////////// add this line to make space for removed button -->
+                      <div *ngIf="!node.hasChild" class="pad"></div>
+                      
+                      <div >
+                         <p *ngIf="node.id!= id_grupo">{{node.nombre}}</p> 
+                         <p *ngIf="node.id == id_grupo"><input matInput [(ngModel)]="node.nombre"/></p> 
+                         
+                      </div>
+                      
+                      <button title="Añadir nuevo grupo" *ngIf=" editable" mat-icon-button (click)="addNewItem(node)">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                     
+                      <button title="Editar nombre del grupo" *ngIf=" editable" mat-icon-button  (click)="EditNode(node)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button title="actualizar grupo" *ngIf=" node.id == id_grupo" mat-icon-button (click)="actualizar(node)">
+                        <mat-icon>update</mat-icon>
+                      </button>
+                      <button title="Cancelar operacion" *ngIf=" node.id == id_grupo" mat-icon-button (click)="cancelar(node)">
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                      <button title="Eliminar grupo" *ngIf=" editable" mat-icon-button (click)="deleteNode(node)">
+                        <mat-icon>delete_forever</mat-icon>
+                      </button>
+                    
+                     </ng-container>
+                    </mat-tree-node>
+           
+                  </mat-tree>
+                  
+                </div>
+            </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+  

@@ -29,7 +29,9 @@
       "TEXT": "Group",
       "LIST": {
         "ANIMALGROUP": "Animal Group",
-        "SEMENINVENTORYGROUP": "Semen Inventory Group"
+        "SEMENINVENTORYGROUP": "Semen Inventory Group",
+        "EVENTGROUP": "Event Group",
+        "PROTOCOLGROUP": "Protocol Group"
       }
     },
     "VET-ANIMALS": {

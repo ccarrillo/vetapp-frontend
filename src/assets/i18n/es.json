@@ -29,7 +29,10 @@
       "TEXT": "Grupo",
       "LIST": {
         "ANIMALGROUP": "Grupo Animales",
-        "SEMENINVENTORYGROUP": "Grupo Inventario de Semen"
+        "SEMENINVENTORYGROUP": "Grupo Inventario de Semen",
+        "EVENTGROUP": "Grupo de Eventos",
+        "PROTOCOLGROUP": "Grupo de Protocolos"
+
       }
     },
     "VET-ANIMALS": {
